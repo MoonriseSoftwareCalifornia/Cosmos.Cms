@@ -11,7 +11,7 @@ namespace CDT.Cosmos.Cms.Common.Services
     /// </summary>
     public class TranslationServices
     {
-        private readonly GoogleCloudAuthConfig _translationConfig;
+        private readonly IOptions<CosmosConfig> _config;
 
         /// <summary>
         ///     Constructor
@@ -21,7 +21,7 @@ namespace CDT.Cosmos.Cms.Common.Services
         {
             if (config.Value != null && config.Value.GoogleCloudAuthConfig != null)
             {
-                _translationConfig = config.Value.GoogleCloudAuthConfig;
+                _config = config;
             }    
         }
 
@@ -31,7 +31,7 @@ namespace CDT.Cosmos.Cms.Common.Services
         /// <returns></returns>
         public bool IsConfigured()
         {
-            return _translationConfig != null;
+            return _config.Value.GoogleCloudAuthConfig != null;
         }
 
         private async Task<TranslationServiceClient> GetTranslatorClient()
@@ -52,16 +52,16 @@ namespace CDT.Cosmos.Cms.Common.Services
             };
 
             var json = "{" +
-                       $"\"type\": \"{_translationConfig.ServiceType}\", " +
-                       $" \"project_id\": \"{_translationConfig.ProjectId}\", " +
-                       $" \"private_key_id\": \"{_translationConfig.PrivateKeyId}\"," +
-                       $" \"private_key\": \"{_translationConfig.PrivateKey}\", " +
-                       $" \"client_email\": \"{_translationConfig.ClientEmail}\", " +
-                       $" \"client_id\": \"{_translationConfig.ClientId}\", " +
-                       $" \"auth_uri\": \"{_translationConfig.AuthUri}\", " +
-                       $" \"token_uri\": \"{_translationConfig.TokenUri}\", " +
-                       $" \"auth_provider_x509_cert_url\": \"{_translationConfig.AuthProviderX509CertUrl}\", " +
-                       $" \"client_x509_cert_url\": \"{_translationConfig.ClientX509CertificateUrl}\"" + "}";
+                       $"\"type\": \"{_config.Value.GoogleCloudAuthConfig.ServiceType}\", " +
+                       $" \"project_id\": \"{_config.Value.GoogleCloudAuthConfig.ProjectId}\", " +
+                       $" \"private_key_id\": \"{_config.Value.GoogleCloudAuthConfig.PrivateKeyId}\"," +
+                       $" \"private_key\": \"{_config.Value.GoogleCloudAuthConfig.PrivateKey}\", " +
+                       $" \"client_email\": \"{_config.Value.GoogleCloudAuthConfig.ClientEmail}\", " +
+                       $" \"client_id\": \"{_config.Value.GoogleCloudAuthConfig.ClientId}\", " +
+                       $" \"auth_uri\": \"{_config.Value.GoogleCloudAuthConfig.AuthUri}\", " +
+                       $" \"token_uri\": \"{_config.Value.GoogleCloudAuthConfig.TokenUri}\", " +
+                       $" \"auth_provider_x509_cert_url\": \"{_config.Value.GoogleCloudAuthConfig.AuthProviderX509CertUrl}\", " +
+                       $" \"client_x509_cert_url\": \"{_config.Value.GoogleCloudAuthConfig.ClientX509CertificateUrl}\"" + "}";
 
             builder.JsonCredentials = json;
 
@@ -80,12 +80,17 @@ namespace CDT.Cosmos.Cms.Common.Services
         {
             var client = await GetTranslatorClient();
 
+            if (string.IsNullOrEmpty(sourceLanguage))
+            {
+                sourceLanguage = _config.Value.PrimaryLanguageCode;
+            }
+
             var request = new TranslateTextRequest
             {
                 SourceLanguageCode = sourceLanguage,
                 Contents = { content },
                 TargetLanguageCode = destinationLanguage,
-                Parent = new ProjectName(_translationConfig.ParentProjectId).ToString() // Must match .json file
+                Parent = new ProjectName(_config.Value.GoogleCloudAuthConfig.ParentProjectId).ToString() // Must match .json file
             };
             var response = await client.TranslateTextAsync(request);
             // response.Translations will have one entry, because request.Contents has one entry.
@@ -104,8 +109,8 @@ namespace CDT.Cosmos.Cms.Common.Services
             var model = await client.GetSupportedLanguagesAsync(new GetSupportedLanguagesRequest
             {
                 DisplayLanguageCode = returnLanguage,
-                Parent = new ProjectName(_translationConfig.ParentProjectId).ToString(),
-                ParentAsLocationName = new LocationName(_translationConfig.ParentProjectId, "us-central1")
+                Parent = new ProjectName(_config.Value.GoogleCloudAuthConfig.ParentProjectId).ToString(),
+                ParentAsLocationName = new LocationName(_config.Value.GoogleCloudAuthConfig.ParentProjectId, "us-central1")
             });
 
             //

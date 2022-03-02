@@ -156,7 +156,7 @@ namespace CDT.Cosmos.Cms.Common.Data.Logic
         ///     </para>
         ///     <para>NOTE: Cannot access articles that have been deleted.</para>
         /// </remarks>
-        public async Task<ArticleViewModel> GetByUrl(string urlPath, string lang = "en-US", bool publishedOnly = true,
+        public async Task<ArticleViewModel> GetByUrl(string urlPath, string lang = "", bool publishedOnly = true,
             bool onlyActive = true)
         {
             urlPath = urlPath?.Trim().ToLower();
@@ -263,11 +263,10 @@ namespace CDT.Cosmos.Cms.Common.Data.Logic
 
             var languageName = "US English";
 
-            if (_translationServices != null && !lang.Equals("en", StringComparison.CurrentCultureIgnoreCase) &&
-                !lang.Equals("en-us", StringComparison.CurrentCultureIgnoreCase))
+            if (lang != "" && CosmosOptions.Value.GoogleCloudAuthConfig != null && CosmosOptions.Value.PrimaryLanguageCode.Equals(lang, StringComparison.CurrentCultureIgnoreCase) == false)
             {
                 var result =
-                    await _translationServices.GetTranslation(lang, "en-us", new[] { article.Title, article.Content });
+                    await _translationServices.GetTranslation(lang, "", new[] { article.Title, article.Content });
 
                 languageName =
                     (await GetSupportedLanguages(lang))?.Languages.FirstOrDefault(f => f.LanguageCode == lang)

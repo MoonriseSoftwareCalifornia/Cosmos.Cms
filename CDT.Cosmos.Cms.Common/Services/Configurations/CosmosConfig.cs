@@ -30,6 +30,21 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         public string PrimaryCloud { get; set; }
 
         /// <summary>
+        /// Primary ISO-639-1 language code for this website.
+        /// </summary>
+        /// <remarks>
+        /// <para>Default value is "en-US".</para>
+        /// <para>
+        /// When Google translate is configured and a page translation is requested, the
+        /// translation is based on what language code is requested.  To see a list of
+        /// codes see <see href="https://cloud.google.com/translate/docs/languages">Google's
+        /// list of supported codes.</see>
+        /// </para>
+        /// </remarks>
+        [Display(Name = "Primary language code.")]
+        public string PrimaryLanguageCode { get; set; } = "en-US";
+
+        /// <summary>
         ///     Authentication
         /// </summary>
         public AuthenticationConfig AuthenticationConfig { get; set; }

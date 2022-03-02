@@ -7,6 +7,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
     /// </summary>
     public class GoogleCloudAuthConfig
     {
+        private string _parentProjectId = "";
         /// <summary>
         ///     Service type
         /// </summary>
@@ -28,13 +29,13 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         public string ParentProjectId { 
             get
             {
-                if (string.IsNullOrEmpty(ParentProjectId))
+                if (string.IsNullOrEmpty(_parentProjectId))
                     return ProjectId;
-                return ParentProjectId;
+                return _parentProjectId;
             }
             set 
             {
-                ParentProjectId = value;
+                _parentProjectId = value;
             }
         }
 
