@@ -931,15 +931,20 @@ namespace CDT.Cosmos.Cms.Data.Logic
 
             Ensure_ContentEditable_HasId(ref article);
 
-
-            if (controllerName == EnumControllerName.Edit)
+            if (!string.IsNullOrEmpty(article.Content))
             {
-                if (!string.IsNullOrEmpty(article.Content))
+                if (controllerName == EnumControllerName.Edit)
                 {
                     article.Content = article.Content.Replace("crx=", "contenteditable=",
-                        StringComparison.CurrentCultureIgnoreCase);
+                           StringComparison.CurrentCultureIgnoreCase);
+                }
+                else
+                {
+                    article.Content = article.Content.Replace("contenteditable=", "crx=",
+                           StringComparison.CurrentCultureIgnoreCase);
                 }
             }
+            
                
             if (article == null) throw new Exception($"Article ID:{id} not found.");
             return await BuildArticleViewModel(article, "en-US", false);
