@@ -277,10 +277,10 @@ namespace CDT.Cosmos.Cms.Common.Data.Logic
                 article.Content = result.Translations[1].TranslatedText;
             }
 
-            if (!string.IsNullOrEmpty(article.Content) && article.Content.Contains("contenteditable=", StringComparison.CurrentCultureIgnoreCase))
-            {
-                article.Content = article.Content.Replace("contenteditable=", "crx=", StringComparison.CurrentCultureIgnoreCase);
-            }
+            //if (!string.IsNullOrEmpty(article.Content) && article.Content.Contains("contenteditable=", StringComparison.CurrentCultureIgnoreCase))
+            //{
+            //    article.Content = article.Content.Replace("contenteditable=", "crx=", StringComparison.CurrentCultureIgnoreCase);
+            //}
 
             return new ArticleViewModel
             {
