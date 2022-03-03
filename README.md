@@ -8,7 +8,7 @@ This project is Sponsored by  [![Tek Yantra Logo](https://github.com/CosmosSoftw
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://cosmos.moonrise.net/get_started/install)
 
-Quick links: [Developer Help](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/DevelopingWithCosmos.md) | [Manual Docker Install](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/README.md#docker-container-manual-install)
+Quick links: [Developer Help](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/DevelopingWithCosmos.md) | [Manual Docker Install](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/README.md#docker-container-manual-install) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
 
 ## About Cosmos CMS
 
