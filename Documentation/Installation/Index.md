@@ -31,41 +31,6 @@ Tip:
 * By default, SendGrid restricts address to an account [through IP Address "Allow Lists."](https://docs.sendgrid.com/ui/account-and-settings/ip-access-management). To simplify installation, this security feature can be disabled by clicking the "Disable Allow List" button on the IP Address Management console screen.  For "high-value" or "high-risk" scenarios, it is highly recommended to leave the IP Address Allow List enabled.
 * As of this writing, it may be necessary to deploy the SendGrid account manually--not through using Terraform or other automation technology.
 
-### Automation Environment Variables Requirements
-
-If you are using an automated means of deploying Cosmos [as is used for Deployment to Azure](https://cosmos.moonrise.net/get_started/install), you will want to establish the following environment variables prior to the script running:
-
-* CosmosPrimaryCloud [This is the cloud where this installation is located. It can be amazon, azure, or google]
-* CosmosAdminEmail [Email address of the person who will be the administrator of this website]
-* CosmosSendGridApiKey [SendGrid API Key that is enabled to send email]
-* sqlDatabaseName [Database name to be used such as 'cosmosdb']
-* sqlServerAdminName [A random SQL Server admin name]
-* sqlServerName [This is the SQL Server DNS name]
-* sqlServerPassword [SQL Server random password]
-* CosmosPublisherUrl [The public URL to the Publisher website]
-* CosmosEditorUrl [The public URL of the editor website]
-* CosmosPrimaryCloud [Can be one of these: amazon, azure, google]
-* CosmosStorageUrl [Public URL of the Azure Storage or S3 bucket]
-* CosmosBlobContainer [Can be either '$web' for Azure, or the name of the S3 container for Amazon]
-
-* ConnectionStrings:
-  * DefaultConnection [This is the MS SQL Connection String to the database and database server]
-
-For Amazon Web Services you will need the following:
-
-* An API Access key with permissions to upload, rename, and delete blobs in the S3 bucket.
-
-For Amazon the following environment variables will be needed:
-* AmazonAwsAccessKeyId [API Access key ID]
-* AmazonAwsSecretAccessKey [The actual access key]
-* AmazonRegion [Amazon region where deployed]
-
-For Microsoft Azure you will need the following:
-
-* storageAccountName [Azure Storage Account or S3 Bucket Name]
-* ConnectionStrings:
-  * BlobConnection [Connection string to the Azure Storage Account]
-
 ### File Storage
 
 Files are stored in either AWS S3 or Azure Storage accounts with the public website enabled.
@@ -112,18 +77,18 @@ The editor website needs the following "Secrets" to be set:
 * CosmosEditorUrl [The publick URL of the editor website]
 * CosmosPrimaryCloud [Can be one of these: amazon, azure, google]
 * CosmosBlobContainer [Can be either '$web' for Azure, or the name of the S3 container for Amazon]
-* ConnectionStrings:
-  * DefaultConnection [This is the MS SQL Connection String to the database and database server]
 
 For Amazon the following environment variables will be needed:
 * AmazonAwsAccessKeyId [API Access key ID]
 * AmazonAwsSecretAccessKey [The actual access key]
 * AmazonRegion [Amazon region where deployed]
+* ConnectionStrings_DefaultConnection [This is the MS SQL Connection String to the database and database server]
 
-For Microsoft Azure you will need the following:
+For Microsoft Azure you will need the following configuration variables:
 
 * storageAccountName [Azure Storage Account or S3 Bucket Name]
 * ConnectionStrings:
+  * DefaultConnection [This is the MS SQL Connection String to the database and database server]
   * BlobConnection [Connection string to the Azure Storage Account]
 
 #### Publisher Website
