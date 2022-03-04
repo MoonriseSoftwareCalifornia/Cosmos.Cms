@@ -405,7 +405,7 @@
 
         // EDITOR UTILITIES
         function loadEditors() {
-            var elements = $("[contenteditable='true']");
+            var elements = $("[data-ccms-ceid]");
             $(elements).each(function () {
                 deployEditor(this);
                 $(this).click(function (event) {
@@ -808,7 +808,6 @@
                 editor = $("#eContent");
                 hiddenField.val(editor.html());
             }
-            hiddenField.val(hiddenField.val().replace(" contenteditable=", " crx="));
         }
 
         function processKendoCtrls(roleName, dataName) {

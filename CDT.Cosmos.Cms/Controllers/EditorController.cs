@@ -670,8 +670,8 @@ namespace CDT.Cosmos.Cms.Controllers
                 model = result.Model;
 
                 // Re-enable editable sections.
-                model.Content = model.Content.Replace("crx=", "contenteditable=",
-                    StringComparison.CurrentCultureIgnoreCase);
+                //model.Content = model.Content.Replace("crx=", "contenteditable=",
+                //    StringComparison.CurrentCultureIgnoreCase);
 
                 //
                 // Flush Redis and CDN if required 
@@ -791,8 +791,8 @@ namespace CDT.Cosmos.Cms.Controllers
 
 
             // Re-enable editable sections.
-            article.Content = article.Content.Replace("crx=", "contenteditable=",
-                StringComparison.CurrentCultureIgnoreCase);
+            //article.Content = article.Content.Replace("crx=", "contenteditable=",
+            //    StringComparison.CurrentCultureIgnoreCase);
 
             return View(new EditCodePostModel
             {

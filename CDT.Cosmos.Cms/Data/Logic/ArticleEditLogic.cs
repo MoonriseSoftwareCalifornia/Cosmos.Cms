@@ -131,8 +131,8 @@ namespace CDT.Cosmos.Cms.Data.Logic
         /// <summary>
         /// Make sure all content editble DIVs have a unique C/CMS ID (attribute 'data-ccms-ceid').
         /// </summary>
-        /// <param name="article"></param>
-        /// <returns></returns>
+        /// <param name="content"></param>
+        /// <returns>string</returns>
         /// <remarks>
         /// <para>
         /// The WYSIWYG editor is designed to only edit portions of an article content that are marked 
@@ -147,33 +147,52 @@ namespace CDT.Cosmos.Cms.Data.Logic
         /// like a map, chart, graph, etc. to be uneditable on a page while the text around it is.
         /// </para>
         /// </remarks>
-        private void Ensure_ContentEditable_HasId(ref Article article)
+        private string Ensure_ContentEditable_IsMarked(string content)
         {
+            if (string.IsNullOrEmpty(content) || string.IsNullOrWhiteSpace(content))
+            {
+                return content;
+            }
             var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(article.Content);
+            htmlDoc.LoadHtml(content);
 
-            var elements = htmlDoc.DocumentNode.SelectNodes("//*/div[@crx='true']");
+            var elements = htmlDoc.DocumentNode.SelectNodes("//*[@contenteditable]|//*[@crx]|//*[@data-ccms-ceid]");
+
+            if (elements == null)
+            {
+                return content;
+            }
 
             var count = 0;
 
-            if (elements != null)
+            foreach (var element in elements)
             {
-                foreach (var element in elements)
+                if (!element.Attributes.Contains("data-ccms-ceid"))
                 {
-                    if (!element.Attributes.Contains("data-ccms-ceid"))
+                    element.Attributes.Add("data-ccms-ceid", Guid.NewGuid().ToString());
+                    count++;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(element.Attributes["data-ccms-ceid"].Value))
                     {
-                        element.Attributes.Add("data-ccms-ceid", Guid.NewGuid().ToString());
-                        count++;
+                        element.Attributes["data-ccms-ceid"].Value = Guid.NewGuid().ToString();
                     }
                 }
 
-                // If we had to add at least one ID, then re-save the article.
-                if (count > 0)
+                if (element.Attributes.Contains("contenteditable"))
                 {
-                    article.Content = htmlDoc.DocumentNode.OuterHtml;
+                    element.Attributes.Remove("contenteditable");
                 }
+                if (element.Attributes.Contains("crx"))
+                {
+                    element.Attributes.Remove("crx");
+                }
+
             }
 
+            // If we had to add at least one ID, then re-save the article.
+            return htmlDoc.DocumentNode.OuterHtml;
         }
 
         private async Task<List<ArticleListItem>> PrivateGetArticleList(IQueryable<Article> query)
@@ -468,14 +487,16 @@ namespace CDT.Cosmos.Cms.Data.Logic
         {
             var flushUrls = new List<string>();
 
+            model.Content = Ensure_ContentEditable_IsMarked(model.Content);
+
             Article article;
 
-            if (!string.IsNullOrEmpty(model.Content))
-            {
-                //// When we save to the database, remove content editable attribute.
-                model.Content = model.Content.Replace("contenteditable=", "crx=",
-                    StringComparison.CurrentCultureIgnoreCase);
-            }
+            //if (!string.IsNullOrEmpty(model.Content))
+            //{
+            //    //// When we save to the database, remove content editable attribute.
+            //    model.Content = model.Content.Replace("contenteditable=", "crx=",
+            //        StringComparison.CurrentCultureIgnoreCase);
+            //}
 
             if (!await DbContext.Users.AnyAsync(a => a.Id == userId))
                 throw new Exception($"User ID: {userId} not found!");
@@ -929,23 +950,8 @@ namespace CDT.Cosmos.Cms.Data.Logic
                 .Include(l => l.Layout)
                 .FirstOrDefaultAsync(a => a.Id == id && a.StatusCode != 2);
 
-            Ensure_ContentEditable_HasId(ref article);
+            article.Content = Ensure_ContentEditable_IsMarked(article.Content);
 
-            if (!string.IsNullOrEmpty(article.Content))
-            {
-                if (controllerName == EnumControllerName.Edit)
-                {
-                    article.Content = article.Content.Replace("crx=", "contenteditable=",
-                           StringComparison.CurrentCultureIgnoreCase);
-                }
-                else
-                {
-                    article.Content = article.Content.Replace("contenteditable=", "crx=",
-                           StringComparison.CurrentCultureIgnoreCase);
-                }
-            }
-            
-               
             if (article == null) throw new Exception($"Article ID:{id} not found.");
             return await BuildArticleViewModel(article, "en-US", false);
         }

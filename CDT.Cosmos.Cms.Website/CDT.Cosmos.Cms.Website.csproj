@@ -7,13 +7,13 @@
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<StartupObject>CDT.Cosmos.Cms.Website.Program</StartupObject>
 		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
-		<AssemblyVersion>6.2.2.2</AssemblyVersion>
-		<FileVersion>6.2.2.2</FileVersion>
+		<AssemblyVersion>6.2.3.1</AssemblyVersion>
+		<FileVersion>6.2.3.1</FileVersion>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
 		<ApplicationInsightsResourceId>/subscriptions/aec61f6c-81f1-4589-b4a5-c743876b4847/resourceGroups/CosmosCMS/providers/microsoft.insights/components/cosmos-cms</ApplicationInsightsResourceId>
-		<Version>6.2.2.2</Version>
+		<Version>6.2.3.1</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

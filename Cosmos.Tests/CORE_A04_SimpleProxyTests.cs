@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Cosmos.Tests
 {
     [TestClass]
-    public class CORE_A04_SimpleProxyTests
+    public class CORE_F03_SimpleProxyTests
     {
         private static SimpleProxyConfigs configs;
 

@@ -165,8 +165,8 @@ namespace CDT.Cosmos.Cms.Controllers
             var layout = await _dbContext.Layouts.FirstOrDefaultAsync(i => i.Id == id);
 
             // Make editable
-            header = header.Replace(" contenteditable=\"", " crx=\"", StringComparison.CurrentCultureIgnoreCase);
-            footer = footer.Replace(" contenteditable=\"", " crx=\"", StringComparison.CurrentCultureIgnoreCase);
+            //header = header.Replace(" contenteditable=\"", " crx=\"", StringComparison.CurrentCultureIgnoreCase);
+            //footer = footer.Replace(" contenteditable=\"", " crx=\"", StringComparison.CurrentCultureIgnoreCase);
 
             layout.HtmlHeader = header;
             layout.FooterHtmlContent = footer;
