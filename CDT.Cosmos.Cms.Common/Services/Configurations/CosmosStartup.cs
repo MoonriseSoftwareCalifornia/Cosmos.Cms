@@ -136,12 +136,24 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             return (T)outputValue;
         }
 
-        private string GetConnectionString(string name)
+        private string GetConnectionString(string name, string primaryCloud)
         {
+            string connectionString = "";
+            if (primaryCloud == "azure")
+            {
+                connectionString = _configuration.GetConnectionString(name);
+            }
+            else if (primaryCloud == "amazon")
+            {
+                var variableName = "ConnectionStrings_DefaultConnection";
+                connectionString = _configuration[variableName];
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    connectionString = _configuration[variableName.ToUpper()];
+                }
+            }
 
-            var val = _configuration.GetConnectionString(name);
-
-            if (string.IsNullOrEmpty(val))
+            if (string.IsNullOrEmpty(connectionString))
             {
                 AddDiagnostic($"INFORMATIONAL: Connection string {name} is null or empty.", true);
             }
@@ -150,7 +162,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
                 AddDiagnostic($"INFORMATIONAL: Connection string {name} was found.", true);
             }
 
-            return val;
+            return connectionString;
         }
 
         #region BOOT TIME CONFIGURATION BUILDING AND VALIDATION METHODS
@@ -195,7 +207,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             AwsKeyId = GetValue<string>("CosmosAwsKeyId");
             AwsSecretAccessKey = GetValue<string>("CosmosAwsSecretAccessKey");
 
-            var dbConnection = GetConnectionString("DefaultConnection");
+            var dbConnection = GetConnectionString("DefaultConnection", PrimaryCloud);
 
             #endregion
 
