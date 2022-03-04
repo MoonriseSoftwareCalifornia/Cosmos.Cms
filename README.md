@@ -6,7 +6,7 @@ This project is Sponsored by  [![Tek Yantra Logo](https://github.com/CosmosSoftw
 [![NuGet Badge](https://buildstats.info/nuget/CDT.Cosmos.Cms.Common)](https://www.nuget.org/packages/CDT.Cosmos.Cms.Common/)
 [![Unit Tests (67)](https://github.com/CosmosSoftware/Cosmos.Cms/actions/workflows/unittests.yml/badge.svg)](https://github.com/CosmosSoftware/Cosmos.Cms/actions/workflows/unittests.yml)
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://cosmos.moonrise.net/documentation/install)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://cosmos.moonrise.net/Documentation/10-minute_install)
 
 Quick links: [Developer Help](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/DevelopingWithCosmos.md) | [Manual Docker Install](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/README.md#docker-container-manual-install) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
 
@@ -63,7 +63,7 @@ The publisher repository is a "stock" out of the box Visual Studio application. 
 
 You can deploy Cosmos to Azure by clicking the following button (recommended) or manually install by following the directions below.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](/Documentation/Installation/AzureClickInstall.md)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://cosmos.moonrise.net/Documentation/10-minute_install)
 
 This documentation is still under development, so check back for more topics as they become available.
 
