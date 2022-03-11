@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace CDT.Cosmos.Cms.Controllers
     public class HomeController : Controller
     {
         private readonly ArticleEditLogic _articleLogic;
-        private readonly IOptions<CosmosStartup> _bootConfigOptions;
+        //private readonly IOptions<CosmosStartup> _bootConfigOptions;
         private readonly IOptions<CosmosConfig> _cosmosConfigOptions;
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<HomeController> _logger;
@@ -34,19 +35,16 @@ namespace CDT.Cosmos.Cms.Controllers
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="cosmosConfig"></param>
-        /// <param name="bootConfigOptions"></param>
         /// <param name="dbContext"></param>
         /// <param name="articleLogic"></param>
         public HomeController(ILogger<HomeController> logger,
             IOptions<CosmosConfig> cosmosConfig,
-            IOptions<CosmosStartup> bootConfigOptions,
             ApplicationDbContext dbContext,
             ArticleEditLogic articleLogic)
         {
             _logger = logger;
             _cosmosConfigOptions = cosmosConfig;
             _articleLogic = articleLogic;
-            _bootConfigOptions = bootConfigOptions;
             _dbContext = dbContext;
         }
 
@@ -72,7 +70,7 @@ namespace CDT.Cosmos.Cms.Controllers
                     string.IsNullOrEmpty(_cosmosConfigOptions?.Value?.GoogleCloudAuthConfig?.ClientId) == false;
 
                 ViewData["AllowReset"] = _cosmosConfigOptions.Value.SiteSettings.AllowReset;
-                ViewData["AllowConfig"] = _bootConfigOptions.Value.AllowConfigEdit;
+                ViewData["AllowConfig"] = false;
 
 
                 if (User.Identity?.IsAuthenticated == false)
@@ -188,6 +186,24 @@ namespace CDT.Cosmos.Cms.Controllers
             Response.Headers[HeaderNames.Pragma] = "no-cache";
             ViewData["EditModeOn"] = false;
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        /// <summary>
+        /// Gets the application validation for Microsoft
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        public IActionResult GetMicrosoftIdentityAssociation()
+        {
+            var model = new MicrosoftValidationObject();
+            var appIds = _cosmosConfigOptions.Value.MicrosoftAppId.Split(',');
+
+            foreach (var id in appIds)
+            {
+                model.associatedApplications.Add(new AssociatedApplication() { applicationId = id });
+            }
+
+            return Json(model);
         }
 
         /// <summary>

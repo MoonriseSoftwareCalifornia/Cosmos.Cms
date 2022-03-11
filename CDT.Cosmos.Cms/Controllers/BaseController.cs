@@ -312,7 +312,7 @@ namespace CDT.Cosmos.Cms.Controllers
             data = builder.ToString();
 
             // Search for and eliminate BOM
-            var filtered = new string(data.ToArray().Where(c => c != '\uFEFF').ToArray());
+            var filtered = new string(data.ToArray().Where(c => c != '\uFEFF' && c != '\u00a0').ToArray());
 
             using var memStream = new MemoryStream();
             using var writer = new StreamWriter(memStream, new UTF8Encoding(false));

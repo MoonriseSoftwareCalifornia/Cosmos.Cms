@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -70,30 +72,43 @@ namespace CDT.Cosmos.Cms.Common.Services
         private async Task<string> CallEndpoint(Uri endPoint, string method, string proxyData, string userName,
             string password, string contentType = "application/x-www-form-urlencoded")
         {
-            WebRequest request;
-            if (method.Equals("get", StringComparison.CurrentCultureIgnoreCase))
-                request = WebRequest.Create(endPoint + proxyData);
-            else
-                request = WebRequest.Create(endPoint);
-            request.Method = method;
-            request.ContentType = contentType;
+            HttpClient httpClient;
 
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password))
-                request.Credentials = new NetworkCredential(userName, password);
-
-            if (method.Equals("post", StringComparison.CurrentCultureIgnoreCase))
             {
-                var ascii = new ASCIIEncoding();
-                var data = ascii.GetBytes(proxyData);
-                request.ContentLength = data.Length;
+                httpClient = new HttpClient(new HttpClientHandler()
+                {
+                      PreAuthenticate = true,
+                    UseDefaultCredentials = false,
+                    UseProxy = false,
+                    Credentials = new NetworkCredential(userName, password)
+                });
+            } 
+            else
+            {
+                httpClient = new HttpClient();
+            }
+            
+            using (httpClient)
+            {
+                HttpResponseMessage response;
 
-                using var stream = await request.GetRequestStreamAsync();
-                stream.Write(data, 0, data.Length);
+                // WebRequest request;
+                if (method.Equals("get", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    response = await httpClient.GetAsync(endPoint + proxyData);
+                }
+                else
+                {
+                    HttpContent httpContent = new StringContent(proxyData, Encoding.UTF8);
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+
+                    response = await httpClient.PostAsync(endPoint, httpContent);
+                }
+
+                return await response.Content.ReadAsStringAsync();
             }
 
-            using var response = (HttpWebResponse)await request.GetResponseAsync();
-
-            return new StreamReader(response.GetResponseStream()).ReadToEnd();
         }
     }
 }

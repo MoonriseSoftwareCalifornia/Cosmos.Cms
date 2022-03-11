@@ -12,8 +12,7 @@ namespace Cosmos.Tests
     [TestClass]
     public class CORE_D00_LayoutControllerTests
     {
-        private static Utilities utils;
-        private static string layoutId = "";
+        private static Utilities? utils;
 
         [ClassInitialize]
         public static void Initialize(TestContext context)

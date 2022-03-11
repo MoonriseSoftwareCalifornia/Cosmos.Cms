@@ -18,7 +18,9 @@ using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Controllers
 {
-
+    /// <summary>
+    /// Teams management controller
+    /// </summary>
     [AutoValidateAntiforgeryToken]
     [Authorize(Roles = "Administrators, Editors")]
     public class TeamsController : BaseController

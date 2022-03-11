@@ -32,8 +32,11 @@ namespace Cosmos.Tests
 
     public class Utilities
     {
-        private IOptions<CosmosConfig> _cosmosOptions;
+        private IOptions<CosmosConfig>? _cosmosOptions;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Utilities()
         {
             _cosmosOptions = GetCosmosConfigOptions();
@@ -43,7 +46,7 @@ namespace Cosmos.Tests
         ///     Gets the application Db context with sync context loaded.
         /// </summary>
         /// <returns></returns>
-        public ApplicationDbContext GetApplicationDbContext(SqlConnectionString connectionString = null, IOptions<CosmosConfig> cosmosConfig = null)
+        public ApplicationDbContext GetApplicationDbContext(SqlConnectionString? connectionString = null, IOptions<CosmosConfig>? cosmosConfig = null)
         {
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
@@ -124,7 +127,7 @@ namespace Cosmos.Tests
             return new FormFile(stream, 0, stream.Length, fileName, fileName);
         }
 
-        public SqlDbSyncContext GetSqlDbSyncContext(IOptions<CosmosConfig> config = null)
+        public SqlDbSyncContext GetSqlDbSyncContext(IOptions<CosmosConfig>? config = null)
         {
             if (config == null)
             {
@@ -186,12 +189,13 @@ namespace Cosmos.Tests
                 _configuration = GetConfig(true);
                 var optionsBuilder = new CosmosStartup(_configuration);
 
-                optionsBuilder.TryRun(out _cosmosOptions);
+                var _cosmosOptions = optionsBuilder.Build();
 
                 if (_cosmosOptions == null)
                 {
                     throw new InvalidOperationException("Could not load configuration");
                 }
+                return _cosmosOptions;
             }
 
             return _cosmosOptions;
@@ -207,7 +211,7 @@ namespace Cosmos.Tests
                 AuthenticationConfig = options.AuthenticationConfig,
                 CdnConfig = options.CdnConfig,
                 EditorUrls = options.EditorUrls,
-                EnvironmentVariable = options.EnvironmentVariable,
+                SecretName = options.SecretName,
                 GoogleCloudAuthConfig = options.GoogleCloudAuthConfig,
                 PrimaryCloud = options.PrimaryCloud,
                 SecretKey = options.SecretKey,
@@ -240,7 +244,7 @@ namespace Cosmos.Tests
                 AuthenticationConfig = options.AuthenticationConfig,
                 CdnConfig = options.CdnConfig,
                 EditorUrls = options.EditorUrls,
-                EnvironmentVariable = options.EnvironmentVariable,
+                SecretName = options.SecretName,
                 GoogleCloudAuthConfig = options.GoogleCloudAuthConfig,
                 PrimaryCloud = options.PrimaryCloud,
                 SecretKey = options.SecretKey,
@@ -318,6 +322,8 @@ namespace Cosmos.Tests
 
             var awsSecretAccessKey = GetKeyValue(config, "CosmosAwsSecretAccessKey");
 
+            var primaryCloud = GetKeyValue(config, "CosmosPrimaryCloud");
+
             _cosmosBootConfig = new CosmosStartup()
             {
                 AllowSetup = allowSetup,
@@ -330,7 +336,9 @@ namespace Cosmos.Tests
                 UseAwsSecretsMgr = useAwsSecretsManager,
                 AwsSecretsRegion = awsSecretsRegion,
                 AwsSecretAccessKey = awsSecretAccessKey,
-                AwsKeyId = awsKeyId
+                AwsKeyId = awsKeyId,
+                AzureVaultTenantId = tenantId,
+                PrimaryCloud = primaryCloud
             };
 
 
@@ -460,7 +468,7 @@ namespace Cosmos.Tests
             return controller;
         }
 
-        public HomeController GetHomeController(ClaimsPrincipal user, bool allowSetup, IOptions<CosmosConfig> siteOptions = null)
+        public HomeController GetHomeController(ClaimsPrincipal user, bool allowSetup, IOptions<CosmosConfig>? siteOptions = null)
         {
             if (siteOptions == null)
             {
@@ -474,7 +482,6 @@ namespace Cosmos.Tests
             //var blobOptions = Options.Create(new AzureBlobServiceConfig());
             var controller = new HomeController(logger,
                 siteOptions,
-                Options.Create(GetCosmosBootConfig()),
                 dbContext,
                 GetArticleEditLogic(dbContext)
             )
@@ -498,8 +505,8 @@ namespace Cosmos.Tests
                 dbContext,
                 GetUserManager(dbContext),
                 GetArticleEditLogic(dbContext),
-                GetSqlDbSyncContext(options), 
-                options, 
+                GetSqlDbSyncContext(options),
+                options,
                 logger)
             {
                 ControllerContext = { HttpContext = GetMockContext(user) }
@@ -515,13 +522,16 @@ namespace Cosmos.Tests
             //var claimsPrincipal = GetPrincipal(TestUsers.Foo).Result;
             //var redisConfig = Options.Create(GetRedisContextConfig());
             //var dbContext = GetApplicationDbContext();
+            var cosmosStartup = GetCosmosBootConfig();
+            cosmosStartup.AllowConfigEdit = true;
 
             var cosmosConfig = GetCosmosConfigOptionsInSetupMode();
 
             var controller = new SetupController(
                 logger,
                 cosmosConfig,
-                null
+                null,
+                new CDT.Cosmos.Cms.Services.Secrets.SecretsClient(cosmosStartup)
                 );
 
             return controller;
@@ -635,7 +645,7 @@ namespace Cosmos.Tests
             return principal;
         }
 
-        public UserManager<IdentityUser> GetUserManager(ApplicationDbContext dbContext = null)
+        public UserManager<IdentityUser> GetUserManager(ApplicationDbContext? dbContext = null)
         {
             if (dbContext == null)
             {

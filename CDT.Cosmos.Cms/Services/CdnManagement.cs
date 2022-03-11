@@ -6,6 +6,7 @@ using Microsoft.Rest;
 using Microsoft.Rest.Azure;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Services
@@ -169,16 +170,43 @@ namespace CDT.Cosmos.Cms.Services
         {
             using var cdnClient = await GetCdnManagementClient();
 
-            if (_endpoint == null)
+            try
             {
-                _endpoint = await cdnClient.Endpoints.GetAsync(_config.ResourceGroup, _config.CdnProfileName, _config.EndPointName);
-
                 if (_endpoint == null)
                 {
-                    throw new Exception($"Could not connect to Azure CDN Endpoint for profile {_config.CdnProfileName} and end point {_config.EndPointName}. Check permissions.");
+                    _endpoint = await cdnClient.Endpoints.GetAsync(_config.ResourceGroup, _config.CdnProfileName, _config.EndPointName);
                 }
+                return _endpoint;
             }
-            return _endpoint;
+            catch (Exception e)
+            {
+                if (_endpoint == null)
+                {
+                    try
+                    {
+                        var profileList = cdnClient.Profiles.ListByResourceGroup(_config.ResourceGroup);
+
+                        var allEndpoints = cdnClient.Endpoints.ListByProfile(_config.ResourceGroup, _config.CdnProfileName);
+                        if (allEndpoints != null)
+                        {
+                            foreach(var endpoint in allEndpoints)
+                            {
+                                var t = endpoint.Name;
+                            }
+                            var list = allEndpoints.Select(s => s.Name).ToArray();
+                            var names = string.Join(",", list);
+                            throw new Exception($"Profile '{_config.CdnProfileName}' does not contain endpoint name '{_config.EndPointName}.' Did you mean to use one of these endpoints: {names}?");
+                        }
+                        allEndpoints.Select(s => s.Name).ToArray();
+                        throw new Exception($"Could not connect to Azure CDN Endpoint for profile {_config.CdnProfileName} and end point {_config.EndPointName}. Check permissions.");
+                    }
+                    catch (Exception e2)
+                    {
+                        var t = e2; // For debugging purposes.
+                    }
+                }
+                throw;
+            }
         }
     }
 }

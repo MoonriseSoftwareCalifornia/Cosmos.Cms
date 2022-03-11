@@ -50,6 +50,16 @@ namespace CDT.Cosmos.Cms.Models
         }
 
         /// <summary>
+        /// Default Microsoft client ID (comes from boot time environment variables)
+        /// </summary>
+        public string DefaultMicrosoftClientId { get; set; }
+
+        /// <summary>
+        /// Default Microsoft secret (comes from boot time environment variables)
+        /// </summary>
+        public string DefaultMicrosoftSecret { get; set; }
+
+        /// <summary>
         ///     This is the object used to load and deserialize a json object
         /// </summary>
         [Display(Name = "Import JSON")]
@@ -94,13 +104,18 @@ namespace CDT.Cosmos.Cms.Models
         ///     Name of the vault secret that contains the configuration
         /// </summary>
         [Display(Name = "Secret Name")]
-        [RegularExpression(@"^[0-9, a-z, A-Z]{1,40}$", ErrorMessage = "Only numbers and letters.")]
+        [RegularExpression(@"^[0-9, a-z, A-Z]{1,40}$", ErrorMessage = "Secret name can only contain numbers and letters.")]
         public string SecretName { get; set; }
 
         /// <summary>
         ///     Connection test success or not
         /// </summary>
         public bool TestSuccess { get; set; }
+
+        /// <summary>
+        /// Can save to secrets if secrets manager is configured
+        /// </summary>
+        public bool CanSaveSecrets { get; private set; }
 
         /// <summary>
         ///     Initializes the model
@@ -119,9 +134,11 @@ namespace CDT.Cosmos.Cms.Models
             GoogleCloudAuthConfig = config.GoogleCloudAuthConfig;
             SendGridConfig = config.SendGridConfig;
             StorageConfig = config.StorageConfig;
-            EnvironmentVariable = config.EnvironmentVariable;
+            base.SecretName = config.SecretName;
             SecretKey = string.IsNullOrEmpty(config.SecretKey) ? RandomKey() : config.SecretKey;
             EditorUrls = config.EditorUrls;
+            CanSaveSecrets = config.SiteSettings.AllowConfigEdit;
+            SecretName = config.SecretName;
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace Cosmos.Tests
                 StorageConfig = new StorageConfig()
             };
 
-            config.StorageConfig = StaticUtilities.GetCosmosConfig().Value.StorageConfig;
+            config.StorageConfig = ConfigUtilities.GetCosmosConfig().Value.StorageConfig;
 
             _cosmosConfig = config;
 
@@ -41,14 +41,14 @@ namespace Cosmos.Tests
             _cosmosConfig.PrimaryCloud = "azure";
 
             var service1 =
-                new StorageContext(Options.Create(_cosmosConfig), StaticUtilities.GetMemoryCache());
+                new StorageContext(Options.Create(_cosmosConfig), ConfigUtilities.GetMemoryCache());
 
             var result1 = await service1.GetObjectsAsync("");
 
             _cosmosConfig.PrimaryCloud = "amazon";
 
             var service2 =
-                new StorageContext(Options.Create(_cosmosConfig), StaticUtilities.GetMemoryCache());
+                new StorageContext(Options.Create(_cosmosConfig), ConfigUtilities.GetMemoryCache());
 
             var result2 = await service2.GetObjectsAsync("");
 
@@ -61,7 +61,7 @@ namespace Cosmos.Tests
         {
             var azureDriver = new AzureStorage(_cosmosConfig.StorageConfig.AzureConfigs.FirstOrDefault());
             var awsDriver = new AmazonStorage(_cosmosConfig.StorageConfig.AmazonConfigs.FirstOrDefault(),
-                StaticUtilities.GetMemoryCache());
+                ConfigUtilities.GetMemoryCache());
 
             await using var memStream = new MemoryStream();
             await using var fileStream = File.OpenRead(_fullPathTestFile);
@@ -85,14 +85,14 @@ namespace Cosmos.Tests
             _cosmosConfig.PrimaryCloud = "azure";
 
             var service1 =
-                new StorageContext(Options.Create(_cosmosConfig), StaticUtilities.GetMemoryCache());
+                new StorageContext(Options.Create(_cosmosConfig), ConfigUtilities.GetMemoryCache());
 
             service1.AppendBlob(memStream, fileUploadMetadata1);
 
             _cosmosConfig.PrimaryCloud = "amazon";
 
             var service2 =
-                new StorageContext(Options.Create(_cosmosConfig), StaticUtilities.GetMemoryCache());
+                new StorageContext(Options.Create(_cosmosConfig), ConfigUtilities.GetMemoryCache());
 
             var fullPath2 = BLOB_Driver_TestConstants.HelloWorldSubDirectory2 + "/" + BLOB_Driver_TestConstants.TestFile3;
 
@@ -127,7 +127,7 @@ namespace Cosmos.Tests
             _cosmosConfig.PrimaryCloud = "azure";
 
             var service1 =
-                new StorageContext(Options.Create(_cosmosConfig), StaticUtilities.GetMemoryCache());
+                new StorageContext(Options.Create(_cosmosConfig), ConfigUtilities.GetMemoryCache());
 
             var blobsToMove =
                 await service1.GetFolderContents(BLOB_Driver_TestConstants.HelloWorldSubdirectory2Subdirectory3);
@@ -149,7 +149,7 @@ namespace Cosmos.Tests
             _cosmosConfig.PrimaryCloud = "azure";
 
             var service1 =
-                new StorageContext(Options.Create(_cosmosConfig), StaticUtilities.GetMemoryCache());
+                new StorageContext(Options.Create(_cosmosConfig), ConfigUtilities.GetMemoryCache());
 
             var fileToRename = BLOB_Driver_TestConstants.HelloWorldSubDirectory2 + "/" + BLOB_Driver_TestConstants.TestFile3;
 
@@ -169,7 +169,7 @@ namespace Cosmos.Tests
             _cosmosConfig.PrimaryCloud = "amazon";
 
             var service1 =
-                new StorageContext(Options.Create(_cosmosConfig), StaticUtilities.GetMemoryCache());
+                new StorageContext(Options.Create(_cosmosConfig), ConfigUtilities.GetMemoryCache());
 
             //
             // Arrange sub folders with files
@@ -248,7 +248,7 @@ namespace Cosmos.Tests
             _cosmosConfig.PrimaryCloud = "azure";
 
             var service1 =
-                new StorageContext(Options.Create(_cosmosConfig), StaticUtilities.GetMemoryCache());
+                new StorageContext(Options.Create(_cosmosConfig), ConfigUtilities.GetMemoryCache());
 
             //_cosmosConfig.StorageConfig.PrimaryProvider = "amazon";
 

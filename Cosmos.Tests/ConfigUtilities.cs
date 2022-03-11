@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Cosmos.Tests
 {
-    public class StaticUtilities
+    public class ConfigUtilities
     {
         private static CosmosStartup? _cosmosBootConfig;
 
@@ -56,7 +56,8 @@ namespace Cosmos.Tests
                 AzureVaultTenantId = tenantId,
                 CosmosAzureVaultUrl = vaultUrl,
                 SecretName = secretName,
-                UseAzureVault = true
+                UseAzureVault = true,
+                PrimaryCloud = "azure"
             };
 
             var startupConfig = new CosmosOptionsBuilder(_cosmosBootConfig);

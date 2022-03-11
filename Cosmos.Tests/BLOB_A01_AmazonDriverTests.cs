@@ -24,7 +24,7 @@ namespace Cosmos.Tests
                 StorageConfig = new StorageConfig()
             };
 
-            var cosmosConfig = StaticUtilities.GetCosmosConfig();
+            var cosmosConfig = ConfigUtilities.GetCosmosConfig();
 
             config.StorageConfig = cosmosConfig.Value.StorageConfig;
 
@@ -37,7 +37,7 @@ namespace Cosmos.Tests
         public async Task A01_GetList()
         {
             var driver = new AmazonStorage(_cosmosConfig.StorageConfig.AmazonConfigs.FirstOrDefault(),
-                StaticUtilities.GetMemoryCache());
+                ConfigUtilities.GetMemoryCache());
 
             var blobs = await driver.GetObjectsAsync("", null);
 
@@ -48,7 +48,7 @@ namespace Cosmos.Tests
         public async Task A02_DeleteItems()
         {
             var driver = new AmazonStorage(_cosmosConfig.StorageConfig.AmazonConfigs.FirstOrDefault(),
-                StaticUtilities.GetMemoryCache());
+                ConfigUtilities.GetMemoryCache());
 
             // Delete all blobs
             var blobs = await driver.DeleteFolderAsync("");
@@ -63,7 +63,7 @@ namespace Cosmos.Tests
         public async Task A03_CreateFolderSuccess()
         {
             var driver = new AmazonStorage(_cosmosConfig.StorageConfig.AmazonConfigs.FirstOrDefault(),
-                StaticUtilities.GetMemoryCache());
+                ConfigUtilities.GetMemoryCache());
 
             await driver.CreateFolderAsync(BLOB_Driver_TestConstants.FolderHelloWorld1);
         }
@@ -72,7 +72,7 @@ namespace Cosmos.Tests
         public async Task A04_CreateSubFolders()
         {
             var driver = new AmazonStorage(_cosmosConfig.StorageConfig.AmazonConfigs.FirstOrDefault(),
-                StaticUtilities.GetMemoryCache());
+                ConfigUtilities.GetMemoryCache());
 
             await driver.CreateFolderAsync(BLOB_Driver_TestConstants.FolderHelloWorld1);
 
@@ -91,7 +91,7 @@ namespace Cosmos.Tests
         public async Task A05_GetSubFolders()
         {
             var driver = new AmazonStorage(_cosmosConfig.StorageConfig.AmazonConfigs.FirstOrDefault(),
-                StaticUtilities.GetMemoryCache());
+                ConfigUtilities.GetMemoryCache());
 
             // Get all blobs
             var blobs = await driver.GetObjectsAsync("/hello-world-1/", null);
@@ -115,7 +115,7 @@ namespace Cosmos.Tests
             //var data = memStream.ToArray();
 
             var driver = new AmazonStorage(_cosmosConfig.StorageConfig.AmazonConfigs.FirstOrDefault(),
-                StaticUtilities.GetMemoryCache());
+                ConfigUtilities.GetMemoryCache());
 
             var fullPath = BLOB_Driver_TestConstants.HelloWorldSubdirectory2Subdirectory3 + "/" +
                            BLOB_Driver_TestConstants.TestFile1;
@@ -145,7 +145,7 @@ namespace Cosmos.Tests
             var destination = BLOB_Driver_TestConstants.HelloWorldSubDirectory2 + "/" + BLOB_Driver_TestConstants.TestFile1;
 
             var driver = new AmazonStorage(_cosmosConfig.StorageConfig.AmazonConfigs.FirstOrDefault(),
-                StaticUtilities.GetMemoryCache());
+                ConfigUtilities.GetMemoryCache());
 
             var sourceObject = await driver.GetBlobAsync(source);
 

@@ -20,6 +20,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             SiteSettings = new SiteSettings();
             StorageConfig = new StorageConfig();
             SendGridConfig = new SendGridConfig();
+            MicrosoftAppId = string.Empty;
         }
 
         /// <summary>
@@ -70,6 +71,11 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         public GoogleCloudAuthConfig GoogleCloudAuthConfig { get; set; }
 
         /// <summary>
+        /// Microsoft application ID used for application verification.
+        /// </summary>
+        public string MicrosoftAppId { get; set; }
+
+        /// <summary>
         ///     SendGrid configuration
         /// </summary>
         public SendGridConfig SendGridConfig { get; set; }
@@ -87,7 +93,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         /// <summary>
         ///     Environment Variable Name
         /// </summary>
-        public string EnvironmentVariable { get; set; } = "";
+        public string SecretName { get; set; } = "";
 
         /// <summary>
         ///     Secret key used for JWT authenticated communication between editors.

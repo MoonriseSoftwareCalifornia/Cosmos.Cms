@@ -8,6 +8,7 @@ using CDT.Cosmos.Cms.Common.Services.Configurations.Storage;
 using CDT.Cosmos.Cms.Data;
 using CDT.Cosmos.Cms.Models;
 using CDT.Cosmos.Cms.Services;
+using CDT.Cosmos.Cms.Services.Secrets;
 using Kendo.Mvc.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -34,6 +35,7 @@ namespace CDT.Cosmos.Cms.Controllers
         private readonly ILogger<SetupController> _logger;
         private readonly IOptions<CosmosConfig> _options;
         private readonly CosmosConfigStatus _cosmosStatus;
+        private readonly SecretsClient _secretsClient;
 
         /// <summary>
         ///     Constructor
@@ -41,14 +43,22 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <param name="logger"></param>
         /// <param name="options"></param>
         /// <param name="cosmosStatus"></param>
+        /// <param name="secretsClient"></param>
         public SetupController(ILogger<SetupController> logger,
             IOptions<CosmosConfig> options,
-            CosmosConfigStatus cosmosStatus
+            CosmosConfigStatus cosmosStatus,
+            SecretsClient secretsClient
         )
         {
             _logger = logger;
             _options = options;
             _cosmosStatus = cosmosStatus;
+            _secretsClient = secretsClient;
+        }
+
+        private bool CanUseSecretClient()
+        {
+            return CanUseConfigWizard() && _options.Value.SiteSettings.AllowConfigEdit;
         }
 
         private bool CanUseConfigWizard()
@@ -169,16 +179,10 @@ namespace CDT.Cosmos.Cms.Controllers
         {
             if (CanUseConfigWizard())
             {
-                if (
-                    _options.Value == null
-                    || _options.Value.SiteSettings == null
-                    || _options.Value.SiteSettings.AllowSetup == false
-                    || User.Identity.IsAuthenticated == false
-                    || User.Identity.IsAuthenticated &&
-                    User.IsInRole("Administrators") == false) // Setup allowed but user not an adminstrator
+                if (_options.Value == null || _options.Value.SiteSettings == null) // Setup allowed but user not an adminstrator
                     return View(new ConfigureIndexViewModel());
 
-                return View(new ConfigureIndexViewModel(_options.Value.EnvironmentVariable, _options.Value));
+                return View(new ConfigureIndexViewModel(_options.Value.SecretName, _options.Value));
             }
 
             _logger.LogError("Unauthorized access attempted.", new Exception("Unauthorized access attempted."));
@@ -193,16 +197,20 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <returns>SetupIndexViewModel</returns>
         [HttpPost]
         [ResponseCache(NoStore = true)]
-        public IActionResult ConfigWizard(ConfigureIndexViewModel model)
+        public async Task<IActionResult> ConfigWizard(ConfigureIndexViewModel model)
         {
             model.PrimaryCloud = string.IsNullOrEmpty(_options.Value.PrimaryCloud) ? "" : _options.Value.PrimaryCloud.ToLower();
+
             if (CanUseConfigWizard())
             {
+
+                ViewData["CanSaveToSecretsManager"] = _options.Value.SiteSettings.AllowConfigEdit && _secretsClient.IsConfigured;
+
                 if (!string.IsNullOrEmpty(model.ImportJson))
                 {
                     ModelState.Clear();
                     var config = JsonConvert.DeserializeObject<CosmosConfig>(model.ImportJson);
-                    model = new ConfigureIndexViewModel(_options.Value?.EnvironmentVariable, config);
+                    model = new ConfigureIndexViewModel(_options.Value?.SecretName, config);
                     ViewData["SkipBegin"] = true;
                     return View(model);
                 }
@@ -414,11 +422,19 @@ namespace CDT.Cosmos.Cms.Controllers
                         SqlConnectionStrings = model.SqlConnectionStrings,
                         StorageConfig = model.StorageConfig,
                         PrimaryCloud = model.PrimaryCloud,
-                        EnvironmentVariable = _options.Value?.EnvironmentVariable,
+                        SecretName = _options.Value?.SecretName,
                         SecretKey = model.SecretKey,
                         EditorUrls = model.EditorUrls
                     };
-                    ViewData["jsonObject"] = JsonConvert.SerializeObject(obj);
+
+                    var json = JsonConvert.SerializeObject(obj);
+
+                    if (_options.Value.SiteSettings.AllowConfigEdit)
+                    {
+                        await _secretsClient.SetSecret(_secretsClient.DefaultSecretName, json);
+                    }
+
+                    ViewData["jsonObject"] = json;
                 }
                 else
                 {

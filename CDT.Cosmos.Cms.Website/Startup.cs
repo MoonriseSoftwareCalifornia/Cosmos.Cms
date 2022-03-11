@@ -56,9 +56,11 @@ namespace CDT.Cosmos.Cms.Website
             var cosmosStartup = new CosmosStartup(Configuration);
 
             //
-            // Check for boot variable errors
+            // Check for boot variable errors and build the options
             //
-            if (cosmosStartup.TryRun(out var cosmosOptions))
+            var cosmosOptions = cosmosStartup.Build();
+
+            if (cosmosOptions.Value.SqlConnectionStrings.Any())
             {
                 cosmosStartup.Diagnostics.AddRange(cosmosStartup.Diagnostics);
 

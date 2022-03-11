@@ -24,7 +24,7 @@ namespace Cosmos.Tests
                 StorageConfig = new StorageConfig()
             };
 
-            config.StorageConfig = StaticUtilities.GetCosmosConfig().Value.StorageConfig;
+            config.StorageConfig = ConfigUtilities.GetCosmosConfig().Value.StorageConfig;
 
             _cosmosConfig = config;
 

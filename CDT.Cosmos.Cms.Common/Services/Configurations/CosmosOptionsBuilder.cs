@@ -280,7 +280,8 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
                 //    }
 
                 model = new CosmosConfig();
-
+                model.SecretName = GetValue<string>(configuration, "CosmosSecretName");
+                model.MicrosoftAppId = GetValue<string>(configuration, "MicrosoftAppId");
                 model.SiteSettings.AllowSetup = GetValue<bool?>(configuration, "CosmosAllowSetup");
                 model.PrimaryCloud = GetValue<string>(configuration, "CosmosPrimaryCloud");
                 model.SendGridConfig.EmailFrom = GetValue<string>(configuration, "CosmosAdminEmail");
@@ -295,6 +296,10 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
                 };
 
                 var dbConnection = configuration.GetConnectionString("DefaultConnection");
+                if (string.IsNullOrEmpty(dbConnection))
+                {
+                    dbConnection = GetValue<string>(configuration, "ConnectionStrings_DefaultConnection");
+                }
                 if (!string.IsNullOrEmpty(dbConnection))
                 {
                     var sqlConnectionString = new SqlConnectionString(dbConnection, model.PrimaryCloud, true);
@@ -339,7 +344,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             else
             {
                 model = JsonConvert.DeserializeObject<CosmosConfig>(_cosmosConfigSection.Value);
-                model.EnvironmentVariable = _cosmosStartup.SecretName;
+                model.SecretName = _cosmosStartup.SecretName;
             }
 
             //

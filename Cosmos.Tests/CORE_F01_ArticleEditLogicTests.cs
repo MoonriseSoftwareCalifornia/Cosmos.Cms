@@ -17,8 +17,8 @@ namespace Cosmos.Tests
     [TestClass]
     public class CORE_F01_ArticleEditLogicTests
     {
-        private static Utilities utils;
-        private static IdentityUser _testUser;
+        private static Utilities? utils;
+        private static IdentityUser? _testUser;
 
         [ClassInitialize]
         public static void Initialize(TestContext context)

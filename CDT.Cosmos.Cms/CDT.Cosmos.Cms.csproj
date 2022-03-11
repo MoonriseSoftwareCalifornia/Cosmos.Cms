@@ -7,10 +7,10 @@
 		<EnableNETAnalyzers>false</EnableNETAnalyzers>
 		<RepositoryUrl>https://github.com/CosmosSoftware/Cosmos.Cms</RepositoryUrl>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<Version>6.2.3.3</Version>
+		<Version>6.3.4.1</Version>
 		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
-		<AssemblyVersion>6.2.3.3</AssemblyVersion>
-		<FileVersion>6.2.3.3</FileVersion>
+		<AssemblyVersion>6.3.4.1</AssemblyVersion>
+		<FileVersion>6.3.4.1</FileVersion>
 		<Authors></Authors>
 		<ApplicationInsightsResourceId>/subscriptions/9bdb8e29-156f-4fc9-a1fe-1bb6a915a4f0/resourceGroups/CosmosCMS/providers/microsoft.insights/components/edit-cosmos-cms202107021426</ApplicationInsightsResourceId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -49,6 +49,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AWSSDK.SecretsManager" Version="3.7.2.13" />
+		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.2.0" />
 		<PackageReference Include="CDT.Akamai.Cdn" Version="6.0.0.4" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
 		<PackageReference Include="IntelliTect.AspNetCore.SignalR.SqlServer" Version="1.0.1" />

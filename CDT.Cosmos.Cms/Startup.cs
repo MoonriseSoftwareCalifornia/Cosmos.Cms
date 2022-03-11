@@ -4,6 +4,7 @@ using CDT.Cosmos.Cms.Common.Services;
 using CDT.Cosmos.Cms.Common.Services.Configurations;
 using CDT.Cosmos.Cms.Data.Logic;
 using CDT.Cosmos.Cms.Hubs;
+using CDT.Cosmos.Cms.Services.Secrets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -61,10 +62,17 @@ namespace CDT.Cosmos.Cms
             var cosmosStartup = new CosmosStartup(Configuration);
 
             //
-            // Check for boot variable errors
+            // Check for boot variable errors and build the options object
             //
-            if (cosmosStartup.TryRun(out var cosmosOptions))
+            var cosmosOptions = cosmosStartup.Build();
+
+            if (!cosmosStartup.HasErrors)
             {
+                //
+                // Adds a secret client. For it to work must set environment variable CosmosAllowConfigEdit set to true.
+                //
+                services.AddSingleton(new SecretsClient(cosmosStartup));
+
                 var primary = cosmosOptions.Value.SqlConnectionStrings.FirstOrDefault(f => f.IsPrimary);
 
                 if (primary != null)
@@ -218,6 +226,12 @@ namespace CDT.Cosmos.Cms
             }
             else
             {
+
+                //
+                // Adds a secret client. For it to work must set environment variable CosmosAllowConfigEdit set to true.
+                //
+                services.AddSingleton(new SecretsClient(cosmosStartup));
+
                 //
                 // Cosmos Startup was not successful.
                 // Load what is necessary to show diagnostic
@@ -251,7 +265,6 @@ namespace CDT.Cosmos.Cms
                     //options.ExcludedHosts.Add("example.com");
                     //options.ExcludedHosts.Add("www.example.com");
                 });
-
             }
 
             //
@@ -378,6 +391,11 @@ namespace CDT.Cosmos.Cms
             {
                 // Point to the route that will return the SignalR Hub.
                 endpoints.MapHub<ChatHub>("/chat");
+
+                endpoints.MapControllerRoute(
+                    "MsValidation",
+                    ".well-known/microsoft-identity-association.json",
+                    new { controller = "Home", action = "GetMicrosoftIdentityAssociation" });
 
                 endpoints.MapControllerRoute(
                     "MyArea",

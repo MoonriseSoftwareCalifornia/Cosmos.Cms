@@ -40,7 +40,6 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         /// request rules to be setup that route requests to blob storage. See documentation
         /// for more information.
         /// </remarks>
-        [Url()]
         [Required]
         [Display(Name = "Blob Url")]
         public string BlobPublicUrl { get; set; } = "";

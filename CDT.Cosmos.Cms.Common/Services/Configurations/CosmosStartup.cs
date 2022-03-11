@@ -32,6 +32,8 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         public CosmosStartup(IConfiguration configuration)
         {
             _configuration = configuration;
+            ReadBootConfig();
+
         }
 
 
@@ -136,22 +138,9 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             return (T)outputValue;
         }
 
-        private string GetConnectionString(string name, string primaryCloud)
+        private string GetConnectionString(string name)
         {
-            string connectionString = "";
-            if (primaryCloud == "azure")
-            {
-                connectionString = _configuration.GetConnectionString(name);
-            }
-            else if (primaryCloud == "amazon")
-            {
-                var variableName = "ConnectionStrings_DefaultConnection";
-                connectionString = _configuration[variableName];
-                if (string.IsNullOrEmpty(connectionString))
-                {
-                    connectionString = _configuration[variableName.ToUpper()];
-                }
-            }
+            var connectionString = _configuration.GetConnectionString(name);
 
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -182,15 +171,13 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
                 PrimaryCloud = PrimaryCloud.ToLower();
             }
 
-            SecretName = GetValue<string>("CosmosSecretName");
-
             // SETUP VALUES
             AllowConfigEdit = GetValue<bool>("CosmosAllowConfigEdit");
             AllowSetup = GetValue<bool>("CosmosAllowSetup");
             AllowSiteReset = GetValue<bool>("CosmosAllowSiteReset");
+            MicrosoftAppId = GetValue<string>("MicrosoftAppId");
 
             // AZURE VAULT VALUES
-            UseAzureVault = GetValue<bool>("CosmosUseAzureVault");
             UseDefaultCredential = GetValue<bool>("CosmosUseDefaultCredential");
             AzureVaultClientId = GetValue<string>("CosmosAzureVaultClientId");
             AzureVaultClientSecret = GetValue<string>("CosmosAzureVaultClientSecret");
@@ -207,7 +194,18 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             AwsKeyId = GetValue<string>("CosmosAwsKeyId");
             AwsSecretAccessKey = GetValue<string>("CosmosAwsSecretAccessKey");
 
-            var dbConnection = GetConnectionString("DefaultConnection", PrimaryCloud);
+            // Microsoft App ID
+            MicrosoftAppId = GetValue<string>("MicrosoftAppId");
+
+            string dbConnection;
+            if (PrimaryCloud.Equals("azure"))
+            {
+                dbConnection = GetConnectionString("DefaultConnection");
+            }
+            else
+            {
+                dbConnection = GetValue<string>("ConnectionStrings_DefaultConnection");
+            }
 
             #endregion
 
@@ -215,7 +213,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
 
             if (string.IsNullOrEmpty(SecretName) && string.IsNullOrEmpty(dbConnection))
             {
-                AddDiagnostic("Boot environment variable CosmosSecretName is null or empty.", false);
+                AddDiagnostic("Boot environment variable CosmosSecretName is null or empty while dbConnection is not defined.", false);
             }
             else
             {
@@ -298,6 +296,9 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
                 }
             }
 
+
+            SecretName = GetValue<string>("CosmosSecretName");
+
             #endregion
         }
 
@@ -323,59 +324,44 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         /// Attempts to run Cosmos Startup.
         /// </summary>
         /// <remarks>
-        /// <para>This method tries to run Cosmos and collects diagnostics in the process.</para>
-        /// <para>Check <see cref="HasErrors"/> to see if there are any errors detected.</para>
+        /// <para>
+        /// This method tries to run Cosmos and collects diagnostics in the process.
+        /// </para>
+        /// <para>
+        /// Check <see cref="HasErrors"/> to see if there are any errors detected.
+        /// </para>
         /// <para>
         /// If boot time value CosmosAllowSetup is set to true, then diagnostic tests are 
         /// run to determine if cloud resource can be connected to. This can significantly delay boot
         /// up time for Cosmos.  Once Cosmos is setup, set CosmosAllowSetup to false.
         /// </para>
         /// </remarks>
-        public bool TryRun(out IOptions<CosmosConfig> config)
+        public IOptions<CosmosConfig> Build()
         {
-            config = null;
-
             // Read the boot configuration values and check them
             ReadBootConfig();
 
-            if (!HasErrors)
+            // Step one, read the boot time configuration variables and validate.
+            var cosmosOptionsBuilder = new CosmosOptionsBuilder(this);
+
+            AddDiagnostics(cosmosOptionsBuilder.Diagnostics);
+
+
+            // Now try to build the options
+            var config = cosmosOptionsBuilder.Build(_configuration);
+            AddDiagnostics(cosmosOptionsBuilder.Diagnostics);
+
+            // Check for errors trying to build the options and
+            // if we are in setup mode, run diagnostics
+            if (!cosmosOptionsBuilder.HasErrors && AllowSetup)
             {
-                // Step one, read the boot time configuration variables and validate.
-                var cosmosOptionsBuilder = new CosmosOptionsBuilder(this);
-
-                // If no errors, then continue.
-                if (cosmosOptionsBuilder.HasErrors)
-                {
-                    AddDiagnostics(cosmosOptionsBuilder.Diagnostics);
-                }
-                else
-                {
-                    // Now try to build the options
-                    config = cosmosOptionsBuilder.Build(_configuration);
-                    AddDiagnostics(cosmosOptionsBuilder.Diagnostics);
-
-                    // Check for errors trying to build the options and
-                    // if we are in setup mode, run diagnostics
-                    if (!cosmosOptionsBuilder.HasErrors && AllowSetup)
-                    {
-                        var diagnosticTests = new DiagnosticTests(config);
-                        var results = diagnosticTests.Run().Result;
-                        AddDiagnostics(results);
-                    }
-                }
-
+                var diagnosticTests = new DiagnosticTests(config);
+                var results = diagnosticTests.Run().Result;
+                AddDiagnostics(results);
             }
-            else
-            {
-                if (config == null)
-                {
-                    config = Options.Create(new CosmosConfig());
-                }
-            }
-                        
 
-            // If there are no errors, we have success.
-            return HasErrors == false;
+            return config;
+
         }
 
         #region PUBLIC PROPERTIES
@@ -404,7 +390,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         public string PrimaryCloud { get; set; } = "";
 
         /// <summary>
-        ///     Cosmos Azure Vault Secret Name
+        ///     Secret Name in either AWS Secrets Manager or Azure Key Vault
         /// </summary>
         public string SecretName { get; set; } = "";
 
@@ -430,6 +416,8 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         #endregion
 
         #region AZURE VAULT SETTINGS
+
+        public string MicrosoftAppId { get; set; } = "";
 
         /// <summary>
         ///     Client ID (aka App Id)
