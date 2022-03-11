@@ -30,7 +30,7 @@ namespace CDT.Cosmos.Cms.Models
         /// <summary>
         /// Application ID
         /// </summary>
-        public string applicationId { get; set; }
+        public string applicationId { get; set; } = "";
     }
 
 }

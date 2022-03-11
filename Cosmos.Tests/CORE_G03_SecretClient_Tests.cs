@@ -22,6 +22,14 @@ namespace Cosmos.Tests
             var config = utils.GetCosmosBootConfig();
             _testValue = Guid.NewGuid();
 
+            TestValue("CosmosAzureVaultUrl", config.CosmosAzureVaultUrl);
+            TestValue("AzureVaultTenantId", config.AzureVaultTenantId);
+            TestValue("AzureVaultClientId", config.AzureVaultClientId);
+            TestValue("AzureVaultClientSecret", config.AzureVaultClientSecret);
+            TestValue("AwsKeyId", config.AwsKeyId);
+            TestValue("AwsSecretAccessKey", config.AwsSecretAccessKey);
+            TestValue("AwsSecretsRegion", config.AwsSecretsRegion);
+
             _azureClient = new AzureKeyVaultClient(config.CosmosAzureVaultUrl,
                 config.AzureVaultTenantId,
                 config.AzureVaultClientId,
@@ -32,6 +40,14 @@ namespace Cosmos.Tests
                 config.AwsSecretsRegion);
 
             _secretsClient = new SecretsClient(config);
+        }
+
+        private static void TestValue(string variableName, string value)
+        {
+            if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+            {
+                throw new Exception($"Variable { variableName } is not a valid value");
+            }
         }
 
         [TestMethod]
