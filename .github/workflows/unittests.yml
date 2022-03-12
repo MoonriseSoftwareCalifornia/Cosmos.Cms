@@ -45,6 +45,10 @@ jobs:
             COSMOSSECRETNAME: ${{ secrets.COSMOSSECRETNAME }}
             COSMOSUSEAZUREVAULT: ${{ secrets.COSMOSUSEAZUREVAULT }}
             COSMOSUSEDEFAULTCREDENTIAL: ${{ secrets.COSMOSUSEDEFAULTCREDENTIAL }}
+            COSMOSAWSKEYID: ${{ secrets.COSMOSAWSKEYID }}
+            COSMOSAWSSECRETACCESSKEY: ${{ secrets.COSMOSAWSSECRETACCESSKEY }}
+            COSMOSAWSSECRETSREGION:  ${{ secrets.COSMOSAWSSECRETSREGION }}
+            COSMOSUSEAWSSECRETSMGR:   ${{ secrets.COSMOSUSEAWSSECRETSMGR }}
       run: dotnet test --no-build --verbosity normal
 
       
