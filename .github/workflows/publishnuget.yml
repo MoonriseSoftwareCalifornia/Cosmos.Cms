@@ -31,7 +31,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore -c Release
     - name: Publish NuGet
-      run: dotnet nuget push /home/runner/work/Cosmos.Cms/Cosmos.Cms/CDT.Cosmos.Cms.Common/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push /home/runner/work/Cosmos.Cms/Cosmos.Cms/CDT.Cosmos.Cms.Common/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
     #- name: Test
     #  run: dotnet test --no-build --verbosity normal
     #- name: dotnet publish Cosmos Editor
