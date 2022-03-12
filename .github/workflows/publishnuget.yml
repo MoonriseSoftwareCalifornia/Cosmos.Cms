@@ -28,8 +28,10 @@ jobs:
       run: dotnet nuget add source https://nuget.telerik.com/v3/index.json --username ${{ secrets.TELERIK_USER }} --password ${{ secrets.TELERIK_PASSWORD }} --store-password-in-clear-text --name telerik.com
     - name: Restore dependencies
       run: dotnet restore --packages ./packages
-    #- name: Build
-    #  run: dotnet build --no-restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Publish NuGet
+      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
     #- name: Test
     #  run: dotnet test --no-build --verbosity normal
     #- name: dotnet publish Cosmos Editor
@@ -39,12 +41,12 @@ jobs:
     # - name: dotnet publish Cosmos Publisher
     #  run: dotnet publish /home/runner/work/Cosmos.Cms/Cosmos.Cms/CDT.Cosmos.Cms.Website/CDT.Cosmos.Cms.Website.csproj -c Release -o /home/runner/work/app/publisher
     # NuGet Comsos Common Package
-    - name: Publish NuGet
+    #- name: Publish NuGet
       # You may pin to the exact commit or the version.
       # uses: brandedoutcast/publish-nuget@c12b8546b67672ee38ac87bea491ac94a587f7cc
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
+      #uses: brandedoutcast/publish-nuget@v2.5.5
+      #with:
         # Filepath of the project to be packaged, relative to root of repository
-        PROJECT_FILE_PATH: "./CDT.Cosmos.Cms.Common/CDT.Cosmos.Cms.Common.csproj"
+        #PROJECT_FILE_PATH: "./CDT.Cosmos.Cms.Common/CDT.Cosmos.Cms.Common.csproj"
         # API key to authenticate with NuGet server
-        NUGET_KEY: ${{ secrets.NUGET_KEY }}
+        #NUGET_KEY: ${{ secrets.NUGET_KEY }}
