@@ -13,7 +13,9 @@ using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Controllers
@@ -203,7 +205,9 @@ namespace CDT.Cosmos.Cms.Controllers
                 model.associatedApplications.Add(new AssociatedApplication() { applicationId = id });
             }
 
-            return Json(model);
+            var data = Newtonsoft.Json.JsonConvert.SerializeObject(model);
+
+            return File(Encoding.UTF8.GetBytes(data), "application/json", fileDownloadName: "microsoft-identity-association.json");
         }
 
         /// <summary>
