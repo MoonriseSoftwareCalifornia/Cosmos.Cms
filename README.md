@@ -24,7 +24,7 @@ This Readme describes the current status of this project, why it was started, an
 * [Product website](https://cosmos.moonrise.net/) launched.
 * Now the project is in a phase where we are trying to grow our developer and user community.
 
-### Why a CMS
+### Why Cosmos CMS was created
 
 This project began out of a need for a lean, easy to use, high performance Content Management System that has the capacity to handle extremely high number of users and be highly available--capable of hosting a single website from both Azure and AWS with real-time content synchronization between the two.
 
@@ -32,7 +32,7 @@ Cosmos CMS hosted websites built for the State of California's fire response of 
 
 [Please see our blog article](https://cosmos.moonrise.net/blog) that describes the unique architecture of this system.
 
-### Join the Cosmos CMS Team
+### Help contribute
 
 There are a number of ways you can help:
 
