@@ -98,14 +98,13 @@ The publisher installation is relatively simple as it's sole purpose is the "pub
 
 The publisher needs the following "Secrets" set:
 
-* CosmosPrimaryCloud [This is the cloud where this installation is located. It can be amazon, azure, or google]
-
 For Amazon Web Services the following environment variables will be needed:
-
+* CosmosPrimaryCloud [Set to: amazon]
 * ConnectionStrings_DefaultConnection [This is the Microsoft SQL Connection String to the database and database server]
 
 For Microsoft Azure you will need the following configuration variables:
 
+* CosmosPrimaryCloud [Set to: azure]
 * ConnectionStrings:
   * DefaultConnection [This is the Microsoft SQL Connection String to the database and database server]
 
