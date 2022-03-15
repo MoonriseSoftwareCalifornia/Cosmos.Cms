@@ -53,7 +53,7 @@ IMPORTANT! The database has to be accessible to both the Publisher and Editor we
 
 ### Editor and Publisher Website Docker Container Installation
 
-Cosmos requires two websites to be deployed as Docker Containers. It is recommended to install these first as the docker containers take a while to download and spin up.  By the time the storage and database resources are deployed, these websites will be ready to use.
+Cosmos requires two websites to be deployed as Docker Containers. It is recommended to install these first as the docker containers take a while to download and run.  By the time the storage and database resources are deployed, these websites will be ready to use.
 
 #### Editor Website Configuration
 
