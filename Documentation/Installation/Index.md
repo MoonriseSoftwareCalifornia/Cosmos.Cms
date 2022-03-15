@@ -66,29 +66,26 @@ The purpose of the "Editor" is to manage content.  Here are the particulars abou
 
 The editor website needs the following "Secrets" to be set:
 
-* CosmosPrimaryCloud [This is the cloud where this installation is located. It can be amazon, azure, or google]
 * CosmosAdminEmail [Email address of the person who will be the administrator of this website]
-* CosmosSendGridApiKey [SendGrid API Key that is enabled to send email]
-* sqlDatabaseName [Database name to be used such as 'cosmosdb']
-* sqlServerAdminName [A random SQL Server admin name]
-* sqlServerName [This is the SQL Server DNS name]
-* sqlServerPassword [SQL Server random password]
-* CosmosPublisherUrl [The public URL to the Publisher website]
-* CosmosEditorUrl [The publick URL of the editor website]
-* CosmosPrimaryCloud [Can be one of these: amazon, azure, google]
 * CosmosBlobContainer [Can be either '$web' for Azure, or the name of the S3 container for Amazon]
+* CosmosEditorUrl [The publick URL of the editor website]
+* CosmosPrimaryCloud [This is the cloud where this installation is located. It can be amazon, azure, or google]
+* CosmosPublisherUrl [The public URL to the Publisher website]
+* CosmosSendGridApiKey [SendGrid API Key that is enabled to send email]
+* CosmosStorageUrl [The URL to the public website for AWS S3 or Azure Storage Account]
 
-For Amazon the following environment variables will be needed:
+For Amazon Web Services the following environment variables will be needed:
+
 * AmazonAwsAccessKeyId [API Access key ID]
 * AmazonAwsSecretAccessKey [The actual access key]
 * AmazonRegion [Amazon region where deployed]
-* ConnectionStrings_DefaultConnection [This is the MS SQL Connection String to the database and database server]
+* ConnectionStrings_DefaultConnection [This is the Microsoft SQL Connection String to the database and database server]
 
 For Microsoft Azure you will need the following configuration variables:
 
 * storageAccountName [Azure Storage Account or S3 Bucket Name]
 * ConnectionStrings:
-  * DefaultConnection [This is the MS SQL Connection String to the database and database server]
+  * DefaultConnection [This is the Microsoft SQL Connection String to the database and database server]
   * BlobConnection [Connection string to the Azure Storage Account]
 
 #### Publisher Website
@@ -102,9 +99,15 @@ The publisher installation is relatively simple as it's sole purpose is the "pub
 The publisher needs the following "Secrets" set:
 
 * CosmosPrimaryCloud [This is the cloud where this installation is located. It can be amazon, azure, or google]
-* ConnectionStrings:
-  * DefaultConnection [This is the MS SQL Connection String to the database and database server]
 
+For Amazon Web Services the following environment variables will be needed:
+
+* ConnectionStrings_DefaultConnection [This is the Microsoft SQL Connection String to the database and database server]
+
+For Microsoft Azure you will need the following configuration variables:
+
+* ConnectionStrings:
+  * DefaultConnection [This is the Microsoft SQL Connection String to the database and database server]
 
 ## Performance Tips
 
@@ -114,4 +117,4 @@ The publisher and editor has been tested with Azure Front Doort Firewall. This f
 
 ## CDN
 
-Cosmos is capabilbe of integrating with Akamai Fast Purge, or through Microsoft Azure Akamai, Microsoft and Verizon CDN's.
+Cosmos is capabilbe of integrating with Akamai Fast Purge, or through Microsoft Azure: Akamai, Microsoft and Verizon CDN's.
