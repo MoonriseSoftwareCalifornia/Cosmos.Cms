@@ -55,7 +55,7 @@ IMPORTANT! The database has to be accessible to both the Publisher and Editor we
 
 Cosmos requires two websites to be deployed as Docker Containers. It is recommended to install these first as the docker containers take a while to download and spin up.  By the time the storage and database resources are deployed, these websites will be ready to use.
 
-#### Editor Website
+#### Editor Website Configuration
 
 The purpose of the "Editor" is to manage content.  Here are the particulars about the installation:
 
@@ -88,7 +88,7 @@ For Microsoft Azure you will need the following configuration variables:
   * DefaultConnection [This is the Microsoft SQL Connection String to the database and database server]
   * BlobConnection [Connection string to the Azure Storage Account]
 
-#### Publisher Website
+#### Publisher Website Configuration
 
 The publisher installation is relatively simple as it's sole purpose is the "publish" content on the web. By design it is light-weight and "lean."
 
