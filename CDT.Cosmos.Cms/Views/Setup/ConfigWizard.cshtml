@@ -3,6 +3,7 @@
 @model ConfigureIndexViewModel
 @{
     ViewData["Title"] = "Configuration Wizard";
+    var canUseSecrets = ((bool)ViewData["CanSaveToSecretsManager"]) ? "" : "style='display:none'";
 }
 <script src="~/js/clipboard.min.js"></script>
 
@@ -51,15 +52,33 @@
                 s.Add().Title("Begin").Buttons(b => b.Next())
                 .Content("<div>" +
                 "<h3>Configuration Editor Wizard</h3>" +
-                "<p>This wizard allows you to view and edit the configuration of this website.</p>" +
+                "<p>This wizard allows you to view and edit the configuration of this website.</p>"  +
+                "<hr />" +
+                "<div class='input-group mb-3'><button type='button' data-role='button' class='k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-primary' role='button' aria-disabled='false' tabindex='0' data-wizard-next=''>Begin editing configuration <i class='fa fa-circle-right'></i></button></div>" +
+                "</div>" +
+                "<p>Load an alternate configuration:" +
+                
+                "<div class='row' style='max-width:98%'>" +
+                "<div class='col'>" +
+                "<div " + canUseSecrets + "><p>Load configuration from secret (enter name):</p>" +
 
-                "<div class='input-group mb-3'><button type='button' data-role='button' class='k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-primary' role='button' aria-disabled='false' tabindex='0' data-wizard-next=''>Begin editing current configuration <i class='fa fa-circle-right'></i></button></div>" +
+                "<div class='input-group mb-3'><div class='btn btn-secondary'><span class='k-icon k-i-lock' title='View or hide secret'></span></div>" +
+                "<input class='form-control' id='idSecretName' title='Enter another secret name here to change.' />" +
+                "<button id='btnLoadSecret' class='btn btn-primary' onclick='loadSecret()' type='button' title='Click to load config from new secret.' id='button-addon2'>Load</button>" +
+                "</div></div>" +
 
+                "</div>"  +
+                "<div class='col'>" +
+
+                "<p>Paste configuration JSON string:</p>" +
+                
                 "<div class='input-group mb-3'>" +
                 "<div class='btn btn-secondary'><span class='k-icon k-i-lock tog-secret' title='View or hide secret' toggle='ImportJson'></span></div>" +
-                "<input class='form-control' id='ImportJson' name='ImportJson' value='' title='Click load after pasting configuration here.' placeholder='Edit alternative configuration by pasting it here.' />" +
+                "<input class='form-control' id='ImportJson' name='ImportJson' value='' placeholder='Edit alternative configuration by pasting it here.' />" +
                 "<button class='btn btn-primary' type='submit' title='Click to load JSON into form below.' id='button-addon2'>Load</button>" +
                 "</div>" +
+
+                "</div>"  +
                 "</div>");
                 }
 
@@ -94,8 +113,7 @@
                 .Grid(g => g.Cols(1).Gutter(10)).Items(gi =>
                 {
                 gi.Add().Field(p => p.SecretName).Title("Environment Variable")
-                .InputHtmlAttributes(new {@readonly = "true"})
-                .Hint("Environment variable name where C/CMS configuration is stored.");
+                .Hint("<span class='badge bg-danger badge-hint'>DANGER!</span> This is the name of the secret that holds your configuration. For sites in production it is highly recommended that you use a different secret name.");
 
                 gi.Add().Field(p => p.SiteSettings.AllowSetup).Editor(e => e.Switch())
                 .Hint("Allows setting up a new website.<br /><br /><span class='badge bg-success badge-hint'>TIP:</span> To improve security disable this setting after setup complete.");
@@ -437,6 +455,18 @@
         }
     });
 
+    function loadSecret() {
+        var input = $("#idSecretName");
+        var value = input.val();
+        if (isNotEmpty(value)) {
+            var url = "@Url.Action("ConfigWizard")/" + value;
+            windows.location = url;
+        } else {
+            alert("Please enter a secret name.");
+        }
+
+    };
+
     function btnCheckOnClick(e) {
         e.preventDefault();
         $("#resultsTbl").show();
@@ -628,7 +658,20 @@
                             if (val === null) {
                                 return false;
                             }
-                            var result = val.match(/(http(s)?:\/\/.)?[-a-zA-Z0-9@@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@@:%_\+.~#?&//=]*)/g);
+                            if (!val.startsWith("https://") && !val.startsWith("http://")) {
+                                editorErrorMsg = "Urls must begin with https:// or https://";
+                                return false;
+                            }
+                        }
+                        return true;
+                    },
+                    SecretName: function(input) {
+                        if (input.is("[name='SecretName']")) {
+                            var val = input.val();
+                            if (val === null) {
+                                return false;
+                            }
+                            var result = val.match("^[0-9, a-z, A-Z]{1,40}$");
                             if (result === null) {
                                 return false;
                             }
@@ -714,6 +757,9 @@
                     PublisherUrl: function(input) {
                         return "Valid URL is required.";
                     },
+                    SecretName: function (input) {
+                        return "Name required with only letters and numbers (40 chars max)."
+                    },
                     SendGridKey: function(input) {
                         return "SendGrid key required.";
                     },
@@ -726,6 +772,10 @@
                 }
             });
     })(jQuery, kendo);
+
+    $.ready(function () {
+
+    });
 </script>
 
 <kendo-dialog name="configCopiedDialog" title="Configuration Copied!" modal="true" visible="false" min-width="500">

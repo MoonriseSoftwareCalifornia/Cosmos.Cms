@@ -55,7 +55,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         /// </summary>
         [Url]
         [Required]
-        [Display(Name = "Publisher Url")]
+        [Display(Name = "Website (Publisher) Url")]
         public string PublisherUrl { get; set; } = "";
 
         /// <summary>

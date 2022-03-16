@@ -48,7 +48,9 @@ namespace CDT.Cosmos.Cms.Services.Secrets
         {
             get
             {
-                return _allowConfigEdit && _secretsClients.Count > 0;
+                return _allowConfigEdit &&
+                    ((!string.IsNullOrEmpty(_config.CosmosAzureVaultUrl) && !string.IsNullOrEmpty(_config.AzureVaultTenantId) && !string.IsNullOrEmpty(_config.AzureVaultClientId) && !string.IsNullOrEmpty(_config.AzureVaultClientSecret)) || 
+                    (!string.IsNullOrEmpty(_config.AwsKeyId) && !string.IsNullOrEmpty(_config.AwsSecretAccessKey) && !string.IsNullOrEmpty(_config.AwsSecretsRegion)));
             }
         }
 

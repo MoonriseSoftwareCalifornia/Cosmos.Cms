@@ -174,15 +174,40 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <summary>
         ///     Configuration wizard
         /// </summary>
+        /// <param name="id">Secret name to read from.</param>
         /// <returns></returns>
-        public IActionResult ConfigWizard()
+        public async Task<IActionResult> ConfigWizard(string id)
         {
             if (CanUseConfigWizard())
             {
+                ViewData["CanSaveToSecretsManager"] = _options.Value.SiteSettings.AllowConfigEdit && _secretsClient.IsConfigured;
+
                 if (_options.Value == null || _options.Value.SiteSettings == null) // Setup allowed but user not an adminstrator
                     return View(new ConfigureIndexViewModel());
 
-                return View(new ConfigureIndexViewModel(_options.Value.SecretName, _options.Value));
+
+                CosmosConfig config;
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    id = _options.Value.SecretName;
+                    config = _options.Value;
+                }
+                else
+                {
+                    var json = await _secretsClient.GetSecret(id);
+                    if (string.IsNullOrEmpty(json))
+                    {
+                        config = _options.Value;
+                        config.SecretName = id;
+                    }
+                    else
+                    {
+                        config = JsonConvert.DeserializeObject<CosmosConfig>(json);
+                    }
+                }
+
+                return View(new ConfigureIndexViewModel(id, config));
             }
 
             _logger.LogError("Unauthorized access attempted.", new Exception("Unauthorized access attempted."));
@@ -422,7 +447,7 @@ namespace CDT.Cosmos.Cms.Controllers
                         SqlConnectionStrings = model.SqlConnectionStrings,
                         StorageConfig = model.StorageConfig,
                         PrimaryCloud = model.PrimaryCloud,
-                        SecretName = _options.Value?.SecretName,
+                        SecretName = model.SecretName,
                         SecretKey = model.SecretKey,
                         EditorUrls = model.EditorUrls
                     };
@@ -431,7 +456,7 @@ namespace CDT.Cosmos.Cms.Controllers
 
                     if (_options.Value.SiteSettings.AllowConfigEdit)
                     {
-                        await _secretsClient.SetSecret(_secretsClient.DefaultSecretName, json);
+                        await _secretsClient.SetSecret(model.SecretName, json);
                     }
 
                     ViewData["jsonObject"] = json;
