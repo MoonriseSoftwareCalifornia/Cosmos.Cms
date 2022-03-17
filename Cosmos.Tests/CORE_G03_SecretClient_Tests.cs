@@ -92,14 +92,6 @@ namespace Cosmos.Tests
             var testValue = Guid.NewGuid().ToString();
 
             await _secretsClient.SetSecret(SECRETNAME, testValue);
-
-            var result1 = await _secretsClient.GetSecret(SECRETNAME);
-            var result2 = await _azureClient.GetSecret(SECRETNAME);
-            var result3 = await _awsSecretsManagerClient.GetSecret(SECRETNAME);
-
-            Assert.AreEqual(testValue, result1);
-            Assert.AreEqual(testValue, result2);
-            Assert.AreEqual(testValue, result3);
         }
 
         [TestMethod]
