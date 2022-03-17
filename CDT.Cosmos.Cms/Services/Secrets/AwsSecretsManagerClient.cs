@@ -10,6 +10,9 @@ namespace CDT.Cosmos.Cms.Services.Secrets
     /// <summary>
     /// AWS Secrets Manager Client
     /// </summary>
+    /// <remarks>
+    /// It is best to use the <see cref="SecretsClient"/> instead of this class directly.
+    /// </remarks>
     public class AwsSecretsManagerClient : ISecretsClient, IDisposable
     {
         private AmazonSecretsManagerClient? _client;

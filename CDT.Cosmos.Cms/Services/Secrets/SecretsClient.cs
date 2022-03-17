@@ -1,4 +1,6 @@
-﻿using CDT.Cosmos.Cms.Common.Services.Configurations;
+﻿using CDT.Cosmos.Cms.Common;
+using CDT.Cosmos.Cms.Common.Services.Configurations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -139,7 +141,6 @@ namespace CDT.Cosmos.Cms.Services.Secrets
                 if (_primaryCloud == "azure")
                 {
                     client = _secretsClients.FirstOrDefault(c => c.GetType() == typeof(AzureKeyVaultClient));
-                    return await client.GetSecret(secreteName);
                 }
                 else if (_primaryCloud == "amazon")
                 {
@@ -147,12 +148,18 @@ namespace CDT.Cosmos.Cms.Services.Secrets
                 }
             }
 
+            string secret;
+
             if (client == null)
             {
-                return "";
+                secret = "";
+            }
+            else
+            {
+                secret = await Retry.Do(async () => await client.GetSecret(secreteName), TimeSpan.FromSeconds(3));
             }
 
-            var secret = await client.GetSecret(secreteName);
+
             Dispose();
 
             return secret;
@@ -175,7 +182,7 @@ namespace CDT.Cosmos.Cms.Services.Secrets
 
             foreach (var client in _secretsClients)
             {
-                await client.SetSecret(secreteName, secret);
+                await Retry.Do(async () => await client.SetSecret(secreteName, secret), TimeSpan.FromSeconds(3));
             }
 
             Dispose();

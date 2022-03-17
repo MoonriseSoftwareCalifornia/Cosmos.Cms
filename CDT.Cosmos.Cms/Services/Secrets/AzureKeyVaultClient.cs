@@ -8,6 +8,9 @@ namespace CDT.Cosmos.Cms.Services.Secrets
     /// <summary>
     /// Azure key vault client
     /// </summary>
+    /// <remarks>
+    /// It is best to use the <see cref="SecretsClient"/> instead of this class directly.
+    /// </remarks>
     public class AzureKeyVaultClient : ISecretsClient
     {
         private readonly SecretClient _client;
