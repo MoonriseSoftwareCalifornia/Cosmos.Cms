@@ -179,19 +179,19 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
                     AddDiagnostic("Failed build configuration that includes AWS Secrets Manager: " + e.Message, false, "AWS Secrets Manager");
                 }
             }
-            //else
-            //{
-            //    //
-            //    // Get the C/CMS configuration from another configuration source (not Azure vault).
-            //    //
-            //    AddDiagnostic($"Attempting to load config from local variable {_cosmosStartup.SecretName}.", true, "Local Secrets");
+            else
+            {
+                //
+                // Get the C/CMS configuration from another configuration source (not Azure vault).
+                //
+                AddDiagnostic($"Attempting to load config from local variable {_cosmosStartup.SecretName}.", true, "Local Secrets");
 
-            //    if (!string.IsNullOrEmpty(_cosmosStartup.SecretName))
-            //        _cosmosConfigSection = configuration.GetSection(_cosmosStartup.SecretName);
+                if (!string.IsNullOrEmpty(_cosmosStartup.SecretName))
+                    _cosmosConfigSection = configuration.GetSection(_cosmosStartup.SecretName);
 
-            //    AddDiagnostic($"Loaded config from local variable {_cosmosStartup.SecretName}.", true, "Local Secrets");
+                AddDiagnostic($"Loaded config from local variable {_cosmosStartup.SecretName}.", true, "Local Secrets");
 
-            //}
+            }
 
             // Returns the Cosmos Configuration
             if (HasErrors)
