@@ -197,12 +197,8 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             // Microsoft App ID
             MicrosoftAppId = GetValue<string>("MicrosoftAppId");
 
-            string dbConnection;
-            if (PrimaryCloud.Equals("azure"))
-            {
-                dbConnection = GetConnectionString("DefaultConnection");
-            }
-            else
+            string dbConnection = GetConnectionString("DefaultConnection");
+            if (string.IsNullOrEmpty(dbConnection))
             {
                 dbConnection = GetValue<string>("ConnectionStrings_DefaultConnection");
             }
