@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "File Manager";
     var blobUrl = (string)ViewData["BlobEndpointUrl"];
+    var containerClass = "container mt-5 pt-2";
+    if (ViewData["Popup"] != null && ((bool)ViewData["Popup"]))
+    {
+        Layout = "_LayoutNoToolbar";
+        containerClass = "continer-fluid";
+    }
 }
 @(Html.Kendo().Notification().Name("notification"))
 @(Html.Kendo().Window()
@@ -23,15 +29,15 @@
         vertical-align: top;
     }
 </style>
-<div class="container mt-5 pt-2">
+<div class="@containerClass">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col">
             <a id="frmEditFile" class="btn btn-primary btn-sm" style="display: none" href="javascript:editCode()">Edit File</a> <a id="frmEditImage" class="btn btn-primary btn-sm" style="display: none" href="javascript:editImage()">Edit Image</a>
             <button id="btnCopyUrl" style="display: none" class="clipboard btn btn-sm btn-success" data-clipboard-text="" title="Click to copy url">Click to copy URL <span class="ca-gov-icon-clipboard"></span></button>
         </div>
     </div>
     <div class="row" id="uploaderRow" style="display:none">
-        <div class="col-md-12">
+        <div class="col">
             <div class="form-row align-items-center">
                 <div class="col-11">
                     <label class="sr-only" for="inlineFormInputGroup">Folder</label>
@@ -67,7 +73,7 @@
         </div>
     </div>
     <div class="row" id="fileManagerRow">
-        <div class="col-md-12 dropZoneElement">
+        <div class="col dropZoneElement">
             @(Html.Kendo().FileManager().Name("fileManager")
             .Draggable(false)
             .DataSource(ds =>
@@ -263,6 +269,11 @@
 
             $("#btnCopyUrl").attr("data-clipboard-text", "@blobUrl" + entry.path);
             $("#btnCopyUrl").show();
+
+            if (window.opener) {
+                window.opener.selectedFile = "@blobUrl" + entry.path;
+            }
+
             return;
         } else {
             blobRelativePath = entry.path + "/";

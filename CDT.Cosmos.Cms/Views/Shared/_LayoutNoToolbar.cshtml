@@ -1,0 +1,82 @@
+﻿@addTagHelper *, Kendo.Mvc
+@using Microsoft.AspNetCore.Routing
+@using Kendo.Mvc.UI
+@using System.Reflection
+@using CDT.Cosmos.Cms.Services
+@using Microsoft.Extensions.Options;
+@using CDT.Cosmos.Cms.Common.Services.Configurations
+@inject IOptions<CosmosConfig> options
+@model object
+@{
+    var assemblyName = Assembly.GetExecutingAssembly().GetName();
+
+    var controllerName = (string)Context.GetRouteData().Values["controller"];
+    var actionName = (string)Context.GetRouteData().Values["action"];
+
+    var teamMemberLogic = (TeamIdentityLogic)ViewData["TeamLogic"];
+    var teamName = (string)ViewData["TeamName"];
+
+    var isAuthor = false;
+    var isEditor = false;
+    var isAdministrator = false;
+    var isTeamMember = teamMemberLogic != null;
+
+    ArticleViewModel articleViewModel = null;
+
+    var accountBtnTemplate = "<div id='userAcctMenu' style='font-size:0.8em'><span class='fa fa-user'></span> Account</div>";
+
+    if (User != null && (User.IsInRole("Authors") || teamMemberLogic?.IsInRole(TeamRoleEnum.Author, teamName) == true))
+    {
+        isAuthor = true;
+    }
+    else if (User != null && User.IsInRole("Editors") || teamMemberLogic?.IsInRole(TeamRoleEnum.Editor, teamName) == true)
+    {
+        isEditor = true;
+    }
+    else if (User != null && User.IsInRole("Administrators"))
+    {
+        isAdministrator = true;
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en-us">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag?.Title</title>
+    @if (Model != null && Model.GetType() == typeof(ArticleViewModel))
+    {
+        articleViewModel = (ArticleViewModel)Model;
+        @*
+            Layout specific header content
+        *@
+        @Html.Raw(articleViewModel.Layout.Head)
+        @*
+            Page specific header content
+        *@
+        @Html.Raw(articleViewModel.HeaderJavaScript)
+
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/lib/mdb-ui-kit/mdb.min.css" />
+        <script src="~/lib/mdb-ui-kit/mdb.min.js"></script>
+    }
+    @*
+        Telerik/Kendo resources
+    *@
+    <partial name="_KendoHeadPartial" />
+    @*
+        Application Insights Scripts
+    *@
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body>
+    @RenderBody()
+    @*
+        Application Insights Scripts
+    *@
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>

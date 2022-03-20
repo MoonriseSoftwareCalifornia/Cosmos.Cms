@@ -56,6 +56,7 @@
             {
             btn.Add().Text("Save");
             btn.Add().Text("Close");
+            btn.Add().Text("Files");
             foreach (var button in buttons)
             {
             btn.Add().Text(button);
@@ -88,21 +89,6 @@
             <div class="collapse navbar-collapse" id="navBarTabs">
                 <span id="msgBox"></span>
                 <ul id="editorTabs" class="navbar-nav">
-                    @*<li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Code Editor
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" onclick="btnMainClick('Save')">Save</a></li>
-                        <li><a class="dropdown-item" onclick="btnMainClick('Close')">Close</a></li>
-                        @{
-                        foreach (var button in buttons)
-                        {
-                        <li><a class="dropdown-item" onclick="btnMainClick('@button')">@button</a></li>
-                        }
-                        }
-                        </ul>
-                        </li>*@
                     @{
                         var aclass = "active";
                         foreach (var field in fields)
@@ -250,6 +236,8 @@
     <script>
         var editor;
         var fieldId;
+        var fileMgrPopup = null;
+        var selectedFile = "";
 
         // Example: var editFields = '[{"FieldId":"HeaderJavaScript","FieldName":"Header JavaScript","EditorMode":0},{"FieldId":"Content","FieldName":"Html Content","EditorMode":1},{"FieldId":"FooterJavaScript","FieldName":"Footer JavaScript","EditorMode":0}]';
         var editFields = @(Html.Raw(JsonConvert.SerializeObject(Model.EditorFields)));
@@ -388,6 +376,14 @@
             case "Close":
                 $("#closeEditorDialog").data("kendoDialog").open();
                 break;
+            case "Files":
+                if (fileMgrPopup === null) {
+                    fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")', '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');
+                }
+                else {
+                    fileMgrPopup.focus();
+                }
+                break;
             default:
                 if (typeof btnCustomClick === "function") {
                     btnCustomClick(e);
@@ -435,8 +431,7 @@
             }
         });
 
-        $(window).bind('keydown',
-            function(event) {
+        $(window).bind('keydown', function(event) {
                 if (event.ctrlKey || event.metaKey) {
                     switch (String.fromCharCode(event.which).toLowerCase()) {
                     case 's':
@@ -445,8 +440,13 @@
                         break;
                     }
                 }
-            });
+        });
 
+        $(window).on("unload", function() {
+           if (fileMgrPopup !== null) {
+               fileMgrPopup.close();
+           }
+        });
     </script>
     <script src="/lib/monaco-editor/min/vs/loader.js"></script>
 

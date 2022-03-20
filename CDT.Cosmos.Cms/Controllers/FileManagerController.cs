@@ -73,8 +73,22 @@ namespace CDT.Cosmos.Cms.Controllers
         {
             _storageContext.CreateFolder("/pub");
             ViewData["BlobEndpointUrl"] = GetBlobRootUrl();
-
             return View();
+        }
+
+        /// <summary>
+        /// Opens the file manager without the toolbar.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// This is suitable for opening the file manager as a popup.
+        /// </remarks>
+        public IActionResult Popup()
+        {
+            _storageContext.CreateFolder("/pub");
+            ViewData["BlobEndpointUrl"] = GetBlobRootUrl();
+            ViewData["Popup"] = true;
+            return View("index");
         }
 
         #region PRIVATE FIELDS AND METHODS

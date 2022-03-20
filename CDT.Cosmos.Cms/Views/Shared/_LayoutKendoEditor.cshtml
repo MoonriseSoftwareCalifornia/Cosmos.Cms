@@ -349,7 +349,9 @@
         var editors = [];
         var cdnDetail = "";
         var editorsLoaded = false;
+        var fileMgrPopup = null;
         var validationSummary = $("#validation-summary");
+        var selectedFile = "";
 
         function fixUrl(fieldName) {
             var input = $(fieldName);
@@ -602,8 +604,13 @@
                     $("#editCodeDialog").data("kendoDialog").open();
                     break;
                 case "Files":
-                    window.open("/FileManager", "_blank ");
-                    break;
+                     if (fileMgrPopup === null) {
+                        fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")', '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');
+                    }
+                    else {
+                        fileMgrPopup.focus();
+                    }
+                break;
                 case "Versions":
                     openVersionsDialog();
                     break;
@@ -881,6 +888,12 @@
                         alert("Cannot save while locked by another user.");
                     }
              });
+        });
+        
+        $(window).on("unload", function() {
+           if (fileMgrPopup !== null) {
+               fileMgrPopup.close();
+           }
         });
     </script>
     <form id="frmLogout" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">

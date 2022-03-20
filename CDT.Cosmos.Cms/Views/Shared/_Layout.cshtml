@@ -91,7 +91,7 @@
     .Width(400)
     .Height(320)
     )
-    @*
+     @*
         Cosmos toolbar is added last to make sure it is overlayed over everything at the top of this page.
     *@
     <nav id="k-ccms-ToolBar" class="navbar navbar-expand-md fixed-top" style="height: 52px; background-color:#363636 !important">
@@ -166,7 +166,7 @@
             @* This button is required to by the Chat Component *@
             @if (options.Value.SiteSettings.AllowSetup == false)
             {
-            <partial name="_ChatButtonPartial" />
+                <partial name="_ChatButtonPartial" />
             }
         </div>
     </nav>
@@ -318,12 +318,11 @@
             }).data("kendoNotification");
         });
     </script>
-    <form id="frmLogout" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
-        
-    </form>
+    <form id="frmLogout" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})"></form>
+
     @if (options.Value.SiteSettings.AllowSetup == false)
     {
-    <partial name="_ChatComponentsPartial" />
+        <partial name="_ChatComponentsPartial" />
     }
     @*
         Application Insights Scripts
