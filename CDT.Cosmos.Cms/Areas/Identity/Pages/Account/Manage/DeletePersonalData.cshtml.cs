@@ -8,12 +8,20 @@ using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account.Manage
 {
+    /// <summary>
+    /// Delete personoal data model
+    /// </summary>
     public class DeletePersonalDataModel : PageModel
     {
         private readonly ILogger<DeletePersonalDataModel> _logger;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="logger"></param>
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
@@ -23,11 +31,18 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _logger = logger;
         }
-
+        /// <summary>
+        /// Input model
+        /// </summary>
         [BindProperty] public InputModel Input { get; set; }
-
+        /// <summary>
+        /// Password
+        /// </summary>
         public bool RequirePassword { get; set; }
-
+        /// <summary>
+        /// On get event handler
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -36,7 +51,11 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account.Manage
             RequirePassword = await _userManager.HasPasswordAsync(user);
             return Page();
         }
-
+        /// <summary>
+        /// On post event handler
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -62,8 +81,14 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account.Manage
             return Redirect("~/");
         }
 
+        /// <summary>
+        /// Input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Password
+            /// </summary>
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
