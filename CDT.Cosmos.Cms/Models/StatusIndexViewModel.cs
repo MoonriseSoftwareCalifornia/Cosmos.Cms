@@ -62,9 +62,12 @@ namespace CDT.Cosmos.Cms.Models
         /// </summary>
         RedisCache = 2,
         /// <summary>
-        /// Content Dis
+        /// Content Distribution Network
         /// </summary>
         Cdn = 3,
+        /// <summary>
+        /// Cosmos editor
+        /// </summary>
         CosmosEditor = 4
     }
 

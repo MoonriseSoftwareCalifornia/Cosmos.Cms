@@ -8,6 +8,9 @@ namespace CDT.Cosmos.Cms.Models
     /// </summary>
     public class SignalResult
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SignalResult()
         {
             Exceptions = new List<Exception>();

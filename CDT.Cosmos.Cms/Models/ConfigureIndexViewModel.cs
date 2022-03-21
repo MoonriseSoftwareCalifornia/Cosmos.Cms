@@ -101,13 +101,6 @@ namespace CDT.Cosmos.Cms.Models
         public string EditorUrlsJson { get; set; }
 
         /// <summary>
-        ///     Name of the vault secret that contains the configuration
-        /// </summary>
-        [Display(Name = "Secret Name")]
-        [RegularExpression(@"^[0-9, a-z, A-Z]{1,40}$", ErrorMessage = "Secret name can only contain numbers and letters.")]
-        public string SecretName { get; set; }
-
-        /// <summary>
         ///     Connection test success or not
         /// </summary>
         public bool TestSuccess { get; set; }

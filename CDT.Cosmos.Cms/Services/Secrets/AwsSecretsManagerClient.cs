@@ -15,7 +15,7 @@ namespace CDT.Cosmos.Cms.Services.Secrets
     /// </remarks>
     public class AwsSecretsManagerClient : ISecretsClient, IDisposable
     {
-        private AmazonSecretsManagerClient? _client;
+        private readonly AmazonSecretsManagerClient _client;
 
         /// <summary>
         /// Constructor
@@ -37,7 +37,6 @@ namespace CDT.Cosmos.Cms.Services.Secrets
             if (_client != null)
             {
                 _client.Dispose();
-                _client = null;
             }
         }
 

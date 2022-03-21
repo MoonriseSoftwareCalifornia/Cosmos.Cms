@@ -93,6 +93,7 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
         /// <summary>
         ///     Environment Variable Name
         /// </summary>
+        [RegularExpression(@"^[0-9, a-z, A-Z]{1,40}$", ErrorMessage = "Secret name can only contain numbers and letters.")]
         public string SecretName { get; set; } = "";
 
         /// <summary>

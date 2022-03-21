@@ -175,9 +175,10 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     template.CommunityLayoutId = communityLayoutId;
                     tempates.Add(template);
                 }
-                catch (Exception ex)
+                catch
                 {
                     // TODO Handle page not found
+                    throw;
                 }
             }
 

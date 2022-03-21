@@ -16,27 +16,27 @@
     var teamMemberLogic = (TeamIdentityLogic)ViewData["TeamLogic"];
     var teamName = (string)ViewData["TeamName"];
 
-    var isAuthor = false;
-    var isEditor = false;
-    var isAdministrator = false;
+    // var isAuthor = false;
+    // var isEditor = false;
+    // var isAdministrator = false;
     var isTeamMember = teamMemberLogic != null;
 
     ArticleViewModel articleViewModel = null;
 
-    var accountBtnTemplate = "<div id='userAcctMenu' style='font-size:0.8em'><span class='fa fa-user'></span> Account</div>";
+    //var accountBtnTemplate = "<div id='userAcctMenu' style='font-size:0.8em'><span class='fa fa-user'></span> Account</div>";
 
-    if (User != null && (User.IsInRole("Authors") || teamMemberLogic?.IsInRole(TeamRoleEnum.Author, teamName) == true))
-    {
-        isAuthor = true;
-    }
-    else if (User != null && User.IsInRole("Editors") || teamMemberLogic?.IsInRole(TeamRoleEnum.Editor, teamName) == true)
-    {
-        isEditor = true;
-    }
-    else if (User != null && User.IsInRole("Administrators"))
-    {
-        isAdministrator = true;
-    }
+    //if (User != null && (User.IsInRole("Authors") || teamMemberLogic?.IsInRole(TeamRoleEnum.Author, teamName) == true))
+    //{
+    //    isAuthor = true;
+    //}
+    //else if (User != null && User.IsInRole("Editors") || teamMemberLogic?.IsInRole(TeamRoleEnum.Editor, teamName) == true)
+    //{
+    //    isEditor = true;
+    //}
+    //else if (User != null && User.IsInRole("Administrators"))
+    //{
+    //    isAdministrator = true;
+    //}
 }
 
 <!DOCTYPE html>

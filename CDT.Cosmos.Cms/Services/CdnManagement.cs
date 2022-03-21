@@ -178,7 +178,7 @@ namespace CDT.Cosmos.Cms.Services
                 }
                 return _endpoint;
             }
-            catch (Exception e)
+            catch
             {
                 if (_endpoint == null)
                 {
