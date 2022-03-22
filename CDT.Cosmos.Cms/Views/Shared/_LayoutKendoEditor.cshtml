@@ -352,6 +352,11 @@
         var fileMgrPopup = null;
         var validationSummary = $("#validation-summary");
         var selectedFile = "";
+        
+
+        function insertItemTool(editor) {
+            editor.exec("inserthtml", { value: "<hr />" });
+        }
 
         function fixUrl(fieldName) {
             var input = $(fieldName);
@@ -433,7 +438,8 @@
 
             var blobUrl = "@((string) ViewData["BlobEndpointUrl"])";
 
-            var toolList = ["bold","italic","underline","strikethrough","justifyLeft","justifyCenter","justifyRight","justifyFull","insertUnorderedList","insertOrderedList","insertUpperRomanList","insertLowerRomanList","indent","outdent","createLink","unlink","insertImage","insertFile","tableWizard","createTable","addRowAbove","addRowBelow","addColumnLeft","addColumnRight","deleteRow","deleteColumn","mergeCellsHorizontally","mergeCellsVertically","splitCellHorizontally","splitCellVertically","tableAlignLeft","tableAlignCenter","tableAlignRight","viewHtml","formatting","cleanFormatting","foreColor","backColor"];
+            var customInsertTool = { name: "Insert Image", tooltip: "Inserts and image from website file storage", exec: function(e) { insertItemTool($(this).data("kendoEditor")); } };
+            var toolList = ["bold","italic","underline","strikethrough","justifyLeft","justifyCenter","justifyRight","justifyFull","insertUnorderedList","insertOrderedList","insertUpperRomanList","insertLowerRomanList","indent","outdent","createLink","unlink","insertImage","insertFile","tableWizard","createTable","addRowAbove","addRowBelow","addColumnLeft","addColumnRight","deleteRow","deleteColumn","mergeCellsHorizontally","mergeCellsVertically","splitCellHorizontally","splitCellVertically","tableAlignLeft","tableAlignCenter","tableAlignRight","viewHtml","formatting","cleanFormatting","foreColor","backColor", customInsertTool ];
 
             var tools = $(element).attr("ccms-editor-tools");
             if (tools !== null && tools !== "" && typeof tools !== "undefined") {
