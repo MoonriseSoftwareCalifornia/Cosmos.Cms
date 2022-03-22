@@ -260,7 +260,59 @@
             </action>
         </actions>
     </kendo-dialog>
-
+    <kendo-window name="ccmsInsertWindow"
+    visible="false"
+    title="Insert Content"
+    modal="true"
+    draggable="true" 
+    resizable="true" 
+    width="800">
+    <content>
+       <kendo-tabstrip name="tabstrip">
+            <popup-animation>
+                <open effects="fade:in" />
+            </popup-animation>
+            <items>
+                <tabstrip-item text="Paris" selected="true">
+                    <content>
+                        <div class="weather">
+                            <h2>17<span>&ordm;C</span></h2>
+                            <p>Rainy weather in Paris.</p>
+                        </div>
+                        <span class="rainy">&nbsp;</span>
+                    </content>
+                </tabstrip-item>
+                <tabstrip-item text="New York">
+                    <content>
+                        <div class="weather">
+                            <h2>29<span>&ordm;C</span></h2>
+                            <p>Sunny weather in New York.</p>
+                        </div>
+                        <span class="sunny">&nbsp;</span>
+                    </content>
+                </tabstrip-item>
+                <tabstrip-item text="Moscow">
+                    <content>
+                        <div class="weather">
+                            <h2>16<span>&ordm;C</span></h2>
+                            <p>Cloudy weather in Moscow.</p>
+                        </div>
+                        <span class="cloudy">&nbsp;</span>
+                    </content>
+                </tabstrip-item>
+                <tabstrip-item text="Sydney">
+                    <content>
+                        <div class="weather">
+                            <h2>17<span>&ordm;C</span></h2>
+                            <p>Rainy weather in Sidney.</p>
+                        </div>
+                        <span class="rainy">&nbsp;</span>
+                    </content>
+                </tabstrip-item>
+            </items>
+        </kendo-tabstrip>
+    </content>
+</kendo-window>
     @*
         Cosmos toolbar is added last to make sure it is overlayed over everything at the top of this page.
     *@
@@ -352,10 +404,14 @@
         var fileMgrPopup = null;
         var validationSummary = $("#validation-summary");
         var selectedFile = "";
+        var insertActiveEditor = null;
         
 
         function insertItemTool(editor) {
-            editor.exec("inserthtml", { value: "<hr />" });
+            insertActiveEditor = editor;
+            var win = $("#ccmsInsertWindow").data("kendoWindow");
+            win.center();
+            win.open();
         }
 
         function fixUrl(fieldName) {
@@ -446,13 +502,6 @@
                 toolList = tools.split(",");
             }
 
-            // The Kendo style may override that of the page.
-            // To fix, grab the inherited CSS from the parent
-            // div and after the editor is built, reapply.
-            //var color = $(element).closest("div").css("color");
-            //var bgcolor = $(element).closest("div").css("background-color");
-            //var toolBar = $("#ToolBar");
-            //var offSet = toolBar.offset();
 
             $(element).kendoEditor({
                 tools: toolList,
@@ -708,37 +757,6 @@
                         //
                         ccmsLoadModel(response.Model);
 
-                        //$("#Id").val(response.Model.Id);
-                        //$("#btnPreview").attr("href", "@Url.Action("Preview", "Home")/" + response.Model.Id);
-                        //$("#ArticleNumber").val(response.Model.ArticleNumber);
-
-                        //// Template name
-                        //editorSave("eTemplateName", "kendoDropDownList", response.Model.TemplateName);
-
-                        //$("#UrlPath").val(response.Model.UrlPath);
-
-                        //// Version
-                        //$("#VersionNumber").val(response.Model.VersionNumber);
-                        //$("#versionLbl").text("Version: " + response.Model.VersionNumber);
-
-                        //// Published
-                        //$("#Published").val(response.Model.Published);
-                        //loadPublishLocalDateTime();
-
-                        //// Role list
-                        //$("RoleList").val(response.Model.RoleList);
-                        //loadRoleListMultiSelect();
-                        //updatePermissionsBtn();
-
-                        //// Title
-                        //editorSave("eTitle", "kendoEditor", response.Model.Title);
-
-                        //// Load Content
-                        //$("#eContent").html(response.Model.Content);
-
-                        //$("#savedVersionNo").text(response.Model.VersionNumber);
-
-                        //loadEditors();
 
                         $("#saveChangesDialog").data("kendoDialog").close();
                         if (response.IsValid) {
