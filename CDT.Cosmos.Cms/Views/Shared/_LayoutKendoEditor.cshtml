@@ -75,6 +75,17 @@
         .k-alert {
             background-color: #be4d25;
         }
+
+        .k-i-insert-element {
+            width: 36px !important;
+            height: 30px !important;
+        }
+
+            .k-i-insert-element:before {
+                font-family: FontAwesome;
+                content: "\f0fe";
+                font-size: 20px;
+            }
     </style>
 </head>
 <body>
@@ -260,59 +271,75 @@
             </action>
         </actions>
     </kendo-dialog>
-    <kendo-window name="ccmsInsertWindow"
-    visible="false"
-    title="Insert Content"
-    modal="true"
-    draggable="true" 
-    resizable="true" 
-    width="800">
-    <content>
-       <kendo-tabstrip name="tabstrip">
-            <popup-animation>
-                <open effects="fade:in" />
-            </popup-animation>
-            <items>
-                <tabstrip-item text="Paris" selected="true">
-                    <content>
-                        <div class="weather">
-                            <h2>17<span>&ordm;C</span></h2>
-                            <p>Rainy weather in Paris.</p>
-                        </div>
-                        <span class="rainy">&nbsp;</span>
-                    </content>
-                </tabstrip-item>
-                <tabstrip-item text="New York">
-                    <content>
-                        <div class="weather">
-                            <h2>29<span>&ordm;C</span></h2>
-                            <p>Sunny weather in New York.</p>
-                        </div>
-                        <span class="sunny">&nbsp;</span>
-                    </content>
-                </tabstrip-item>
-                <tabstrip-item text="Moscow">
-                    <content>
-                        <div class="weather">
-                            <h2>16<span>&ordm;C</span></h2>
-                            <p>Cloudy weather in Moscow.</p>
-                        </div>
-                        <span class="cloudy">&nbsp;</span>
-                    </content>
-                </tabstrip-item>
-                <tabstrip-item text="Sydney">
-                    <content>
-                        <div class="weather">
-                            <h2>17<span>&ordm;C</span></h2>
-                            <p>Rainy weather in Sidney.</p>
-                        </div>
-                        <span class="rainy">&nbsp;</span>
-                    </content>
-                </tabstrip-item>
-            </items>
-        </kendo-tabstrip>
-    </content>
-</kendo-window>
+    <kendo-window name="ccmsInsertWindow" visible="false" title="Insert Content" draggable="true" resizable="true" width="800">
+        <content>
+            <kendo-tabstrip name="tabstrip">
+                <popup-animation>
+                    <open effects="fade:in" />
+                </popup-animation>
+                <items>
+                    <tabstrip-item text="Link" selected="true">
+                        <content>
+                            <div class="row">
+                                <div class="col">
+                                    <form id="frmInsertPage">
+                                        <p>Insert a link to a page on this website or another website.</p>
+                                        <div class="mb-3">
+                                            <label for="ccmsPageOrUrl" class="form-label">Type to select a page, or enter URL:</label>
+                                            <kendo-combobox name="ccmsPageOrUrl" filter="FilterType.Contains" placeholder="Enter page title or URL" datatextfield="Title" datavaluefield="UrlPath" auto-bind="false" min-length="2" style="width: 100%;" class="form-control">
+                                                <datasource server-filtering="true">
+                                                    <transport>
+                                                        <read url="@Url.Action("List_Articles", "Editor")" />
+                                                    </transport>
+                                                </datasource>
+                                            </kendo-combobox>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="selectedContent1">Link text:</label>
+                                            <input id="selectedContent1" class="form-control" />
+                                        </div>
+                                        <div class="mb-3">
+                                            @(Html.Kendo().CheckBox().Name("ccmsLinkOpenNewWin").Checked(false).Label("Open link in new window:"));
+                                        </div>
+                                        <div class="mb-3">
+                                            <kendo-button name="textButton" on-click="ccmsInsertLink">Insert</kendo-button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </content>
+                    </tabstrip-item>
+                    <tabstrip-item text="New York">
+                        <content>
+                            <div class="weather">
+                                <h2>29<span>&ordm;C</span></h2>
+                                <p>Sunny weather in New York.</p>
+                            </div>
+                            <span class="sunny">&nbsp;</span>
+                        </content>
+                    </tabstrip-item>
+                    <tabstrip-item text="Moscow">
+                        <content>
+                            <div class="weather">
+                                <h2>16<span>&ordm;C</span></h2>
+                                <p>Cloudy weather in Moscow.</p>
+                            </div>
+                            <span class="cloudy">&nbsp;</span>
+                        </content>
+                    </tabstrip-item>
+                    <tabstrip-item text="Sydney">
+                        <content>
+                            <div class="weather">
+                                <h2>17<span>&ordm;C</span></h2>
+                                <p>Rainy weather in Sidney.</p>
+                            </div>
+                            <span class="rainy">&nbsp;</span>
+                        </content>
+                    </tabstrip-item>
+                </items>
+            </kendo-tabstrip>
+        </content>
+    </kendo-window>
     @*
         Cosmos toolbar is added last to make sure it is overlayed over everything at the top of this page.
     *@
@@ -405,13 +432,29 @@
         var validationSummary = $("#validation-summary");
         var selectedFile = "";
         var insertActiveEditor = null;
-        
 
-        function insertItemTool(editor) {
+
+        function insertItemTool(editor, e) {
+            var selection = editor.getSelection();
+            $("#selectedContent1").val(selection);
             insertActiveEditor = editor;
             var win = $("#ccmsInsertWindow").data("kendoWindow");
             win.center();
             win.open();
+        }
+
+        function ccmsInsertLink(e) {
+            e.preventDefault();
+            var url = $("#ccmsPageOrUrl").val();
+            if (url === "") {
+
+            }
+            var newWin = "";
+            if ($('#ccmsLinkOpenNewWin').is(':checked')) {
+                newWin = " target='_blank' ";
+            }
+            var link = "<a href='" + url + newWin + ">" + $("#selectedContent1").val() + "</a>";
+            insertActiveEditor.exec("inserthtml", { value: link });
         }
 
         function fixUrl(fieldName) {
@@ -494,8 +537,51 @@
 
             var blobUrl = "@((string) ViewData["BlobEndpointUrl"])";
 
-            var customInsertTool = { name: "Insert Image", tooltip: "Inserts and image from website file storage", exec: function(e) { insertItemTool($(this).data("kendoEditor")); } };
-            var toolList = ["bold","italic","underline","strikethrough","justifyLeft","justifyCenter","justifyRight","justifyFull","insertUnorderedList","insertOrderedList","insertUpperRomanList","insertLowerRomanList","indent","outdent","createLink","unlink","insertImage","insertFile","tableWizard","createTable","addRowAbove","addRowBelow","addColumnLeft","addColumnRight","deleteRow","deleteColumn","mergeCellsHorizontally","mergeCellsVertically","splitCellHorizontally","splitCellVertically","tableAlignLeft","tableAlignCenter","tableAlignRight","viewHtml","formatting","cleanFormatting","foreColor","backColor", customInsertTool ];
+            var toolList = [
+                "bold",
+                "italic",
+                "underline",
+                "strikethrough",
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "justifyFull",
+                "insertUnorderedList",
+                "insertOrderedList",
+                "insertUpperRomanList",
+                "insertLowerRomanList",
+                "indent",
+                "outdent",
+                "createLink",
+                "unlink",
+                "insertImage",
+                "insertFile",
+                "tableWizard",
+                "createTable",
+                "addRowAbove",
+                "addRowBelow",
+                "addColumnLeft",
+                "addColumnRight",
+                "deleteRow",
+                "deleteColumn",
+                "mergeCellsHorizontally",
+                "mergeCellsVertically",
+                "splitCellHorizontally",
+                "splitCellVertically",
+                "tableAlignLeft",
+                "tableAlignCenter",
+                "tableAlignRight",
+                "viewHtml",
+                "formatting",
+                "cleanFormatting",
+                "foreColor",
+                "backColor",
+                {
+                    name: "insertElement",
+                    tooltip: "Inserts a link or an image into page.",
+                    exec: function(e) { insertItemTool($(this, e).data("kendoEditor")); }
+                 }
+            ];
 
             var tools = $(element).attr("ccms-editor-tools");
             if (tools !== null && tools !== "" && typeof tools !== "undefined") {
@@ -913,7 +999,7 @@
                     }
              });
         });
-        
+
         $(window).on("unload", function() {
            if (fileMgrPopup !== null) {
                fileMgrPopup.close();

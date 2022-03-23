@@ -1148,6 +1148,32 @@ namespace CDT.Cosmos.Cms.Controllers
         }
 
         /// <summary>
+        /// Gets a list of articles (pages) on this website.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        /// <remarks>Returns published and non-published links</remarks>
+        public async Task<IActionResult> List_Articles(string text)
+        {
+            IQueryable<Article> query = _dbContext.Articles
+            .OrderBy(o => o.Title)
+            .Where(w => w.StatusCode == (int) StatusCodeEnum.Active || w.StatusCode == (int) StatusCodeEnum.Inactive);
+            
+            if (!string.IsNullOrEmpty(text))
+            {
+                query = query.Where(x => x.Title.ToLower().Contains(text.ToLower()));
+            }
+
+            var model = await query.Select(s => new
+            {
+                s.Title,
+                s.UrlPath
+            }).Distinct().Take(10).ToListAsync();
+
+            return Json(model);
+        }
+
+        /// <summary>
         /// Sends an article (or page) to trash bin.
         /// </summary>
         /// <param name="request"></param>
