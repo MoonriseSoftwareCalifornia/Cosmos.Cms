@@ -431,13 +431,18 @@
         var fileMgrPopup = null;
         var validationSummary = $("#validation-summary");
         var selectedFile = "";
-        var insertActiveEditor = null;
-
+        var ccmsActiveEditor = null;
+        var ccmsEditorMark;
+        var ccmsEditorSelection;
+        var ccmsEditorHtmlSelection;
+        var ccmsEditorRange;
 
         function insertItemTool(editor, e) {
-            var selection = editor.getSelection();
-            $("#selectedContent1").val(selection);
-            insertActiveEditor = editor;
+            ccmsEditorSelection = editor.getSelection();
+            ccmsEditorHtmlSelection = editor.selectedHtml();
+            ccmsEditorRange = ccmsEditorSelection.getRangeAt(0);
+            $("#selectedContent1").val(ccmsEditorSelection);
+            ccmsActiveEditor = editor;
             var win = $("#ccmsInsertWindow").data("kendoWindow");
             win.center();
             win.open();
@@ -445,16 +450,25 @@
 
         function ccmsInsertLink(e) {
             e.preventDefault();
-            var url = $("#ccmsPageOrUrl").val();
-            if (url === "") {
 
+            var combobox = $("#ccmsPageOrUrl").data("kendoComboBox");
+
+            var url = combobox.value();
+            var text = combobox.text();
+
+            if (url === "") {
+                url = "/" + combobox.text();
             }
+            
             var newWin = "";
             if ($('#ccmsLinkOpenNewWin').is(':checked')) {
                 newWin = " target='_blank' ";
             }
+
             var link = "<a href='" + url + newWin + ">" + $("#selectedContent1").val() + "</a>";
-            insertActiveEditor.exec("inserthtml", { value: link });
+            ccmsActiveEditor.selectRange(ccmsEditorRange);
+
+            ccmsActiveEditor.exec("inserthtml", { value: link });
         }
 
         function fixUrl(fieldName) {
