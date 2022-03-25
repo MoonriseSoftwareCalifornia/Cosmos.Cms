@@ -876,16 +876,15 @@
         };
 
         function ccmsOpenImageMgr(e) {
-            ccmsOpenFileMgr(e, 'images') {
-
-            } 
+            ccmsOpenFileMgr(e, 'i');
         }
+
         function ccmsOpenFileMgr(e, option) {
             if (e !== null) {
                 e.preventDefault();
             }
-            if (option !== null && option !== "" && option == "images") {
-                fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")/images', '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');        
+            if (option !== null && option !== "" && option == "i") {
+                fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")?fileType=' + option, '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');        
             } else {
                 fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")', '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');        
             }

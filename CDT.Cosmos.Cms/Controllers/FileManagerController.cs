@@ -214,9 +214,10 @@ namespace CDT.Cosmos.Cms.Controllers
         ///     Read files for a given path, retuning <see cref="AppendBlobClient" />, not <see cref="BlockBlobClient" />.
         /// </summary>
         /// <param name="target"></param>
+        /// <param name="fileType"></param>
         /// <returns>List of items found at target search, relative</returns>
         [HttpPost]
-        public async Task<IActionResult> Read(string target)
+        public async Task<IActionResult> Read(string target, string fileType)
         {
             target = string.IsNullOrEmpty(target) ? "" : HttpUtility.UrlDecode(target);
 
@@ -224,6 +225,45 @@ namespace CDT.Cosmos.Cms.Controllers
             // GET FULL OR ABSOLUTE PATH
             //
             var model = await _storageContext.GetFolderContents(target);
+
+            //
+            // OPTIONAL FILTER
+            //
+            if (!string.IsNullOrEmpty(fileType))
+            {
+                string[] fileExtensions = null;
+
+                switch (fileType)
+                {
+                    case "f":
+                        fileExtensions = AllowedFileExtensions
+                            .GetFilterForViews(AllowedFileExtensions.ExtensionCollectionType.FileUploads).Split(',')
+                            .Select(s => s.Trim().ToLower()).ToArray();
+                        break;
+                    case "i":
+                        fileExtensions = AllowedFileExtensions
+                            .GetFilterForViews(AllowedFileExtensions.ExtensionCollectionType.ImageUploads).Split(',')
+                            .Select(s => s.Trim().ToLower()).ToArray();
+                        break;
+                }
+
+                var filteredModel = new List<BlobService.FileManagerEntry>();
+
+                foreach (var item in model)
+                {
+                    if (!item.IsDirectory)
+                    {
+                        filteredModel.Add(item);
+                    }
+                    else if (fileExtensions.Contains(item.Extension))
+                    {
+                        filteredModel.Add(item);
+                    }
+                }
+
+                return Json(filteredModel);
+            }
+            
 
             return Json(model);
         }
@@ -251,6 +291,7 @@ namespace CDT.Cosmos.Cms.Controllers
             var model = await _storageContext.GetFolderContents(path);
 
             string[] fileExtensions = null;
+
             switch (fileType)
             {
                 case "f":
@@ -454,7 +495,6 @@ namespace CDT.Cosmos.Cms.Controllers
         }
 
         #endregion
-
 
         #region EDIT (CODE | IMAGE) FUNCTIONS
 

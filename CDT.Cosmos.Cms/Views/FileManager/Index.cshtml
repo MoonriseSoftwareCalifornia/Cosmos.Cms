@@ -9,10 +9,10 @@
         Layout = "_LayoutNoToolbar";
         containerClass = "continer-fluid";
     }
-
+    var fileType = "";
     if (!string.IsNullOrEmpty((string)ViewData["option"]))
     {
-        
+        fileType = (string)ViewData["option"];
     }
 }
 @(Html.Kendo().Notification().Name("notification"))
@@ -86,7 +86,7 @@
             {
             ds.Read(operation => operation
             .Type(HttpVerbs.Post)
-            .Action("Read", "FileManager")
+            .Action("Read", "FileManager", new { fileType = fileType})
             );
             ds.Destroy(operation => operation
             .Type(HttpVerbs.Post)
