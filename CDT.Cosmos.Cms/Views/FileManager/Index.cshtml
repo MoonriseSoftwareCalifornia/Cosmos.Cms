@@ -9,13 +9,19 @@
         Layout = "_LayoutNoToolbar";
         containerClass = "continer-fluid";
     }
+
+    if (!string.IsNullOrEmpty((string)ViewData["option"]))
+    {
+        
+    }
 }
 @(Html.Kendo().Notification().Name("notification"))
 @(Html.Kendo().Window()
     .Name("window")
     .Title("Image Preview")
     .Visible(false)
-    .Content(@<text>
+    .Content(
+    @<text>
         <img id="imagePreview" src="#" alt="Image Preview" />
     </text>)
     .Draggable()
@@ -271,7 +277,8 @@
             $("#btnCopyUrl").show();
 
             if (window.opener) {
-                window.opener.selectedFile = "@blobUrl" + entry.path;
+                window.opener.ccmsSelectedFile = "@blobUrl" + entry.path;
+                window.opener.$("#ccmsInsertImageUrl").data("kendoTextBox").value(window.opener.ccmsSelectedFile);
             }
 
             return;

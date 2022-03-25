@@ -278,44 +278,93 @@
                     <open effects="fade:in" />
                 </popup-animation>
                 <items>
-                    <tabstrip-item text="Link" selected="true">
+                    <tabstrip-item text="Web page link" selected="true">
                         <content>
                             <div class="row">
                                 <div class="col">
-                                    <form id="frmInsertPage">
-                                        <p>Insert a link to a page on this website or another website.</p>
-                                        <div class="mb-3">
-                                            <label for="ccmsPageOrUrl" class="form-label">Type to select a page, or enter URL:</label>
-                                            <kendo-combobox name="ccmsPageOrUrl" filter="FilterType.Contains" placeholder="Enter page title or URL" datatextfield="Title" datavaluefield="UrlPath" auto-bind="false" min-length="2" style="width: 100%;" class="form-control">
+                                    <form id="ccmsInsertAnchorFrm">
+                                        <h5 class="text-light">Insert Link Tool</h5>
+                                        <label for="ccmsPageOrUrl">Type to select a page on this website, or enter URL to another website, or select a file:</label>
+                                        <div class="input-group mb-3">
+                                            <kendo-combobox name="ccmsPageOrUrl" filter="FilterType.Contains" placeholder="Enter page title or URL" datatextfield="Title" datavaluefield="UrlPath" auto-bind="false" min-length="2" class="form-control">
                                                 <datasource server-filtering="true">
                                                     <transport>
                                                         <read url="@Url.Action("List_Articles", "Editor")" />
                                                     </transport>
                                                 </datasource>
                                             </kendo-combobox>
+                                            @(Html.Kendo().Button().Name("ccmsSelFileBtn").Content("<i title='Select file' class='fa-solid fa-square-plus'></i>").Events(eve => eve.Click("ccmsOpenFileMgr")))
                                         </div>
                                         <div class="mb-3">
-                                            <label for="selectedContent1">Link text:</label>
-                                            <input id="selectedContent1" class="form-control" />
+                                            <label for="ccmsAnchorSelectedContent">Link text:</label>
+                                            @(Html.Kendo().TextBox().Name("ccmsAnchorSelectedContent"))
                                         </div>
                                         <div class="mb-3">
-                                            @(Html.Kendo().CheckBox().Name("ccmsLinkOpenNewWin").Checked(false).Label("Open link in new window:"));
+                                            <label for="ccmsAnchorTitleText">Link tool tip text:</label>
+                                            @(Html.Kendo().TextBox().Name("ccmsAnchorTitleText"))
                                         </div>
                                         <div class="mb-3">
-                                            <kendo-button name="textButton" on-click="ccmsInsertLink">Insert</kendo-button>
+                                            <label for="ccmsAnchorTitleText">CSS Class(s):</label>
+                                            @(Html.Kendo().TextBox().Name("ccmsAnchorCssClasses"))
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="ccmsAnchorStyle">CSS style:</label>
+                                            @(Html.Kendo().TextBox().Name("ccmsAnchorStyle"))
+                                        </div>
+                                        <div class="mb-3">
+                                            @(Html.Kendo().CheckBox().Name("ccmsLinkOpenNewWin").Checked(false).Label("Open link in new window"))
+                                        </div>
+                                        <div class="mb-3">
+                                            <kendo-button name="ccmsInsertAnchorBtn" on-click="ccmsInsertAnchor">Insert</kendo-button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </content>
                     </tabstrip-item>
-                    <tabstrip-item text="New York">
+                    <tabstrip-item text="Insert image">
                         <content>
-                            <div class="weather">
-                                <h2>29<span>&ordm;C</span></h2>
-                                <p>Sunny weather in New York.</p>
+                            <div class="row">
+                                <div class="col">
+                                    <form id="ccmsInsertImageFrm">
+                                        <h5 class="text-light">Insert Image Tool</h5>
+                                        <label for="ccmsInsertImageUrl">Image URL:</label>
+                                        <div class="input-group mb-3">
+                                            @(Html.Kendo().TextBox().Name("ccmsInsertImageUrl").Placeholder("Image url").HtmlAttributes(new { @class = "form-control" }))
+                                            @(Html.Kendo().Button().Name("ccmsSelImageBtn").Content("<i title='Select image' class='fa-solid fa-square-plus'></i>").Events(eve => eve.Click("ccmsOpenImageMgr")))
+                                        </div>
+                                         <div class="mb-3">
+                                            <label for="ccmsAnchorTitleText">Image alternative (alt) text:</label>
+                                            @(Html.Kendo().TextBox().Name("ccmsImageAltText"))
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="ccmsAnchorTitleText">CSS Class(s):</label>
+                                            @(Html.Kendo().TextBox().Name("ccmsImageCssClasses"))
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="ccmsAnchorStyle">CSS style:</label>
+                                            @(Html.Kendo().TextBox().Name("ccmsImageStyle"))
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="input-group mb-3">
+                                                    @(Html.Kendo().TextBox().Name("ccmsInsertImageWidth").Placeholder("Enter number (optional)").HtmlAttributes(new { @class = "form-control" }))
+                                                    <span class="input-group-text">Width</span>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="input-group mb-3">
+                                                    @(Html.Kendo().TextBox().Name("ccmsInsertImageHeight").Placeholder("Enter number (optional)").HtmlAttributes(new { @class = "form-control" }))
+                                                    <span class="input-group-text">Height</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <kendo-button name="ccmsInsertImageBtn" on-click="ccmsInsertImage">Insert</kendo-button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <span class="sunny">&nbsp;</span>
                         </content>
                     </tabstrip-item>
                     <tabstrip-item text="Moscow">
@@ -430,7 +479,7 @@
         var editorsLoaded = false;
         var fileMgrPopup = null;
         var validationSummary = $("#validation-summary");
-        var selectedFile = "";
+        var ccmsSelectedFile = "";
         var ccmsActiveEditor = null;
         var ccmsEditorMark;
         var ccmsEditorSelection;
@@ -441,34 +490,112 @@
             ccmsEditorSelection = editor.getSelection();
             ccmsEditorHtmlSelection = editor.selectedHtml();
             ccmsEditorRange = ccmsEditorSelection.getRangeAt(0);
-            $("#selectedContent1").val(ccmsEditorSelection);
+            $("#ccmsAnchorSelectedContent").val(ccmsEditorSelection);
             ccmsActiveEditor = editor;
             var win = $("#ccmsInsertWindow").data("kendoWindow");
             win.center();
             win.open();
         }
 
-        function ccmsInsertLink(e) {
+        function ccmsInsertAnchor(e) {
             e.preventDefault();
+            var win = $("#ccmsInsertWindow").data("kendoWindow");
+            win.close();
 
             var combobox = $("#ccmsPageOrUrl").data("kendoComboBox");
+            var cssAnchorText = $("#ccmsAnchorSelectedContent").data("kendoTextBox").value();
+            var cssClass = $("#ccmsAnchorCssClasses").data("kendoTextBox").value();
+            var cssStyle = $("#ccmsAnchorStyle").data("kendoTextBox").value();
+            var cssTitle = $("#ccmsAnchorTitleText").data("kendoTextBox").value();
 
             var url = combobox.value();
             var text = combobox.text();
 
-            if (url === "") {
-                url = "/" + combobox.text();
+            if (url == "") {
+                url = combobox.text();
+            }
+            else {
+                url = "/" + url;
+            }
+
+            // Create the link.
+            //var link = "<a href='" + url + "' " + newWin + ">" + $("#ccmsAnchorSelectedContent").val() + "</a>";
+            var anchor = $("<a></a>").text(cssAnchorText);
+            anchor.attr("href", url);
+
+            if (cssClass !== null && cssClass !== "") {
+                anchor.attr("class", cssClass);
+            }
+
+            if (cssStyle !== null && cssStyle !== "") {
+                anchor.attr("style", cssStyle);
+            }
+
+            if (cssTitle !== null && cssTitle !== "") {
+                anchor.attr("title", cssTitle);
+            }
+
+            if ($('#ccmsLinkOpenNewWin').is(':checked')) {
+                anchor.attr("target", "_blank");
+            }
+
+            // Use this order when updating the editor content.
+            ccmsActiveEditor.selectRange(ccmsEditorRange);
+            ccmsActiveEditor.focus();
+
+            var anchorHtml = anchor.prop("outerHTML");
+
+            ccmsActiveEditor.exec("inserthtml", { value: anchorHtml });
+        }
+
+        function ccmsInsertImage(e) {
+            e.preventDefault();
+
+            var win = $("#ccmsInsertWindow").data("kendoWindow");
+            win.close();
+
+            
+            var cssImageUrl = $("#ccmsInsertImageUrl").data("kendoTextBox").value();
+            var cssImageAltText = $("#ccmsImageAltText").data("kendoTextBox").value();
+            var cssImageCssClass = $("#ccmsImageCssClasses").data("kendoTextBox").value();
+            var cssImageStyle = $("#ccmsImageStyle").data("kendoTextBox").value();
+            var ccmsImageWidth = $("#ccmsInsertImageWidth").data("kendoTextBox").value();
+            var ccmsImageHeight = $("#ccmsInsertImageHeight").data("kendoTextBox").value();
+
+            // Create the image tag.
+            var image = $("<img></img>").attr("src", cssImageUrl);
+
+            if (cssImageAltText !== null && cssImageAltText !== "") {
+                image.attr("alt", cssImageAltText);
+            }
+
+            if (cssImageCssClass !== null && cssImageCssClass !== "") {
+                image.attr("class", cssImageCssClass);
+            }
+
+            if (cssImageStyle !== null && cssImageStyle !== "") {
+                image.attr("style", cssImageStyle);
             }
             
-            var newWin = "";
-            if ($('#ccmsLinkOpenNewWin').is(':checked')) {
-                newWin = " target='_blank' ";
+            if (ccmsImageWidth !== null && ccmsImageWidth !== "") {
+                image.attr("width", ccmsImageWidth);
+            }
+            
+            if (ccmsImageHeight !== null && ccmsImageHeight !== "") {
+                image.attr("height", ccmsImageHeight);
             }
 
-            var link = "<a href='" + url + newWin + ">" + $("#selectedContent1").val() + "</a>";
-            ccmsActiveEditor.selectRange(ccmsEditorRange);
+            if ($('#ccmsLinkOpenNewWin').is(':checked')) {
+                image.attr("target", "_blank");
+            }
 
-            ccmsActiveEditor.exec("inserthtml", { value: link });
+            // Use this order when updating the editor content.
+            ccmsActiveEditor.selectRange(ccmsEditorRange);
+            ccmsActiveEditor.focus();
+
+            var imageHtml = image.prop("outerHTML");
+
+            ccmsActiveEditor.exec("inserthtml", { value: imageHtml });
         }
 
         function fixUrl(fieldName) {
@@ -748,6 +875,22 @@
             $("#schedulingDialog").data("kendoDialog").close();
         };
 
+        function ccmsOpenImageMgr(e) {
+            ccmsOpenFileMgr(e, 'images') {
+
+            } 
+        }
+        function ccmsOpenFileMgr(e, option) {
+            if (e !== null) {
+                e.preventDefault();
+            }
+            if (option !== null && option !== "" && option == "images") {
+                fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")/images', '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');        
+            } else {
+                fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")', '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');        
+            }
+        }
+
         // Handles button bar click - edit button.
         function bgEditClick(e) {
             var command = e.target.text();
@@ -759,12 +902,7 @@
                     $("#editCodeDialog").data("kendoDialog").open();
                     break;
                 case "Files":
-                     if (fileMgrPopup === null) {
-                        fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")', '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');
-                    }
-                    else {
-                        fileMgrPopup.focus();
-                    }
+                     ccmsOpenFileMgr();
                 break;
                 case "Versions":
                     openVersionsDialog();

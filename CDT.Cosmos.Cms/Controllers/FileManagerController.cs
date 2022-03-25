@@ -79,15 +79,17 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <summary>
         /// Opens the file manager without the toolbar.
         /// </summary>
+        /// <param name="id">option id</param>
         /// <returns></returns>
         /// <remarks>
         /// This is suitable for opening the file manager as a popup.
         /// </remarks>
-        public IActionResult Popup()
+        public IActionResult Popup(string id)
         {
             _storageContext.CreateFolder("/pub");
             ViewData["BlobEndpointUrl"] = GetBlobRootUrl();
             ViewData["Popup"] = true;
+            ViewData["option"] = id;
             return View("index");
         }
 
