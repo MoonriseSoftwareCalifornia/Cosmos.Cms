@@ -492,7 +492,7 @@
             ccmsEditorRange = ccmsEditorSelection.getRangeAt(0);
             //var test = ccmsEditorRange.toString();
             //var fragment = ccmsEditorRange.extractContents();
-            $("#ccmsAnchorSelectedContent").val(ccmsEditorHtmlSelection);
+            $("#ccmsAnchorSelectedContent").data("kendoTextBox").value(ccmsEditorHtmlSelection);
             ccmsActiveEditor = editor;
             var win = $("#ccmsInsertWindow").data("kendoWindow");
             win.center();
