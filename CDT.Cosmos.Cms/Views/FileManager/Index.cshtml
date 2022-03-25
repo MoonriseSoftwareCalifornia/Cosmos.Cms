@@ -278,7 +278,11 @@
 
             if (window.opener) {
                 window.opener.ccmsSelectedFile = "@blobUrl" + entry.path;
-                window.opener.$("#ccmsInsertImageUrl").data("kendoTextBox").value(window.opener.ccmsSelectedFile);
+                if ('@fileType' === "i") {
+                    window.opener.$("#ccmsInsertImageUrl").data("kendoTextBox").value(window.opener.ccmsSelectedFile);
+                } else {
+                    window.opener.$("#ccmsPageOrUrl").data("kendoComboBox").value(window.opener.ccmsSelectedFile);
+                }
             }
 
             return;

@@ -490,7 +490,9 @@
             ccmsEditorSelection = editor.getSelection();
             ccmsEditorHtmlSelection = editor.selectedHtml();
             ccmsEditorRange = ccmsEditorSelection.getRangeAt(0);
-            $("#ccmsAnchorSelectedContent").val(ccmsEditorSelection);
+            //var test = ccmsEditorRange.toString();
+            //var fragment = ccmsEditorRange.extractContents();
+            $("#ccmsAnchorSelectedContent").val(ccmsEditorHtmlSelection);
             ccmsActiveEditor = editor;
             var win = $("#ccmsInsertWindow").data("kendoWindow");
             win.center();
@@ -880,11 +882,11 @@
         }
 
         function ccmsOpenFileMgr(e, option) {
-            if (e !== null) {
+            if (typeof (e) !== "undefined" && e !== null && e !== "") {
                 e.preventDefault();
             }
-            if (option !== null && option !== "" && option == "i") {
-                fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")?fileType=' + option, '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');        
+            if (option !== null && option !== "" && option === "i") {
+                fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")/' + option, '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');        
             } else {
                 fileMgrPopup = window.open('@Url.Action("Popup", "FileManager")', '_blank', 'height=510,width=900,menubar=no,location=no,status=no,titlebar=no,toolbar=no');        
             }

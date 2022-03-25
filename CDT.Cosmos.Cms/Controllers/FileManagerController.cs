@@ -251,11 +251,11 @@ namespace CDT.Cosmos.Cms.Controllers
 
                 foreach (var item in model)
                 {
-                    if (!item.IsDirectory)
+                    if (item.IsDirectory)
                     {
                         filteredModel.Add(item);
                     }
-                    else if (fileExtensions.Contains(item.Extension))
+                    else if (fileExtensions.Contains(item.Extension.ToLower().TrimStart('.')))
                     {
                         filteredModel.Add(item);
                     }
