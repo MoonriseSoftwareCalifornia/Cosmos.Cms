@@ -367,24 +367,6 @@
                             </div>
                         </content>
                     </tabstrip-item>
-                    <tabstrip-item text="Moscow">
-                        <content>
-                            <div class="weather">
-                                <h2>16<span>&ordm;C</span></h2>
-                                <p>Cloudy weather in Moscow.</p>
-                            </div>
-                            <span class="cloudy">&nbsp;</span>
-                        </content>
-                    </tabstrip-item>
-                    <tabstrip-item text="Sydney">
-                        <content>
-                            <div class="weather">
-                                <h2>17<span>&ordm;C</span></h2>
-                                <p>Rainy weather in Sidney.</p>
-                            </div>
-                            <span class="rainy">&nbsp;</span>
-                        </content>
-                    </tabstrip-item>
                 </items>
             </kendo-tabstrip>
         </content>
@@ -513,10 +495,10 @@
             var url = combobox.value();
             var text = combobox.text();
 
-            if (url == "") {
+            if (url === "") {
                 url = combobox.text();
             }
-            else {
+            else if (!url.toLowerCase().startsWith("http://") && !url.toLowerCase().startsWith("https://") ) {
                 url = "/" + url;
             }
 
