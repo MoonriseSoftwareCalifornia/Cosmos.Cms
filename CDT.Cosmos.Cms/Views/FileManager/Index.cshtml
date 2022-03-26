@@ -3,11 +3,9 @@
 @{
     ViewData["Title"] = "File Manager";
     var blobUrl = (string)ViewData["BlobEndpointUrl"];
-    var containerClass = "container mt-5 pt-2";
     if (ViewData["Popup"] != null && ((bool)ViewData["Popup"]))
     {
         Layout = "_LayoutNoToolbar";
-        containerClass = "continer-fluid";
     }
     var fileType = "";
     if (!string.IsNullOrEmpty((string)ViewData["option"]))
@@ -30,52 +28,56 @@
     )
 <script src="~/js/clipboard.min.js"></script>
 <style>
+    body {
+        background-color: #1e1e1e;
+    }
+
     .k-dropzone {
         min-height: 200px;
         vertical-align: top;
     }
 </style>
-<div class="@containerClass">
+<div class="continer-fluid mt-5 pt-2">
     <div class="row">
         <div class="col">
             <a id="frmEditFile" class="btn btn-primary btn-sm" style="display: none" href="javascript:editCode()">Edit File</a> <a id="frmEditImage" class="btn btn-primary btn-sm" style="display: none" href="javascript:editImage()">Edit Image</a>
             <button id="btnCopyUrl" style="display: none" class="clipboard btn btn-sm btn-success" data-clipboard-text="" title="Click to copy url">Click to copy URL <span class="ca-gov-icon-clipboard"></span></button>
         </div>
     </div>
-    <div class="row" id="uploaderRow" style="display:none">
-        <div class="col">
-            <div class="form-row align-items-center">
-                <div class="col-11">
-                    <label class="sr-only" for="inlineFormInputGroup">Folder</label>
-                    <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Uploading to: </div>
-                        </div>
-                        <div type="text" class="form-control" id="folderPath" placeholder="Folder path">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-1">
-                    <button type="button" id="btnCloseUpload" class="btn btn-secondary mb-2">Close</button>
-                </div>
+    <div id="uploaderRow" style="display:none">
+        <div class="row">
+            <div class="col">
+                <h5 class="text-light">File Uploader</h5>
+                <p class="text-light">Select files or drag and drop them below. When done click &quot;Close.&quot;</p>
+                <hr />
             </div>
-            <p>INSTRUCTIONS: Drag and drop files into box below or click &quot;Select files ...&quot;. When done click &quot;Close.&quot;</p>
-
-            @(Html.Kendo().Upload()
-            .Name("files")
-            .Async(a => a
-            .Save("Upload", "FileManager")
-            .Remove("Remove", "FileManager")
-            .AutoUpload(true)
-            .ChunkSize(5242880) // bytes (5 MB) - AWS S3 multi upload requires 5 MB parts. Last part can be any size
-            )
-            .Events(e =>
-            e.Upload("getPath")
-            .Success("onUploadSuccess")
-            .Remove("getPath")
-            .Error("onError")
-            )
-            )
+        </div>
+        <div class="row">
+            <div class="col-11">
+                <div class="text-light">Uploading to: <span id="folderPath"></span></div>
+            </div>
+            <div class="col-1">
+                <button type="button" id="btnCloseUpload" class="btn btn-secondary mb-2">Close</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                @(Html.Kendo().Upload()
+                .Name("files")
+                .Async(a => a
+                .Save("Upload", "FileManager")
+                .Remove("Remove", "FileManager")
+                .AutoUpload(true)
+                .ChunkSize(5242880) // bytes (5 MB) - AWS S3 multi upload requires 5 MB parts. Last part can be any size
+                )
+                .Events(e =>
+                e.Upload("getPath")
+                .Success("onUploadSuccess")
+                .Remove("getPath")
+                .Error("onError")
+                )
+                )
+            </div>
         </div>
     </div>
     <div class="row" id="fileManagerRow">
@@ -126,7 +128,7 @@
         </div>
     </div>
 </div>
-<kendo-dialog name="eventDialog" title="Upload Messages" modal="true" max-width="400" visible="false">
+<kendo-dialog name="eventDialog" title="Upload Messages" modal="true" visible="false">
     <content>
         <div class="bg-dark text-light" id="divEventMsg" style="min-height: 180px; min-width: 300px;">
         </div>

@@ -177,7 +177,11 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             AllowSiteReset = GetValue<bool>("CosmosAllowSiteReset");
             MicrosoftAppId = GetValue<string>("MicrosoftAppId");
 
+            // For use with Azure Vault and AWS SM
+            SecretName = GetValue<string>("CosmosSecretName");
+
             // AZURE VAULT VALUES
+            UseAzureVault = GetValue<bool>("CosmosUseAzureVault");
             UseDefaultCredential = GetValue<bool>("CosmosUseDefaultCredential");
             AzureVaultClientId = GetValue<string>("CosmosAzureVaultClientId");
             AzureVaultClientSecret = GetValue<string>("CosmosAzureVaultClientSecret");
@@ -293,7 +297,6 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             }
 
 
-            SecretName = GetValue<string>("CosmosSecretName");
 
             #endregion
         }
@@ -375,6 +378,17 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations
             get
             {
                 return Diagnostics.Any(a => a.Success == false);
+            }
+        }
+
+        /// <summary>
+        /// Errors
+        /// </summary>
+        public List<Diagnostic> Errors
+        {
+            get
+            {
+                return Diagnostics.Where(a => a.Success == false).ToList();
             }
         }
 
