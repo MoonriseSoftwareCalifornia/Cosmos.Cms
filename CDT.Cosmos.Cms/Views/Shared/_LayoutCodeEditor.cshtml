@@ -231,6 +231,55 @@
             <close duration="500" effects="fade:out" />
         </popup-animation>
     </kendo-dialog>
+    <kendo-dialog name="schedulingDialog" title="Publishing Date" modal="true" visible="false" min-width="700">
+        <content>
+            <h4><span class="fa fa-calendar"></span> Publishing Date/Time</h4>
+            <hr />
+            <p></p>
+            <p>Set the day and time when this page will be made visible on the web.</p>
+            <p>Tips:</p>
+            <ul>
+                <li>Pick now or a date/time in the past to publish right away.</li>
+                <li>Pick a date/time later on to schedule publishing in the future.</li>
+                <li>
+                    Removing or clearing out the date/time will &quot;un-publish&quot; this version.
+                    <ul>
+                        <li>If no prior version exists, this page will not appear on the web.</li>
+                        <li>Otherwise, the prior <em>published</em> version will appear instead.</li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-6">
+                    @(Html.Kendo().DateTimePicker().Name("dtPublished").Enable(User.IsInRole("Editors") || User.IsInRole("Administrators")))
+                </div>
+                <div class="col-4">
+                    @Html.Kendo().Button().Name("btnPublishNow").Content("Publish Now").Events(eve => eve.Click("onPubNow"))
+                </div>
+            </div>
+            <div class="col">
+                @Html.Kendo().Button().Name("timeZone")
+            </div>
+            <p></p>
+            <div class="form-row">
+                <div class="col">
+                    <div class="k-button k-button-sm k-button-primary" onclick="cancelPublish()">Clear Date/Time</div>
+                </div>
+            </div>
+            <p></p>
+            <p><span class="badge badge-warning">Note: </span> This will immediately set permissions for all versions of this page.</p>
+        </content>
+        <popup-animation>
+            <open duration="500" effects="fade:in" />
+            <close duration="500" effects="fade:out" />
+        </popup-animation>
+        <actions>
+            <action action="cancelPublishDateTime" text="Cancel">
+            </action>
+            <action action="savePublishDateTime" text="Set Date/Time" title="Save Date/Time">
+            </action>
+        </actions>
+    </kendo-dialog>
     
     <partial name="_ChatComponentsPartial" />
     <script>
@@ -447,6 +496,50 @@
                fileMgrPopup.close();
            }
         });
+
+        function onPubNow(e) {
+            var now = new Date();
+            now = now.toUTCString();
+            $("#Published").val(now);
+            loadPublishLocalDateTime();
+        }
+        
+        // SCHEDULING PUBLISHING UTILITIES
+        function loadPublishLocalDateTime() {
+            var published = $("#Published").val();
+            var publishButton = $("#btnPublish");
+            if (published !== null && typeof (published) !== "undefined" && published.trim() !== "") {
+
+                if (!published.endsWith("Z") && !published.endsWith("GMT")) {
+                    published += " GMT";
+                }
+
+                var localDateTime = new Date(published);
+                var dateTimePicker = $("#dtPublished").data("kendoDateTimePicker");
+                dateTimePicker.value(localDateTime);
+                var now = new Date();
+
+                if (now < localDateTime) {
+                    //publishButton.attr("class", "k-button k-primary");
+                    publishButton.html("Pending");
+                    $(publishButton).kendoTooltip({
+                        content: "This version is set to be published in the future at: " + localDateTime.toLocaleString() + ". Click to change."
+                    });
+                } else {
+                    //publishButton.attr("class", "k-button k-success");
+                    publishButton.html("Published");
+                    $(publishButton).kendoTooltip({
+                        content: "This version is now published and available on the web as of: " + localDateTime.toLocaleString() + ". Click to change."
+                    });
+                }
+            } else {
+                //publishButton.attr("class", "k-button k-alert");
+                publishButton.html("DRAFT");
+                $(publishButton).kendoTooltip({
+                    content: "This version is not yet published. Click to schedule publishing date and time."
+                });
+            }
+        }
     </script>
     <script src="/lib/monaco-editor/min/vs/loader.js"></script>
 
