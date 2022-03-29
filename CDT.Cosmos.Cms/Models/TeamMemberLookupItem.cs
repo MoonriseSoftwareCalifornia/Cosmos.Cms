@@ -24,8 +24,14 @@ namespace CDT.Cosmos.Cms.Models
             UserId = user.Id;
         }
 
+        /// <summary>
+        /// Team member User Id
+        /// </summary>
         public string UserId { get; set; }
 
+        /// <summary>
+        /// Team member Email address
+        /// </summary>
         [Display(Name = "User Email")]
         [EmailAddress]
         public string UserEmail { get; set; }
