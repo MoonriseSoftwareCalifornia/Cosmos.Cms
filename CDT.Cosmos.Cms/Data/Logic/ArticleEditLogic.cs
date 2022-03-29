@@ -477,8 +477,10 @@ namespace CDT.Cosmos.Cms.Data.Logic
         ///         </item>
         ///         <item>
         ///             The <see cref="ArticleViewModel" /> that is returned, is rebuilt using
-        ///             <see cref="ArticleLogic.BuildArticleViewModel" />
-        ///             .
+        ///             <see cref="ArticleLogic.BuildArticleViewModel" />.
+        ///         </item>
+        ///         <item>
+        ///            <see cref="Article.Updated"/> property is automatically updated with current UTC date and time.
         ///         </item>
         ///     </list>
         /// </remarks>
@@ -535,6 +537,13 @@ namespace CDT.Cosmos.Cms.Data.Logic
 
                 model.Published = isRoot ? DateTime.Now.ToUniversalTime() : model.Published?.ToUniversalTime();
 
+                model.UrlPath = article.UrlPath;
+
+                //
+                // Update base href (for Angular apps)
+                //
+                UpdateHeadBaseTag(model, article);
+
                 var articleCount = await DbContext.Articles.CountAsync();
 
                 DbContext.Articles.Add(article); // Set in an "add" state.
@@ -580,7 +589,6 @@ namespace CDT.Cosmos.Cms.Data.Logic
                 //
                 article = await DbContext.Articles.FirstOrDefaultAsync(a => a.Id == model.Id);
 
-
                 //
                 // We are adding a new version.
                 // DETACH and put into an ADD state.
@@ -602,6 +610,12 @@ namespace CDT.Cosmos.Cms.Data.Logic
 
                     // Force the model into an unpublished state
                     model.Published = null;
+                    model.UrlPath = article.UrlPath;
+
+                    //
+                    // Update base href (for Angular apps)
+                    //
+                    UpdateHeadBaseTag(model, article);
 
                     await DbContext.Articles.AddAsync(article); // Put this entry in an add state
 
@@ -651,6 +665,12 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     // Update the path to reflect new title 
                     //
                     article.UrlPath = HandleUrlEncodeTitle(model.Title);
+                    model.UrlPath = article.UrlPath;
+
+                    //
+                    // Update base href
+                    //
+                    UpdateHeadBaseTag(model, article);
 
                     // Add redirect here
                     await DbContext.Articles.AddAsync(new Article
@@ -682,7 +702,13 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     foreach (var oldArticle in oldArticles)
                     {
                         // We have to change the title and paths for all versions now.
-                        oldArticle.UrlPath = article.UrlPath;
+                        oldArticle.UrlPath = model.UrlPath;
+                        UpdateHeadBaseTag(model, oldArticle);
+
+
+                        //
+                        // Update base href (for Angular apps)
+                        //
 
                         oldArticle.Title = model.Title;
                         oldArticle.Updated = DateTime.Now.ToUniversalTime();
@@ -798,6 +824,49 @@ namespace CDT.Cosmos.Cms.Data.Logic
         {
             var updated = newPrefix + targetString.TrimStart(oldprefix.ToArray());
             return updated;
+        }
+
+        /// <summary>
+        /// Update head tag to match path 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="article"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Angular uses the BASE tag within the HEAD to set relative path to article/app.
+        /// If that tag is detected, it is updated automatically to match the current <see cref="Article.UrlPath"/>.
+        /// </remarks>
+        private void UpdateHeadBaseTag(ArticleViewModel model, Article article)
+        {
+            var htmlDoc = new HtmlDocument();
+
+            htmlDoc.LoadHtml(model.HeaderJavaScript);
+
+            var element = htmlDoc.DocumentNode.SelectSingleNode("//base");
+
+            if (element == null)
+            {
+                return;
+            }
+
+            var urlPath = $"/{model.UrlPath.ToLower().Trim('/')}/";
+
+            var href = element.Attributes["href"];
+
+            if (href == null)
+            {
+                element.Attributes.Add("href", urlPath);
+            }
+            else
+            {
+                href.Value = urlPath;
+            }
+
+            article.UrlPath = urlPath;
+            model.HeaderJavaScript = htmlDoc.DocumentNode.OuterHtml;
+            article.HeaderJavaScript = model.HeaderJavaScript;
+
+            return;
         }
 
         /// <summary>

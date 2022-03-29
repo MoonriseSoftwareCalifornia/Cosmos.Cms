@@ -789,6 +789,7 @@ namespace CDT.Cosmos.Cms.Controllers
 
             ViewData["Version"] = article.VersionNumber;
 
+            ViewData["TeamLogic"] = GetTeamIdentityLogic();
 
             // Re-enable editable sections.
             //article.Content = article.Content.Replace("crx=", "contenteditable=",
@@ -798,6 +799,9 @@ namespace CDT.Cosmos.Cms.Controllers
             {
                 Id = article.Id,
                 ArticleNumber = article.ArticleNumber,
+                Title = article.Title,
+                Published = article.Published,
+                RoleList = article.RoleList,
                 EditorTitle = article.Title,
                 EditorFields = new[]
                 {
@@ -886,6 +890,10 @@ namespace CDT.Cosmos.Cms.Controllers
             // Validate HTML
             model.Content = BaseValidateHtml("Content", model.Content);
 
+            // Save title, published date/time, roles
+            articleViewModel.Published = model.Published;
+            articleViewModel.Title = BaseValidateHtml("Title", model.Title);
+            articleViewModel.RoleList = model.RoleList;
 
             // Check for validation errors...
             if (ModelState.IsValid)
@@ -1215,7 +1223,7 @@ namespace CDT.Cosmos.Cms.Controllers
                     s.Updated,
                     s.VersionNumber,
                     s.Expires,
-                    UsesHtmlEditor = true // s.Content.ToLower().Contains(" crx=")
+                    UsesHtmlEditor = s.Content.ToLower().Contains(" editable=") || s.Content.ToLower().Contains(" data-ccms-ceid=")
                 }).ToListAsync();
 
             //
@@ -1255,7 +1263,7 @@ namespace CDT.Cosmos.Cms.Controllers
                         s.Updated,
                         s.VersionNumber,
                         s.Expires,
-                        UsesHtmlEditor = true // s.Content.ToLower().Contains(" crx=")
+                        UsesHtmlEditor = s.Content.ToLower().Contains(" editable=") || s.Content.ToLower().Contains(" data-ccms-ceid=")
                     }).ToListAsync();
             }
 

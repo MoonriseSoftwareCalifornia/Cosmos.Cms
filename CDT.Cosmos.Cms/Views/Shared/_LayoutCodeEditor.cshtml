@@ -1,4 +1,5 @@
 ﻿@addTagHelper *, Kendo.Mvc
+@using CDT.Cosmos.Cms.Services
 @using Kendo.Mvc.UI
 @using Newtonsoft.Json
 @using System.Reflection
@@ -11,6 +12,31 @@
     var assemblies = assem.GetReferencedAssemblies();
     var kendo = assemblies.FirstOrDefault(a => a.Name.Contains("kendo", StringComparison.CurrentCultureIgnoreCase));
     var kendoVersion = $"{kendo.Version.Major}.{kendo.Version.Minor}.{kendo.Version.Build}";
+
+    // Team member information (only applies to users who are team members)
+    var teamMemberLogic = (TeamIdentityLogic)ViewData["TeamLogic"];
+    var teamName = (string)ViewData["TeamName"];
+
+    var isArticleEditor = Model.GetType() == typeof(EditCodePostModel);
+
+    // Used for ChatBot
+    var userName = Context.User.Identity.Name;
+
+    // Permissions configuration
+    var isAuthor = false;
+    var isTeamMember = teamMemberLogic != null;
+    if (User != null && (User.IsInRole("Authors") || teamMemberLogic?.IsInRole(TeamRoleEnum.Author, teamName) == true))
+    {
+        isAuthor = true;
+    }
+    else if (User != null && User.IsInRole("Editors") || teamMemberLogic?.IsInRole(TeamRoleEnum.Editor, teamName) == true)
+    {
+        isAuthor = false;
+    }
+    else if (User != null && User.IsInRole("Administrators"))
+    {
+        isAuthor = false;
+    }
 }
 <!DOCTYPE html>
 <html>
@@ -66,6 +92,12 @@
             item.Add().Type(CommandType.Button).Text("Ready to Edit").Id("ccms-edit-lock-btn").Click("ccmsEditButtonOnClick"); // ccmsEditButtonOnClick found on _ChatComponentPartial
             item.Add().Template("<div><span id='versInfo' style='margin-right:10px;font-size:0.6em;'>" + @assemblyName.Version + "</span> </div>");
             
+            if (isArticleEditor)
+            {
+                item.Add().Type(CommandType.Button).Text("<span id='btnPublish'></span>").Click("openSchedulerDialog").Hidden(isAuthor);
+                item.Add().Template("<span>Title: </span>");
+                item.Add().Template(Html.Kendo().TextBox().Name("tbTitle").Value(((EditCodePostModel) Model).Title).HtmlAttributes(new {style = "width: 32vw;"}).ToHtmlString());
+            }
             item.Add().Text("Help").Type(CommandType.SplitButton)
             .MenuButtons(btn =>
             {
@@ -365,13 +397,18 @@
         $("#codeForm").submit(function(e) {
             e.preventDefault(); // Prevent the form from doing a post back.
             $("#saveChangesDialog").data("kendoDialog").open();
+
+            if (@isArticleEditor.ToString().ToLower()) {
+
+                // Saving publish date with time zone information
+                savePublishDateTime();
+                // Save title
+                $("#Title").val($("#tbTitle").val());
+
+            }
+            
             if (editor) {
                 $("#" + fieldId).val(editor.getValue());
-                //if (editor.getModel()) {
-                //    editor.getModel().dispose();
-                //}
-                //editor.dispose();
-                //editor = null;
             }
             //return true;
             var form = $('#codeForm');
@@ -478,6 +515,7 @@
                     ccmsSendSignal("NotifyRoomOfLock"); 
                 }, 2000);
             }
+            loadPublishLocalDateTime();
         });
 
         $(window).bind('keydown', function(event) {
@@ -504,8 +542,15 @@
             loadPublishLocalDateTime();
         }
         
-        // SCHEDULING PUBLISHING UTILITIES
+        // SCHEDULING PUBLISHING UTILITIES      
+        function openSchedulerDialog() {
+            $("#schedulingDialog").data("kendoDialog").open();
+        }
+
         function loadPublishLocalDateTime() {
+            if (!@isArticleEditor.ToString().ToLower()) {
+                return;
+            }
             var published = $("#Published").val();
             var publishButton = $("#btnPublish");
             if (published !== null && typeof (published) !== "undefined" && published.trim() !== "") {
@@ -538,6 +583,28 @@
                 $(publishButton).kendoTooltip({
                     content: "This version is not yet published. Click to schedule publishing date and time."
                 });
+            }
+        }
+
+        function savePublishDateTime() {
+            // Save date/time
+            var dateTimePicker = $("#dtPublished").data("kendoDateTimePicker");
+            var dateTimeValue = dateTimePicker.value();
+
+            if ($("#Published").val() !== dateTimeValue) {
+                $("#pendingChangesBadge").show();
+            }
+
+            // Note, this saves the date/time using local time (of the user's computer).
+            // The server stores this as UTC time.
+            if (dateTimeValue !== null && dateTimeValue !== "null" && dateTimeValue !== "") {
+                var datetime = new Date(dateTimeValue);
+                var utcString = datetime.toUTCString();
+                $("#Published").val(utcString);
+                $("#btnPublish").html("Published");
+            } else {
+                $("#btnPublish").html("DRAFT");
+                $("#Published").val("");
             }
         }
     </script>
