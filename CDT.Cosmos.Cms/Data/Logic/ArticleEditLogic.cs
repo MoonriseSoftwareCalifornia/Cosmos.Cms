@@ -836,8 +836,13 @@ namespace CDT.Cosmos.Cms.Data.Logic
         /// Angular uses the BASE tag within the HEAD to set relative path to article/app.
         /// If that tag is detected, it is updated automatically to match the current <see cref="Article.UrlPath"/>.
         /// </remarks>
-        private void UpdateHeadBaseTag(ArticleViewModel model, Article article)
+        public void UpdateHeadBaseTag(ArticleViewModel model, Article article = null)
         {
+            if (string.IsNullOrEmpty(model.HeaderJavaScript))
+            {
+                return;
+            }
+
             var htmlDoc = new HtmlDocument();
 
             htmlDoc.LoadHtml(model.HeaderJavaScript);
@@ -862,9 +867,13 @@ namespace CDT.Cosmos.Cms.Data.Logic
                 href.Value = urlPath;
             }
 
-            article.UrlPath = urlPath;
             model.HeaderJavaScript = htmlDoc.DocumentNode.OuterHtml;
-            article.HeaderJavaScript = model.HeaderJavaScript;
+
+            if (article != null)
+            {
+                article.UrlPath = urlPath;
+                article.HeaderJavaScript = model.HeaderJavaScript;
+            }
 
             return;
         }

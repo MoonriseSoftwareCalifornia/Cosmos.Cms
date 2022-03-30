@@ -159,6 +159,12 @@ namespace CDT.Cosmos.Cms.Controllers
                     ViewData["EditModeOn"] = false;
                     var article = await _articleLogic.Get(pageId, EnumControllerName.Home);
 
+                    // Check base header
+                    article.UrlPath = $"/home/preview/{id}";
+                    _articleLogic.UpdateHeadBaseTag(article);
+
+                    // Home/Preview/154
+
                     if (article != null)
                     {
                         article.ReadWriteMode = false;

@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// External login page model
+    /// </summary>
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
@@ -22,6 +25,13 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="signInManager"></param>
+        /// <param name="userManager"></param>
+        /// <param name="logger"></param>
+        /// <param name="emailSender"></param>
         public ExternalLoginModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
@@ -34,19 +44,42 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        [BindProperty] public InputModel Input { get; set; }
+        /// <summary>
+        /// Input model
+        /// </summary>
+        [BindProperty]
+        public InputModel Input { get; set; }
 
+        /// <summary>
+        /// Provider display name
+        /// </summary>
         public string ProviderDisplayName { get; set; }
 
+        /// <summary>
+        /// Return url
+        /// </summary>
         public string ReturnUrl { get; set; }
 
+        /// <summary>
+        /// Error message
+        /// </summary>
         [TempData] public string ErrorMessage { get; set; }
 
+        /// <summary>
+        /// On get method handler
+        /// </summary>
+        /// <returns></returns>
         public IActionResult OnGetAsync()
         {
             return RedirectToPage("./Login");
         }
 
+        /// <summary>
+        /// On post method handler
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public IActionResult OnPost(string provider, string returnUrl = null)
         {
             // Request a redirect to the external login provider.
@@ -64,6 +97,12 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return challenge;
         }
 
+        /// <summary>
+        /// On get callback method handler
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <param name="remoteError"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -111,6 +150,11 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// On post confirmation handler
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -167,9 +211,17 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// Input model
+        /// </summary>
         public class InputModel
         {
-            [Required] [EmailAddress] public string Email { get; set; }
+            /// <summary>
+            /// Email address
+            /// </summary>
+            [Required]
+            [EmailAddress]
+            public string Email { get; set; }
         }
     }
 }

@@ -8,20 +8,37 @@ using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// Confirm email change page model
+    /// </summary>
     [AllowAnonymous]
     public class ConfirmEmailChangeModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
         public ConfirmEmailChangeModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
-        [TempData] public string StatusMessage { get; set; }
-
+        /// <summary>
+        /// Status messasge
+        /// </summary>
+        [TempData]
+        public string StatusMessage { get; set; }
+        /// <summary>
+        /// On get method handler
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="email"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
         {
             if (userId == null || email == null || code == null) return RedirectToPage("/Index");

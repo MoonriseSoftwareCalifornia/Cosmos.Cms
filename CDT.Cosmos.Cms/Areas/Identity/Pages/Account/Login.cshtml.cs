@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// Login page model
+    /// </summary>
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
@@ -21,6 +24,13 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="signInManager"></param>
+        /// <param name="logger"></param>
+        /// <param name="userManager"></param>
+        /// <param name="options"></param>
         public LoginModel(SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager, IOptions<SiteSettings> options)
@@ -31,14 +41,33 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             _options = options;
         }
 
-        [BindProperty] public InputModel Input { get; set; }
+        /// <summary>
+        /// Input model
+        /// </summary>
+        [BindProperty]
+        public InputModel Input { get; set; }
 
+        /// <summary>
+        /// External logins
+        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        /// <summary>
+        /// Page URL
+        /// </summary>
         public string ReturnUrl { get; set; }
 
-        [TempData] public string ErrorMessage { get; set; }
+        /// <summary>
+        /// Error message
+        /// </summary>
+        [TempData]
+        public string ErrorMessage { get; set; }
 
+        /// <summary>
+        /// On get method handler
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage)) ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -57,6 +86,11 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// On post method handler
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -89,15 +123,30 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// Input model
+        /// </summary>
         public class InputModel
         {
-            [Required] [EmailAddress] public string Email { get; set; }
+            /// <summary>
+            /// Email address
+            /// </summary>
+            [Required]
+            [EmailAddress] 
+            public string Email { get; set; }
 
+            /// <summary>
+            /// Password
+            /// </summary>
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")] public bool RememberMe { get; set; }
+            /// <summary>
+            /// Remember me
+            /// </summary>
+            [Display(Name = "Remember me?")]
+            public bool RememberMe { get; set; }
         }
     }
 }
