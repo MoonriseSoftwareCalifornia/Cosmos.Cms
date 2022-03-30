@@ -2,12 +2,21 @@
 
 namespace CDT.Cosmos.Cms.Models
 {
+    /// <summary>
+    /// Kendo file browser entry
+    /// </summary>
     public class KendoFileBrowserEntry
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public KendoFileBrowserEntry()
         {
         }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="entry"></param>
         public KendoFileBrowserEntry(FileBrowserEntry entry)
         {
             name = entry.Name;
