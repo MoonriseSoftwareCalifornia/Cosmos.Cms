@@ -9,12 +9,20 @@ using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// Login with recovery code model
+    /// </summary>
     [AllowAnonymous]
     public class LoginWithRecoveryCodeModel : PageModel
     {
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
         private readonly SignInManager<IdentityUser> _signInManager;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="signInManager"></param>
+        /// <param name="logger"></param>
         public LoginWithRecoveryCodeModel(SignInManager<IdentityUser> signInManager,
             ILogger<LoginWithRecoveryCodeModel> logger)
         {
@@ -22,10 +30,23 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        [BindProperty] public InputModel Input { get; set; }
+        /// <summary>
+        /// Input model
+        /// </summary>
+        [BindProperty] 
+        public InputModel Input { get; set; }
 
+        /// <summary>
+        /// Return URL
+        /// </summary>
         public string ReturnUrl { get; set; }
 
+        /// <summary>
+        /// On get method handler
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
@@ -37,6 +58,12 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// On post method handler
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             if (!ModelState.IsValid) return Page();
@@ -65,8 +92,14 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// Input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Recovery code
+            /// </summary>
             [BindProperty]
             [Required]
             [DataType(DataType.Text)]

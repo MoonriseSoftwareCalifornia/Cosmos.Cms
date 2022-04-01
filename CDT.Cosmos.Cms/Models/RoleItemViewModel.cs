@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CDT.Cosmos.Cms.Models
 {
+    /// <summary>
+    /// Role item view model
+    /// </summary>
     [Serializable]
     public class RoleItemViewModel
     {

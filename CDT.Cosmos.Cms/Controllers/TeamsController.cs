@@ -29,6 +29,14 @@ namespace CDT.Cosmos.Cms.Controllers
         private readonly IOptions<CosmosConfig> _options;
         private readonly UserManager<IdentityUser> _userManager;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="dbContext"></param>
+        /// <param name="userManager"></param>
+        /// <param name="articleLogic"></param>
+        /// <param name="syncContext"></param>
         public TeamsController(
             IOptions<CosmosConfig> options,
             ApplicationDbContext dbContext,
@@ -45,11 +53,20 @@ namespace CDT.Cosmos.Cms.Controllers
                 dbContext.LoadSyncContext(syncContext);
         }
 
+        /// <summary>
+        /// Index page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Membership page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> Membership(int? id)
         {
             if (id == null) return RedirectToAction("index");
@@ -74,6 +91,11 @@ namespace CDT.Cosmos.Cms.Controllers
             });
         }
 
+        /// <summary>
+        /// Get principal
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private async Task<ClaimsPrincipal> GetPrincipal(IdentityUser user)
         {
             var claims = await _userManager.GetClaimsAsync(user);
@@ -91,6 +113,11 @@ namespace CDT.Cosmos.Cms.Controllers
 
         #region TEAMS CRUD
 
+        /// <summary>
+        /// Read team list method
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<ActionResult> Teams_Read([DataSourceRequest] DataSourceRequest request)
         {
             var data = await _dbContext.Teams.ToListAsync();
@@ -102,6 +129,12 @@ namespace CDT.Cosmos.Cms.Controllers
             }).ToDataSourceResultAsync(request));
         }
 
+        /// <summary>
+        /// Create teams method
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="teams"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Teams_Create([DataSourceRequest] DataSourceRequest request,
             [Bind(Prefix = "models")] IEnumerable<TeamViewModel> teams)
@@ -130,6 +163,12 @@ namespace CDT.Cosmos.Cms.Controllers
             return Json(await results.ToDataSourceResultAsync(request, ModelState));
         }
 
+        /// <summary>
+        /// Update one or more teams
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="teams"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Teams_Update(
             [DataSourceRequest] DataSourceRequest request,
@@ -150,6 +189,12 @@ namespace CDT.Cosmos.Cms.Controllers
             return Json(teams.ToDataSourceResult(request, ModelState));
         }
 
+        /// <summary>
+        /// Remove one or more teams
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="teams"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Teams_Destroy(
             [DataSourceRequest] DataSourceRequest request,
@@ -180,6 +225,12 @@ namespace CDT.Cosmos.Cms.Controllers
 
         #region TEAM MEMBER CRUD
 
+        /// <summary>
+        /// Read team members from a team.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> TeamMembers_Read([DataSourceRequest] DataSourceRequest request, int id)
         {
             var data = await _dbContext.TeamMembers.Include(i => i.Team).Include(i => i.User)
@@ -282,6 +333,13 @@ namespace CDT.Cosmos.Cms.Controllers
             return Json(results.ToDataSourceResult(request, ModelState));
         }
 
+        /// <summary>
+        /// Team membership update method
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="members"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> TeamMembers_Update([DataSourceRequest] DataSourceRequest request,
             [Bind(Prefix = "models")] IEnumerable<TeamMemberViewModel> members, int id)
@@ -323,6 +381,12 @@ namespace CDT.Cosmos.Cms.Controllers
             return Json(await results.ToDataSourceResultAsync(request, ModelState));
         }
 
+        /// <summary>
+        /// Remove members from a team
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="members"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> TeamMembers_Destroy([DataSourceRequest] DataSourceRequest request,
             [Bind(Prefix = "models")] IEnumerable<TeamMemberViewModel> members)

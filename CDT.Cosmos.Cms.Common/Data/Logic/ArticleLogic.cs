@@ -182,7 +182,7 @@ namespace CDT.Cosmos.Cms.Common.Data.Logic
         private async Task<ArticleViewModel> GetArticle(string urlPath, bool publishedOnly, bool onlyActive,
             string lang)
         {
-            urlPath = urlPath?.TrimStart('/');
+            urlPath = urlPath?.ToLower().Trim('/');
             Article article;
             // Get time zone info
             //var pst = TimeZoneUtility.ConvertUtcDateTimeToPst(DateTime.UtcNow);
@@ -277,11 +277,7 @@ namespace CDT.Cosmos.Cms.Common.Data.Logic
                 article.Content = result.Translations[1].TranslatedText;
             }
 
-            //if (!string.IsNullOrEmpty(article.Content) && article.Content.Contains("contenteditable=", StringComparison.CurrentCultureIgnoreCase))
-            //{
-            //    article.Content = article.Content.Replace("contenteditable=", "crx=", StringComparison.CurrentCultureIgnoreCase);
-            //}
-
+            
             return new ArticleViewModel
             {
                 ArticleNumber = article.ArticleNumber,

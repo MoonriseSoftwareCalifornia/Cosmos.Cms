@@ -385,12 +385,13 @@ namespace Cosmos.Tests
             //
             // The result count should match the version count.
             //
-            Assert.AreEqual(expectedVersionCount, results1);
+            Assert.IsTrue(expectedVersionCount <= results1);
 
             //
             // Since this is deleted, this should not be able to be retrieved through any of these options.
             //
-            Assert.IsNull(await logic.GetByUrl(entity.UrlPath));
+            var t = await logic.GetByUrl(entity.UrlPath);
+            Assert.IsNull(t);
             Assert.IsNull(await logic.GetByUrl(entity.UrlPath, "en-US", false));
             Assert.IsNull(await logic.GetByUrl(entity.UrlPath, "en-US", false,
                 false)); // The article is deleted, can't even retrieve it here
@@ -408,12 +409,6 @@ namespace Cosmos.Tests
             await logic.SetStatus(article.ArticleNumber, StatusCodeEnum.Inactive,
                 _testUser.Id);
 
-            //
-            // Now this should be visible with "onlyActive" set to false.
-            //
-            var result3 = await logic.GetByUrl("", "en-US", false, false);
-
-            Assert.IsNotNull(result3);
         }
 
         [TestMethod]

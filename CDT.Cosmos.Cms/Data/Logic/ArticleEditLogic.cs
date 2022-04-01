@@ -477,8 +477,10 @@ namespace CDT.Cosmos.Cms.Data.Logic
         ///         </item>
         ///         <item>
         ///             The <see cref="ArticleViewModel" /> that is returned, is rebuilt using
-        ///             <see cref="ArticleLogic.BuildArticleViewModel" />
-        ///             .
+        ///             <see cref="ArticleLogic.BuildArticleViewModel" />.
+        ///         </item>
+        ///         <item>
+        ///            <see cref="Article.Updated"/> property is automatically updated with current UTC date and time.
         ///         </item>
         ///     </list>
         /// </remarks>
@@ -488,7 +490,9 @@ namespace CDT.Cosmos.Cms.Data.Logic
             var flushUrls = new List<string>();
 
             model.Content = Ensure_ContentEditable_IsMarked(model.Content);
-
+			
+			UpdateHeadBaseTag(model);
+			
             Article article;
             
             //if (!string.IsNullOrEmpty(model.Content))
@@ -510,12 +514,18 @@ namespace CDT.Cosmos.Cms.Data.Logic
             var isRoot =
                 await DbContext.Articles.AnyAsync(a => a.ArticleNumber == model.ArticleNumber && a.UrlPath == "root");
 
-            //
-            // Is this a new article?
+
+            // Enforce the default layout here
+            var defaultLayout = await DbContext.Layouts.FirstOrDefaultAsync(l => l.IsDefault);
+
+            // ************************************
+            // DECISION: NEW ARTICLE OR EDITING EXISTING ARTICLE
             //
             if (model.ArticleNumber == 0)
             {
                 //
+                // CREATING NEW ARTICLE NOW
+                // 
                 // If the article number is 0, then this is a new article.
                 // The save action will give this a new unique article number.
                 //
@@ -530,10 +540,18 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     UrlPath = isRoot ? "root" : HandleUrlEncodeTitle(model.Title.Trim()),
                     ArticleLogs = new List<ArticleLog>(),
                     Updated = DateTime.Now.ToUniversalTime(),
-                    RoleList = model.RoleList
+                    RoleList = model.RoleList,
+                    LayoutId = defaultLayout.Id
                 };
 
                 model.Published = isRoot ? DateTime.Now.ToUniversalTime() : model.Published?.ToUniversalTime();
+
+                //model.UrlPath = article.UrlPath;
+
+                //
+                // Update base href (for Angular apps)
+                //
+                //UpdateHeadBaseTag(model, article);
 
                 var articleCount = await DbContext.Articles.CountAsync();
 
@@ -568,6 +586,8 @@ namespace CDT.Cosmos.Cms.Data.Logic
             else
             {
                 //
+                // EDITING EXISTING ARTICLE
+                //
                 // Validate that this article already exists.
                 //
                 if (!await DbContext.Articles.AnyAsync(a => a.ArticleNumber == model.ArticleNumber))
@@ -580,17 +600,21 @@ namespace CDT.Cosmos.Cms.Data.Logic
                 //
                 article = await DbContext.Articles.FirstOrDefaultAsync(a => a.Id == model.Id);
 
-
                 //
                 // We are adding a new version.
                 // DETACH and put into an ADD state.
                 //
                 if (model.VersionNumber == 0)
                 {
+                    //
+                    // ADDING NEW ARTICLE VERSION
+                    //
+                    var versionNumber = await GetNextVersionNumber(model.ArticleNumber);
+
                     article = new Article
                     {
                         ArticleNumber = model.ArticleNumber, // This stays the same
-                        VersionNumber = await GetNextVersionNumber(model.ArticleNumber),
+                        VersionNumber = versionNumber,
                         UrlPath = model.UrlPath,
                         HeaderJavaScript = article.HeaderJavaScript,
                         FooterJavaScript = article.FooterJavaScript,
@@ -602,8 +626,12 @@ namespace CDT.Cosmos.Cms.Data.Logic
 
                     // Force the model into an unpublished state
                     model.Published = null;
+                    //model.UrlPath = article.UrlPath;
 
-                    await DbContext.Articles.AddAsync(article); // Put this entry in an add state
+                    DbContext.Articles.Add(article); // Put this entry in an add state
+
+                    // Make sure this saves
+                    await DbContext.SaveChangesAsync();
 
                     HandleLogEntry(article, "New version", userId);
                 }
@@ -617,6 +645,9 @@ namespace CDT.Cosmos.Cms.Data.Logic
                 //
                 if (!isRoot && !string.Equals(article.Title, model.Title, StringComparison.CurrentCultureIgnoreCase))
                 {
+                    //
+                    // ARTICLE TITLE IS CHANGING, SO CREATE A REDIRECT AND CHANGE ARTICLE TITLE AND URL
+                    //
                     // And capture old URL to flush.
                     flushUrls.Add(model.UrlPath);
 
@@ -651,6 +682,12 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     // Update the path to reflect new title 
                     //
                     article.UrlPath = HandleUrlEncodeTitle(model.Title);
+                    //model.UrlPath = article.UrlPath;
+
+                    //
+                    // Update base href
+                    //
+                    //UpdateHeadBaseTag(model, article);
 
                     // Add redirect here
                     await DbContext.Articles.AddAsync(new Article
@@ -676,39 +713,24 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     HandleLogEntry(article, $"Redirect {model.UrlPath} to {article.UrlPath}", userId);
 
                     // We have to change the title and paths for all versions now.
-                    var oldArticles = await DbContext.Articles.Where(w => w.ArticleNumber == article.ArticleNumber)
+                    var articlesToUpdate = await DbContext.Articles.Where(w => w.ArticleNumber == article.ArticleNumber)
                         .ToListAsync();
 
-                    foreach (var oldArticle in oldArticles)
+                    foreach (var art in articlesToUpdate)
                     {
-                        // We have to change the title and paths for all versions now.
-                        oldArticle.UrlPath = article.UrlPath;
 
-                        oldArticle.Title = model.Title;
-                        oldArticle.Updated = DateTime.Now.ToUniversalTime();
+                        //
+                        // Update base href (for Angular apps)
+                        //
+                        UpdateHeadBaseTag(article);
 
-                        await DbContext.Articles.AddAsync(new Article
-                        {
-                            Id = 0,
-                            LayoutId = null,
-                            ArticleNumber = 0,
-                            StatusCode = (int)StatusCodeEnum.Redirect,
-                            UrlPath = oldUrl, // Old URL
-                            VersionNumber = 0,
-                            Published = DateTime.Now.ToUniversalTime().AddDays(-1), // Make sure this sticks!
-                            Title = "Redirect",
-                            Content = article.UrlPath, // New URL
-                            Updated = DateTime.Now.ToUniversalTime(),
-                            HeaderJavaScript = null,
-                            FooterJavaScript = null,
-                            Layout = null,
-                            ArticleLogs = null,
-                            MenuItems = null
-                        });
+                        art.Title = model.Title;
+                        art.Updated = DateTime.Now.ToUniversalTime();
+                        art.UrlPath = article.UrlPath;
                     }
 
-                    DbContext.Articles.UpdateRange(oldArticles);
-
+                    DbContext.Articles.UpdateRange(articlesToUpdate);
+                    await DbContext.SaveChangesAsync();
                 }
 
                 //
@@ -774,8 +796,6 @@ namespace CDT.Cosmos.Cms.Data.Logic
 
             article.RoleList = model.RoleList;
 
-            // Enforce the default layout here
-            var defaultLayout = await DbContext.Layouts.FirstOrDefaultAsync(l => l.IsDefault);
             article.LayoutId = defaultLayout.Id;
             article.Layout = defaultLayout;
 
@@ -798,6 +818,107 @@ namespace CDT.Cosmos.Cms.Data.Logic
         {
             var updated = newPrefix + targetString.TrimStart(oldprefix.ToArray());
             return updated;
+        }
+
+        /// <summary>
+        /// Update head tag to match path 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Angular uses the BASE tag within the HEAD to set relative path to article/app.
+        /// If that tag is detected, it is updated automatically to match the current <see cref="Article.UrlPath"/>.
+        /// </remarks>
+        public void UpdateHeadBaseTag(ArticleViewModel model)
+        {
+            if (string.IsNullOrEmpty(model.HeaderJavaScript))
+            {
+                return;
+            }
+
+            var htmlDoc = new HtmlDocument();
+
+            htmlDoc.LoadHtml(model.HeaderJavaScript);
+
+            // <meta name="ccms:framework" value="angular">
+            var meta = htmlDoc.DocumentNode.SelectSingleNode("//meta[@name='ccms:framework']");
+
+            // This only needs to be run if the framework is "Angular"
+            if (meta != null && meta.Attributes["value"].Value.ToLower() != "angular")
+            {
+                return;
+            }
+
+            var element = htmlDoc.DocumentNode.SelectSingleNode("//base");
+
+            if (element == null)
+            {
+                return;
+            }
+
+            var urlPath = $"/{model.UrlPath.ToLower().Trim('/')}/";
+
+            var href = element.Attributes["href"];
+
+            if (href == null)
+            {
+                element.Attributes.Add("href", urlPath);
+            }
+            else
+            {
+                href.Value = urlPath;
+            }
+
+            model.HeaderJavaScript = htmlDoc.DocumentNode.OuterHtml;
+            model.UrlPath = urlPath;
+
+            return;
+        }
+
+        /// <summary>
+        /// Update head tag to match path 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Angular uses the BASE tag within the HEAD to set relative path to article/app.
+        /// If that tag is detected, it is updated automatically to match the current <see cref="Article.UrlPath"/>.
+        /// </remarks>
+        public void UpdateHeadBaseTag(Article model)
+        {
+            if (string.IsNullOrEmpty(model.HeaderJavaScript))
+            {
+                return;
+            }
+
+            var htmlDoc = new HtmlDocument();
+
+            htmlDoc.LoadHtml(model.HeaderJavaScript);
+
+            var element = htmlDoc.DocumentNode.SelectSingleNode("//base");
+
+            if (element == null)
+            {
+                return;
+            }
+
+            var urlPath = $"/{model.UrlPath.ToLower().Trim('/')}/";
+
+            var href = element.Attributes["href"];
+
+            if (href == null)
+            {
+                element.Attributes.Add("href", urlPath);
+            }
+            else
+            {
+                href.Value = urlPath;
+            }
+
+            model.HeaderJavaScript = htmlDoc.DocumentNode.OuterHtml;
+            model.UrlPath = urlPath;
+
+            return;
         }
 
         /// <summary>
@@ -836,8 +957,11 @@ namespace CDT.Cosmos.Cms.Data.Logic
             if (!await DbContext.Users.AnyAsync(a => a.Id == userId))
                 throw new Exception($"User ID: {userId} not found!");
 
-            var versions = await DbContext.Articles.Where(a => a.ArticleNumber == articleNumber).ToListAsync();
-            if (!versions.Any()) throw new Exception($"Article number: {articleNumber} not found!");
+            var versions = 
+                await DbContext.Articles.Where(a => a.ArticleNumber == articleNumber).ToListAsync();
+            
+            if (!versions.Any())
+                throw new Exception($"Article number: {articleNumber} not found!");
 
             foreach (var version in versions)
             {
@@ -857,10 +981,11 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     IdentityUserId = userId,
                     DateTimeStamp = DateTime.Now.ToUniversalTime()
                 });
+                
             }
-
-            await DbContext.SaveChangesAsync();
-            return versions.Count;
+            
+            var count = await DbContext.SaveChangesAsync();
+            return count;
         }
 
         #endregion
