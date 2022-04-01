@@ -840,6 +840,15 @@ namespace CDT.Cosmos.Cms.Data.Logic
 
             htmlDoc.LoadHtml(model.HeaderJavaScript);
 
+            // <meta name="ccms:framework" value="angular">
+            var meta = htmlDoc.DocumentNode.SelectSingleNode("//meta[@name='ccms:framework']");
+
+            // This only needs to be run if the framework is "Angular"
+            if (meta != null && meta.Attributes["value"].Value.ToLower() != "angular")
+            {
+                return;
+            }
+
             var element = htmlDoc.DocumentNode.SelectSingleNode("//base");
 
             if (element == null)
