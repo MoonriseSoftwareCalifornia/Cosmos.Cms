@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// Forgot password page model
+    /// </summary>
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
@@ -20,6 +23,12 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
         private readonly IOptions<SiteSettings> _options;
         private readonly UserManager<IdentityUser> _userManager;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="emailSender"></param>
+        /// <param name="options"></param>
         public ForgotPasswordModel(UserManager<IdentityUser> userManager, IEmailSender emailSender,
             IOptions<SiteSettings> options)
         {
@@ -28,13 +37,26 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             _options = options;
         }
 
-        [BindProperty] public InputModel Input { get; set; }
+        /// <summary>
+        /// Input model
+        /// </summary>
+        [BindProperty]
+        public InputModel Input { get; set; }
 
+        /// <summary>
+        /// On get method handler
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public IActionResult OnGetAsync(string returnUrl = null)
         {
             return Page();
         }
 
+        /// <summary>
+        /// On post method handler
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
@@ -65,9 +87,17 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// Input model
+        /// </summary>
         public class InputModel
         {
-            [Required] [EmailAddress] public string Email { get; set; }
+            /// <summary>
+            /// Email address
+            /// </summary>
+            [Required]
+            [EmailAddress]
+            public string Email { get; set; }
         }
     }
 }

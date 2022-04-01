@@ -9,24 +9,49 @@ using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// Login with two factor authentication page model
+    /// </summary>
     [AllowAnonymous]
     public class LoginWith2faModel : PageModel
     {
         private readonly ILogger<LoginWith2faModel> _logger;
         private readonly SignInManager<IdentityUser> _signInManager;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="signInManager"></param>
+        /// <param name="logger"></param>
         public LoginWith2faModel(SignInManager<IdentityUser> signInManager, ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
         }
 
-        [BindProperty] public InputModel Input { get; set; }
+        /// <summary>
+        /// Input model
+        /// </summary>
+        [BindProperty]
+        public InputModel Input { get; set; }
 
+        /// <summary>
+        /// Remember me
+        /// </summary>
         public bool RememberMe { get; set; }
 
+        /// <summary>
+        /// Return to URL
+        /// </summary>
         public string ReturnUrl { get; set; }
 
+        /// <summary>
+        /// On get method handler
+        /// </summary>
+        /// <param name="rememberMe"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
@@ -40,6 +65,13 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// On post method handler
+        /// </summary>
+        /// <param name="rememberMe"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnPostAsync(bool rememberMe, string returnUrl = null)
         {
             if (!ModelState.IsValid) return Page();
@@ -72,6 +104,9 @@ namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// Input model
+        /// </summary>
         public class InputModel
         {
             [Required]

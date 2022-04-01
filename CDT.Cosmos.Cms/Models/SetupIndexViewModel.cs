@@ -11,17 +11,23 @@ namespace CDT.Cosmos.Cms.Models
         /// Setup state we are in.
         /// </summary>
         public SetupState SetupState { get; set; }
-
+        /// <summary>
+        /// Administrator email address
+        /// </summary>
         [Display(Name = "Administrator Email Address")]
         [EmailAddress]
         [DataType(DataType.EmailAddress)]
         public string AdminEmail { get; set; }
-
+        /// <summary>
+        /// Password
+        /// </summary>
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
-
+        /// <summary>
+        /// Password confirmation
+        /// </summary>
         [Display(Name = "Confirm Password")]
         [DataType(DataType.Password)]
         [Compare("Password")]
