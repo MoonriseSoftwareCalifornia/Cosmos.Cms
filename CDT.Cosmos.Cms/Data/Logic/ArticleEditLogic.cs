@@ -1027,6 +1027,24 @@ namespace CDT.Cosmos.Cms.Data.Logic
         }
 
         /// <summary>
+        /// Get a list of article redirects
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public async Task<List<RedirectItemViewModel>> GetArticleRedirects()
+        {
+            var redirectCode = (int)StatusCodeEnum.Redirect;
+            var query = DbContext.Articles.OrderBy(o => o.UrlPath).Where(w => w.StatusCode == redirectCode);
+
+            return await query.Select(s => new RedirectItemViewModel()
+            {
+                FromUrl = s.UrlPath,
+                Id = s.Id,
+                ToUrl = s.Content
+            }).ToListAsync();
+        }
+
+        /// <summary>
         ///     Gets the latest versions of articles that are in the trash.
         /// </summary>
         /// <returns>Gets article number, version number, last data published (if applicable)</returns>

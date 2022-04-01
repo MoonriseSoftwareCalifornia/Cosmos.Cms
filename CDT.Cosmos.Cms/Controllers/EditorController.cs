@@ -518,6 +518,17 @@ namespace CDT.Cosmos.Cms.Controllers
             return Json(result);
         }
 
+        /// <summary>
+        /// Gets a list of redirects
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Read_Redirects([DataSourceRequest] DataSourceRequest request)
+        {
+            var list = await _articleLogic.GetArticleRedirects();
+            return Json(await list.ToDataSourceResultAsync(request));
+        }
+
         #region SAVING CONTENT METHODS
 
         #endregion
@@ -1075,7 +1086,6 @@ namespace CDT.Cosmos.Cms.Controllers
             }
             return Json(list.OrderBy(o => o.Title).ToList());
         }
-
 
         /// <summary>
         ///     Get list of articles
