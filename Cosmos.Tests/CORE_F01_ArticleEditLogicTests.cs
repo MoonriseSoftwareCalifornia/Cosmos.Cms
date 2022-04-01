@@ -434,14 +434,73 @@ namespace Cosmos.Tests
             await using var dbContext = utils.GetApplicationDbContext();
             var logic = utils.GetArticleEditLogic(dbContext);
 
+            // Create test page 0
             var article = await logic.Create("Public Safety Power Shutoff (PSPS)" + Guid.NewGuid());
             article.ArticleNumber = 0;
             article.Published = DateTime.Now.ToUniversalTime().AddDays(-1);
             article.Content = "Hello world!";
             var saved = await logic.UpdateOrInsert(article, _testUser.Id);
 
-            var find = await logic.GetByUrl(saved.Model.UrlPath);
+            var prefix = Guid.NewGuid().ToString();
+            // Create test page 1
+            var article1 = await logic.Create(prefix);
+            article1.ArticleNumber = 0;
+            article1.Published = DateTime.Now.ToUniversalTime().AddDays(-1);
+            article1.Content = "Hello world!";
+            var saved1 = await logic.UpdateOrInsert(article1, _testUser.Id);
+
+            // Create test page 2
+            var article2 = await logic.Create(prefix + "/Angular");
+            article2.HeaderJavaScript = "<meta name='ccms:framework' value='angular'>";
+            article2.ArticleNumber = 0;
+            article2.Published = DateTime.Now.ToUniversalTime().AddDays(-1);
+            article2.Content = "Hello world!";
+            var saved2 = await logic.UpdateOrInsert(article2, _testUser.Id);
+
+            // Create test page 3
+            var article3 = await logic.Create(prefix + "/Angular/Wow");
+            article3.HeaderJavaScript = "<meta name='ccms:framework' value='angular'>";
+            article3.ArticleNumber = 0;
+            article3.Published = DateTime.Now.ToUniversalTime().AddDays(-1);
+            article3.Content = "Hello world!";
+            var saved3 = await logic.UpdateOrInsert(article3, _testUser.Id);
+
+            // Create test page 4
+            var article4 = await logic.Create(prefix + "/Angular/Wow/We");
+            article4.HeaderJavaScript = "<meta name='ccms:framework' value='angular'>";
+            article4.ArticleNumber = 0;
+            article4.Published = DateTime.Now.ToUniversalTime().AddDays(-1);
+            article4.Content = "Hello world!";
+
+            var saved4 = await logic.UpdateOrInsert(article4, _testUser.Id);
+
+            var find = await logic.GetByUrl(saved4.Model.UrlPath);
             Assert.IsNotNull(find);
+
+            var find1 = await logic.GetByUrl(saved1.Model.UrlPath);
+            Assert.IsNotNull(find1);
+
+            var find1b = await logic.GetByUrl(saved1.Model.UrlPath + "/");
+            Assert.IsNotNull(find1b);
+
+            var find2 = await logic.GetByUrl(saved2.Model.UrlPath);
+            Assert.IsNotNull(find2);
+
+            var find2b = await logic.GetByUrl(saved2.Model.UrlPath + "/");
+            Assert.IsNotNull(find2);
+
+            var find3 = await logic.GetByUrl(saved3.Model.UrlPath);
+            Assert.IsNotNull(find3);
+
+            var find3b = await logic.GetByUrl(saved3.Model.UrlPath + "/");
+            Assert.IsNotNull(find3b);
+
+            var find4 = await logic.GetByUrl(saved4.Model.UrlPath);
+            Assert.IsNotNull(find4);
+
+            var find4b = await logic.GetByUrl(saved4.Model.UrlPath + "/");
+            Assert.IsNotNull(find4b);
+
         }
 
         [TestMethod]

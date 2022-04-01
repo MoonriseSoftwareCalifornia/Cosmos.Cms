@@ -490,7 +490,7 @@ namespace CDT.Cosmos.Cms.Data.Logic
             model.Content = Ensure_ContentEditable_IsMarked(model.Content);
 
             Article article;
-
+            
             //if (!string.IsNullOrEmpty(model.Content))
             //{
             //    //// When we save to the database, remove content editable attribute.

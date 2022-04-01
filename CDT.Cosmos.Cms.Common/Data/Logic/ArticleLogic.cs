@@ -159,7 +159,7 @@ namespace CDT.Cosmos.Cms.Common.Data.Logic
         public async Task<ArticleViewModel> GetByUrl(string urlPath, string lang = "", bool publishedOnly = true,
             bool onlyActive = true)
         {
-            urlPath = urlPath?.Trim().ToLower();
+            urlPath = urlPath?.ToLower().Trim(new char [] { ' ', '/'});
             if (string.IsNullOrEmpty(urlPath) || urlPath.Trim() == "/")
                 urlPath = "root";
 
