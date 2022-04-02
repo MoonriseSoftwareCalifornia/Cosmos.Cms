@@ -690,7 +690,7 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     //UpdateHeadBaseTag(model, article);
 
                     // Add redirect here
-                    await DbContext.Articles.AddAsync(new Article
+                    DbContext.Articles.Add(new Article
                     {
                         Id = 0,
                         LayoutId = null,
@@ -851,26 +851,31 @@ namespace CDT.Cosmos.Cms.Data.Logic
 
             var element = htmlDoc.DocumentNode.SelectSingleNode("//base");
 
+            var urlPath = $"/{HttpUtility.UrlDecode(model.UrlPath.ToLower().Trim('/'))}/";
+
             if (element == null)
             {
-                return;
-            }
-
-            var urlPath = $"/{model.UrlPath.ToLower().Trim('/')}/";
-
-            var href = element.Attributes["href"];
-
-            if (href == null)
-            {
-                element.Attributes.Add("href", urlPath);
+                var metaTag = htmlDoc.CreateElement("base");
+                metaTag.SetAttributeValue("href", urlPath);
+                htmlDoc.DocumentNode.AppendChild(metaTag);
             }
             else
             {
-                href.Value = urlPath;
+                var href = element.Attributes["href"];
+
+                if (href == null)
+                {
+                    element.Attributes.Add("href", urlPath);
+                }
+                else
+                {
+                    href.Value = urlPath;
+                }
             }
 
+
             model.HeaderJavaScript = htmlDoc.DocumentNode.OuterHtml;
-            model.UrlPath = urlPath;
+            //model.UrlPath = urlPath;
 
             return;
         }

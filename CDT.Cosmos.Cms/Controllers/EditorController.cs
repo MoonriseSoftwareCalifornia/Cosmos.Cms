@@ -357,7 +357,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 }
             }
 
-            
+
 
             var articleViewModel = await _articleLogic.Get(model.Id, EnumControllerName.Edit);
 
@@ -518,16 +518,7 @@ namespace CDT.Cosmos.Cms.Controllers
             return Json(result);
         }
 
-        /// <summary>
-        /// Gets a list of redirects
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<IActionResult> Read_Redirects([DataSourceRequest] DataSourceRequest request)
-        {
-            var list = await _articleLogic.GetArticleRedirects();
-            return Json(await list.ToDataSourceResultAsync(request));
-        }
+        
 
         #region SAVING CONTENT METHODS
 
@@ -1175,8 +1166,8 @@ namespace CDT.Cosmos.Cms.Controllers
         {
             IQueryable<Article> query = _dbContext.Articles
             .OrderBy(o => o.Title)
-            .Where(w => w.StatusCode == (int) StatusCodeEnum.Active || w.StatusCode == (int) StatusCodeEnum.Inactive);
-            
+            .Where(w => w.StatusCode == (int)StatusCodeEnum.Active || w.StatusCode == (int)StatusCodeEnum.Inactive);
+
             if (!string.IsNullOrEmpty(text))
             {
                 query = query.Where(x => x.Title.ToLower().Contains(text.ToLower()));
@@ -1311,6 +1302,110 @@ namespace CDT.Cosmos.Cms.Controllers
 
             return Json(await query.OrderBy(r => r.RoleName).ToListAsync());
         }
+
+        #region REDIRECT MANAGEMENT
+
+        /// <summary>
+        /// Removes given redirects
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="redirects"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "Administrators, Editors")]
+        public async Task<ActionResult> Create_Redirects([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")] IEnumerable<RedirectItemViewModel> redirects)
+        {
+            if (redirects.Any())
+            {
+                foreach (var redirect in redirects)
+                {
+                    // Add redirect here
+                    _dbContext.Articles.Add(new Article
+                    {
+                        Id = 0,
+                        LayoutId = null,
+                        ArticleNumber = 0,
+                        StatusCode = (int)StatusCodeEnum.Redirect,
+                        UrlPath = redirect.FromUrl, // Old URL
+                        VersionNumber = 0,
+                        Published = DateTime.Now.ToUniversalTime().AddDays(-1), // Make sure this sticks!
+                        Title = "Redirect",
+                        Content = redirect.ToUrl, // New URL
+                        Updated = DateTime.Now.ToUniversalTime(),
+                        HeaderJavaScript = null,
+                        FooterJavaScript = null,
+                        Layout = null,
+                        ArticleLogs = null,
+                        MenuItems = null
+                    });
+                }
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return Json(redirects.ToDataSourceResult(request, ModelState));
+        }
+
+        /// <summary>
+        /// Removes given redirects
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="redirects"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "Administrators, Editors")]
+        public async Task<ActionResult> Delete_Redirects([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")] IEnumerable<RedirectItemViewModel> redirects)
+        {
+            if (redirects.Any())
+            {
+                var ids = redirects.Select(s => s.Id).ToArray();
+                _dbContext.Articles.RemoveRange(await _dbContext.Articles.Where(w => ids.Contains(w.Id)).ToListAsync());
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return Json(redirects.ToDataSourceResult(request, ModelState));
+        }
+
+        /// <summary>
+        /// Gets a list of redirects
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrators, Editors")]
+        public async Task<IActionResult> Read_Redirects([DataSourceRequest] DataSourceRequest request)
+        {
+            var list = await _articleLogic.GetArticleRedirects();
+            return Json(await list.ToDataSourceResultAsync(request));
+        }
+
+        /// <summary>
+        /// Removes given redirects
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="redirects"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "Administrators, Editors")]
+        public async Task<ActionResult> Update_Redirects([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")] IEnumerable<RedirectItemViewModel> redirects)
+        {
+            if (redirects.Any())
+            {
+                foreach (var redirect in redirects)
+                {
+                    var article = await _dbContext.Articles.FindAsync(redirect.Id);
+                    if (article != null)
+                    {
+                        article.UrlPath = redirect.FromUrl;
+                        article.Content = redirect.ToUrl;
+                    }
+                }
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return Json(redirects.ToDataSourceResult(request, ModelState));
+        }
+
+
+        #endregion
 
         #endregion
 

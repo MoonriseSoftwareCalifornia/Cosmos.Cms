@@ -469,7 +469,7 @@ namespace Cosmos.Tests
 
             var saved4 = await logic.UpdateOrInsert(article4, _testUser.Id);
 
-            var find = await logic.GetByUrl(saved4.Model.UrlPath);
+            var find = await logic.GetByUrl(saved.Model.UrlPath);
             Assert.IsNotNull(find);
 
             var find1 = await logic.GetByUrl(saved1.Model.UrlPath);
@@ -480,6 +480,8 @@ namespace Cosmos.Tests
 
             var find2 = await logic.GetByUrl(saved2.Model.UrlPath);
             Assert.IsNotNull(find2);
+            Assert.IsTrue(find2.HeaderJavaScript.Contains("ccms:framework", StringComparison.CurrentCultureIgnoreCase));
+            Assert.IsTrue(find2.HeaderJavaScript.Contains("base", StringComparison.CurrentCultureIgnoreCase));
 
             var find2b = await logic.GetByUrl(saved2.Model.UrlPath + "/");
             Assert.IsNotNull(find2);

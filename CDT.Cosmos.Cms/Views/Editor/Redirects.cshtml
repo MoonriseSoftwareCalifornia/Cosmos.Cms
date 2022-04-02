@@ -1,0 +1,74 @@
+﻿@using Kendo.Mvc.UI
+@using CDT.Cosmos.Cms.Services
+
+
+<div class="container mt-5 pt-2">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Redirect Management</h3>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <p>The redirects for this website are shown below. Use this page to create, edit or remove redirects as needed.</p>
+            <br />
+
+            @(Html.Kendo().Grid<RedirectItemViewModel>().Name("grid")
+            .Columns(c =>
+            {
+            c.Bound(b => b.Id).Hidden(true);
+            c.Bound(b => b.FromUrl);
+            c.Bound(b => b.ToUrl);
+            c.Command(c => c.Edit());
+            c.Command(c => c.Destroy());
+            })
+            .ToolBar(toolbar => {
+            toolbar.Create();
+            toolbar.Save();
+            })
+            .Search(s => s.Field("FromUrl", "contains"))
+            .Sortable()
+            .Filterable()
+            .Editable(GridEditMode.InCell)
+            .Pageable()
+            .DataSource(
+            dataSource => {
+            dataSource.Ajax()
+            .Batch(true)
+            .Events(events => events.Error("error_handler"))
+            .Model(model => model.Id(p => p.Id))
+            .ServerOperation(false)
+            .Read("Read_Redirects", "Editor")
+            .Update("Update_Redirects", "Editor")
+            .Create("Create_Redirects", "Editor")
+            .Destroy("Delete_Redirects", "Editor"); }
+            ))
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function() {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+    // Prevent sorting when new record without Product Name is added
+    function onSort(e) {
+        var gridData = e.sender.dataSource.data()
+        gridData.forEach(function (element) {
+            if (!element.ProductName) {
+                e.preventDefault()
+            }
+        });
+    }
+</script>

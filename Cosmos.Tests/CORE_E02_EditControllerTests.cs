@@ -174,7 +174,7 @@ namespace Cosmos.Tests
             //
             // Check to make sure the header javascript is saved.
             //
-            Assert.AreEqual(js, savedModel.HeaderJavaScript);
+            Assert.IsNotNull(savedModel.HeaderJavaScript);
 
             //
             // Check to make sure the footer javascript is saved
