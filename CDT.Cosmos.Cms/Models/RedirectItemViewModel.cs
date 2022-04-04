@@ -16,7 +16,7 @@ namespace CDT.Cosmos.Cms.Models
         /// <summary>
         /// Redirect from this URL (local to this web server)
         /// </summary>
-        [Url]
+        [RedirectUrl]
         [Required(AllowEmptyStrings = false)]
         [Display(Name = "Redirect from URL")]
         public string FromUrl { get; set; }
@@ -24,7 +24,7 @@ namespace CDT.Cosmos.Cms.Models
         /// <summary>
         /// Redirect to this URL
         /// </summary>
-        [Url]
+        [RedirectUrl]
         [Required(AllowEmptyStrings = false)]
         [Display(Name = "Redirect to URL")]
         public string ToUrl { get; set; }

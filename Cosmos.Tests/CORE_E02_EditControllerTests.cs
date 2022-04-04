@@ -227,7 +227,7 @@ namespace Cosmos.Tests
 
             Assert.AreEqual(1, articles2.Count);
 
-            var home = (ViewResult)await homeController.Index("", "");
+            var home = (ViewResult)await homeController.Index();
 
             var homeModel = (ArticleViewModel)home.Model;
 
@@ -271,7 +271,8 @@ namespace Cosmos.Tests
             using (var homeController =
                 utils.GetHomeController(await utils.GetPrincipal(TestUsers.Foo), false))
             {
-                var page = (ViewResult)await homeController.Index(article.UrlPath, "");
+                homeController.Request.Path = article.UrlPath;
+                var page = (ViewResult)await homeController.Index();
 
                 originalArticleViewModel = (ArticleViewModel)page.Model;
             }
@@ -343,7 +344,8 @@ namespace Cosmos.Tests
                     .FirstOrDefaultAsync();
             }
 
-            var page = (ViewResult)await homeController.Index(article.UrlPath, "");
+            homeController.Request.Path = article.UrlPath;
+            var page = (ViewResult)await homeController.Index();
 
             var pageModel = (ArticleViewModel)page.Model;
 

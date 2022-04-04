@@ -56,11 +56,11 @@ namespace CDT.Cosmos.Cms.Website.Controllers
         /// <param name="returnJson">return page as json</param>
         /// <param name="includeLayout">include layout in json</param>
         /// <returns></returns>
-        public async Task<IActionResult> Index(string id, string lang = "en")
+        public async Task<IActionResult> Index()
         {
             // We do this so Cosmos can handle heirarchical page paths
-            id = HttpContext.Request.Path;
-            return await GetArticleViewModelAsync(id, lang, false, true);
+            HttpContext.Request.Query.TryGetValue("lang", out var lang);
+            return await GetArticleViewModelAsync(HttpContext.Request.Path, lang, false, true);
         }
 
         /// <summary>

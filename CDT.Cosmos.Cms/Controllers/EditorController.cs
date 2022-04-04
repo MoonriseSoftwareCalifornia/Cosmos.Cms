@@ -1306,6 +1306,16 @@ namespace CDT.Cosmos.Cms.Controllers
         #region REDIRECT MANAGEMENT
 
         /// <summary>
+        /// Redirect manager page
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrators, Editors")]
+        public IActionResult Redirects()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// Removes given redirects
         /// </summary>
         /// <param name="request"></param>
