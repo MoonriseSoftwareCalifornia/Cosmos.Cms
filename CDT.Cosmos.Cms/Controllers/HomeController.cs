@@ -53,8 +53,6 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <summary>
         /// Editor home index method
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="lang"></param>
         /// <returns></returns>
         public async Task<IActionResult> Index()
         {
@@ -62,9 +60,6 @@ namespace CDT.Cosmos.Cms.Controllers
             {
                 // We do this so Cosmos can handle heirarchical page path
                 HttpContext.Request.Query.TryGetValue("lang", out var lang);
-                // Make sure this is Url Encoded, because this is the way it is stored in DB.
-                //if (!string.IsNullOrEmpty(id))
-                //    id = ArticleLogic.HandleUrlEncodeTitle(id);
 
                 ArticleViewModel article;
 

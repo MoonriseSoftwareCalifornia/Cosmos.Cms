@@ -234,7 +234,7 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     Updated = article.Updated,
                     VersionNumber = article.VersionNumber,
                     Status = article.StatusCode == 0 ? "Active" : "Inactive",
-                    UrlPath = article.UrlPath,
+                    UrlPath = this.CosmosOptions.Value.SiteSettings.PublisherUrl + "/" + article.UrlPath,
                     TeamName = article.Team == null ? "" : article.Team.TeamName
                 };
                 model.Add(entity);
@@ -490,9 +490,10 @@ namespace CDT.Cosmos.Cms.Data.Logic
             var flushUrls = new List<string>();
 
             model.Content = Ensure_ContentEditable_IsMarked(model.Content);
-			
-			UpdateHeadBaseTag(model);
-			
+
+            // Make sure base tag is set properly.
+            UpdateHeadBaseTag(model);
+
             Article article;
             
             //if (!string.IsNullOrEmpty(model.Content))
@@ -546,12 +547,11 @@ namespace CDT.Cosmos.Cms.Data.Logic
 
                 model.Published = isRoot ? DateTime.Now.ToUniversalTime() : model.Published?.ToUniversalTime();
 
-                //model.UrlPath = article.UrlPath;
 
                 //
                 // Update base href (for Angular apps)
                 //
-                //UpdateHeadBaseTag(model, article);
+                UpdateHeadBaseTag(article);
 
                 var articleCount = await DbContext.Articles.CountAsync();
 
@@ -626,7 +626,8 @@ namespace CDT.Cosmos.Cms.Data.Logic
 
                     // Force the model into an unpublished state
                     model.Published = null;
-                    //model.UrlPath = article.UrlPath;
+
+                    UpdateHeadBaseTag(article);
 
                     DbContext.Articles.Add(article); // Put this entry in an add state
 
@@ -666,6 +667,9 @@ namespace CDT.Cosmos.Cms.Data.Logic
                             subArticle.Title = UpdatePrefix(oldTitle, newTitle, subArticle.Title);
                         }
                         subArticle.UrlPath = UpdatePrefix(oldUrl, newUrl, subArticle.UrlPath);
+
+                        // Make sure base tag is set properly.
+                        UpdateHeadBaseTag(subArticle);
                     }
 
                     DbContext.Articles.UpdateRange(subArticles);
@@ -687,7 +691,7 @@ namespace CDT.Cosmos.Cms.Data.Logic
                     //
                     // Update base href
                     //
-                    //UpdateHeadBaseTag(model, article);
+                    UpdateHeadBaseTag(article);
 
                     // Add redirect here
                     DbContext.Articles.Add(new Article
@@ -799,6 +803,8 @@ namespace CDT.Cosmos.Cms.Data.Logic
             article.LayoutId = defaultLayout.Id;
             article.Layout = defaultLayout;
 
+            UpdateHeadBaseTag(article);
+
             // Save changes to database.
             await DbContext.SaveChangesAsync();
 
@@ -831,14 +837,41 @@ namespace CDT.Cosmos.Cms.Data.Logic
         /// </remarks>
         public void UpdateHeadBaseTag(ArticleViewModel model)
         {
-            if (string.IsNullOrEmpty(model.HeaderJavaScript))
+            model.HeaderJavaScript = UpdateHeadBaseTag(model.HeaderJavaScript, model.UrlPath);
+            return;
+        }
+
+        /// <summary>
+        /// Update head tag to match path 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Angular uses the BASE tag within the HEAD to set relative path to article/app.
+        /// If that tag is detected, it is updated automatically to match the current <see cref="Article.UrlPath"/>.
+        /// </remarks>
+        public void UpdateHeadBaseTag(Article model)
+        {
+            model.HeaderJavaScript = UpdateHeadBaseTag(model.HeaderJavaScript, model.UrlPath);
+            return;
+        }
+
+        /// <summary>
+        /// Updates the base tag in the head if Angular is being used.
+        /// </summary>
+        /// <param name="headerJavaScript"></param>
+        /// <param name="urlPath"></param>
+        /// <returns></returns>
+        private string UpdateHeadBaseTag(string headerJavaScript, string urlPath)
+        {
+            if (string.IsNullOrEmpty(headerJavaScript))
             {
-                return;
+                return "";
             }
 
             var htmlDoc = new HtmlDocument();
 
-            htmlDoc.LoadHtml(model.HeaderJavaScript);
+            htmlDoc.LoadHtml(headerJavaScript);
 
             // <meta name="ccms:framework" value="angular">
             var meta = htmlDoc.DocumentNode.SelectSingleNode("//meta[@name='ccms:framework']");
@@ -846,12 +879,12 @@ namespace CDT.Cosmos.Cms.Data.Logic
             // This only needs to be run if the framework is "Angular"
             if (meta != null && meta.Attributes["value"].Value.ToLower() != "angular")
             {
-                return;
+                return headerJavaScript;
             }
 
             var element = htmlDoc.DocumentNode.SelectSingleNode("//base");
 
-            var urlPath = $"/{HttpUtility.UrlDecode(model.UrlPath.ToLower().Trim('/'))}/";
+            urlPath = $"/{HttpUtility.UrlDecode(urlPath.ToLower().Trim('/'))}/";
 
             if (element == null)
             {
@@ -874,56 +907,9 @@ namespace CDT.Cosmos.Cms.Data.Logic
             }
 
 
-            model.HeaderJavaScript = htmlDoc.DocumentNode.OuterHtml;
-            //model.UrlPath = urlPath;
+            headerJavaScript = htmlDoc.DocumentNode.OuterHtml;
 
-            return;
-        }
-
-        /// <summary>
-        /// Update head tag to match path 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Angular uses the BASE tag within the HEAD to set relative path to article/app.
-        /// If that tag is detected, it is updated automatically to match the current <see cref="Article.UrlPath"/>.
-        /// </remarks>
-        public void UpdateHeadBaseTag(Article model)
-        {
-            if (string.IsNullOrEmpty(model.HeaderJavaScript))
-            {
-                return;
-            }
-
-            var htmlDoc = new HtmlDocument();
-
-            htmlDoc.LoadHtml(model.HeaderJavaScript);
-
-            var element = htmlDoc.DocumentNode.SelectSingleNode("//base");
-
-            if (element == null)
-            {
-                return;
-            }
-
-            var urlPath = $"/{model.UrlPath.ToLower().Trim('/')}/";
-
-            var href = element.Attributes["href"];
-
-            if (href == null)
-            {
-                element.Attributes.Add("href", urlPath);
-            }
-            else
-            {
-                href.Value = urlPath;
-            }
-
-            model.HeaderJavaScript = htmlDoc.DocumentNode.OuterHtml;
-            model.UrlPath = urlPath;
-
-            return;
+            return headerJavaScript;
         }
 
         /// <summary>

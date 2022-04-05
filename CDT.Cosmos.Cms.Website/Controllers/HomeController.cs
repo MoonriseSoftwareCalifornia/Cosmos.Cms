@@ -51,10 +51,7 @@ namespace CDT.Cosmos.Cms.Website.Controllers
         /// <summary>
         ///     Index method of the home controller, main entry point for web pages.
         /// </summary>
-        /// <param name="id">URL of page</param>
-        /// <param name="lang">iso language code</param>
-        /// <param name="returnJson">return page as json</param>
-        /// <param name="includeLayout">include layout in json</param>
+        /// <remarks>Cosmos handles routes, not normal MVC routing.</remarks>
         /// <returns></returns>
         public async Task<IActionResult> Index()
         {

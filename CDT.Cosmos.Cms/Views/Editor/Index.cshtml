@@ -8,7 +8,7 @@
     var teamMemberLogic = (TeamIdentityLogic)ViewData["TeamLogic"];
 
     var versions = $"<a class=\"btn btn-sm btn-primary\" href=\"{Url.Action("Versions", "Editor")}/#: ArticleNumber #\" title=\"See a list of versions for this page\"><span class='fa fa-files-o'></span> Edit</a>";
-    var copyUrl = "<button class=\"clipboard btn btn-sm btn-primary\" data-clipboard-text=\"/#: UrlPath #\"  title='Click to copy url'><span class='fa fa-clipboard'></span> Copy URL</button>";
+    var copyUrl = "<button class=\"clipboard btn btn-sm btn-primary\" data-clipboard-text=\"#: UrlPath #\"  title='Click to copy url'><span class='fa fa-clipboard'></span> Copy URL</button>";
     var btnGroup = "<div class=\"btn-group btn-group-sm\" role=\"group\" aria-label=\"Basic example\">#= getNewHomeButton(IsDefault, LastPublished, Id) #" +
                    versions + copyUrl + "#= getStatusBadge(LastPublished, UrlPath) #</div>";
 
@@ -78,7 +78,7 @@
         if (published === null) {
             return "<a title=\"This page not published.\" class='btn btn-sm btn-secondary'><span class='fa fa-circle-o-notch'></span></a>";
         }
-        var url = "@publisherUrl/" + urlPath.replace("root", "");
+        var url = urlPath.replace("root", "");
         return "<a target=\"_blank\" title=\"This page was published as of " + kendo.toString(published, "G") + ". Click to view.\" class='btn btn-sm btn-primary' href=\"" + url + "\"><span class=\"fa fa-external-link\"></span></a>";
     }
 

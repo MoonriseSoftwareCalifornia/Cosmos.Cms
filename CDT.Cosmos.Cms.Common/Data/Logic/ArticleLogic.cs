@@ -263,7 +263,7 @@ namespace CDT.Cosmos.Cms.Common.Data.Logic
 
             var languageName = "US English";
 
-            if (lang != "" && _translationServices != null && CosmosOptions.Value.GoogleCloudAuthConfig != null && CosmosOptions.Value.PrimaryLanguageCode.Equals(lang, StringComparison.CurrentCultureIgnoreCase) == false)
+            if (!string.IsNullOrEmpty(lang) && _translationServices != null && CosmosOptions.Value.GoogleCloudAuthConfig != null && CosmosOptions.Value.PrimaryLanguageCode.Equals(lang, StringComparison.CurrentCultureIgnoreCase) == false)
             {
                 var result =
                     await _translationServices.GetTranslation(lang, "", new[] { article.Title, article.Content });

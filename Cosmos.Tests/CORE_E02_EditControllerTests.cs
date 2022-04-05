@@ -271,7 +271,7 @@ namespace Cosmos.Tests
             using (var homeController =
                 utils.GetHomeController(await utils.GetPrincipal(TestUsers.Foo), false))
             {
-                homeController.Request.Path = article.UrlPath;
+                homeController.Request.Path = "/" + article.UrlPath;
                 var page = (ViewResult)await homeController.Index();
 
                 originalArticleViewModel = (ArticleViewModel)page.Model;
@@ -344,7 +344,7 @@ namespace Cosmos.Tests
                     .FirstOrDefaultAsync();
             }
 
-            homeController.Request.Path = article.UrlPath;
+            homeController.Request.Path = "/" + article.UrlPath;
             var page = (ViewResult)await homeController.Index();
 
             var pageModel = (ArticleViewModel)page.Model;
