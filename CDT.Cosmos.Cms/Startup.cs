@@ -4,9 +4,11 @@ using CDT.Cosmos.Cms.Common.Services;
 using CDT.Cosmos.Cms.Common.Services.Configurations;
 using CDT.Cosmos.Cms.Data.Logic;
 using CDT.Cosmos.Cms.Hubs;
+using CDT.Cosmos.Cms.Services;
 using CDT.Cosmos.Cms.Services.Secrets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -109,6 +111,10 @@ namespace CDT.Cosmos.Cms
                 services.AddTransient<IEmailSender, EmailSender>();
                 services.AddTransient<TranslationServices>();
                 services.AddTransient<ArticleEditLogic>();
+
+                // This is used by the ViewRenderingService 
+                // to export web pages for external editing.
+                services.AddScoped<IViewRenderService, ViewRenderService>();
 
                 // Add this before identity
                 services.AddControllersWithViews();

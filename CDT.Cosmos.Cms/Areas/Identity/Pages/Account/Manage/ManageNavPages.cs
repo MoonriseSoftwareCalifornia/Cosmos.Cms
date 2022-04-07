@@ -4,6 +4,9 @@ using System.IO;
 
 namespace CDT.Cosmos.Cms.Areas.Identity.Pages.Account.Manage
 {
+    /// <summary>
+    /// Manage navigation pages class
+    /// </summary>
     public static class ManageNavPages
     {
         public static string Index => "Index";

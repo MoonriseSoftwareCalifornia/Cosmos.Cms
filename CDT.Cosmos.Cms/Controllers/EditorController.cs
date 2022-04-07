@@ -10,6 +10,7 @@ using Kendo.Mvc;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -22,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CDT.Cosmos.Cms.Controllers
@@ -37,6 +39,8 @@ namespace CDT.Cosmos.Cms.Controllers
         private readonly ILogger<EditorController> _logger;
         private readonly IOptions<CosmosConfig> _options;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly Uri _blobPublicAbsoluteUrl;
+        private readonly IViewRenderService _viewRenderService;
 
         /// <summary>
         /// Constructor
@@ -47,12 +51,14 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <param name="articleLogic"></param>
         /// <param name="options"></param>
         /// <param name="syncContext"></param>
+        /// <param name="viewRenderService"></param>
         public EditorController(ILogger<EditorController> logger,
             ApplicationDbContext dbContext,
             UserManager<IdentityUser> userManager,
             ArticleEditLogic articleLogic,
             IOptions<CosmosConfig> options,
-            SqlDbSyncContext syncContext
+            SqlDbSyncContext syncContext,
+            IViewRenderService viewRenderService
         ) :
              base(dbContext, userManager, articleLogic, options)
         {
@@ -70,6 +76,12 @@ namespace CDT.Cosmos.Cms.Controllers
             _options = options;
             _userManager = userManager;
             _articleLogic = articleLogic;
+
+            var htmlUtilities = new HtmlUtilities();
+
+            _blobPublicAbsoluteUrl = new Uri(htmlUtilities.IsAbsoluteUri(options.Value.SiteSettings.BlobPublicUrl) ? options.Value.SiteSettings.BlobPublicUrl : options.Value.SiteSettings.PublisherUrl);
+
+            _viewRenderService = viewRenderService;
         }
 
         private TeamIdentityLogic GetTeamIdentityLogic()
@@ -518,7 +530,7 @@ namespace CDT.Cosmos.Cms.Controllers
             return Json(result);
         }
 
-        
+
 
         #region SAVING CONTENT METHODS
 
@@ -560,6 +572,42 @@ namespace CDT.Cosmos.Cms.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Exports a layout with a blank page
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
+        public async Task<IActionResult> ExportPage(int? id)
+        {
+            ArticleViewModel article;
+            if (id.HasValue)
+            {
+                article = await _articleLogic.Get(id.Value, EnumControllerName.Edit);
+            }
+            else
+            {
+               article  = await _articleLogic.Create("Blank Page");
+            }
+
+            var htmlUtilities = new HtmlUtilities();
+
+            article.Layout.Head = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.Head, _blobPublicAbsoluteUrl);
+            article.Layout.HtmlHeader = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.HtmlHeader, _blobPublicAbsoluteUrl);
+            article.Layout.FooterHtmlContent = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.FooterHtmlContent, _blobPublicAbsoluteUrl);
+
+            article.HeaderJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
+            article.Content = htmlUtilities.RelativeToAbsoluteUrls(article.Content, _blobPublicAbsoluteUrl);
+            article.FooterJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
+           
+            var html = await _viewRenderService.RenderToStringAsync("~/Views/Editor/ExportPage.cshtml", article);
+
+            var exportName = $"pageid-{article.ArticleNumber}-version-{article.VersionNumber}.html";
+
+            var bytes = Encoding.UTF8.GetBytes(html);
+
+            return File(bytes, "application/octet-stream", exportName);
+        }
 
         /// <summary>
         ///     Saves an article via HTTP POST.

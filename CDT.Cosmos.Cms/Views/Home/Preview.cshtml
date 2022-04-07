@@ -3,16 +3,28 @@
     Layout = "_LayoutPreview";
     ViewData["Title"] = Model.Title;
 }
+<cosmos-layout-header>
+<!-- Cosmos header inject (not editable) -->
 @Html.Raw(Model.Layout.HtmlHeader)
+</cosmos-layout-header>
+
+<!-- Page specific BODY content goes here -->
 @Html.Raw(Model.Content)
+
+<cosmos-layout-footer>
+<!-- Cosmos footer inject (not editable) -->
 @Html.Raw(Model.Layout.FooterHtmlContent)
+</cosmos-layout-footer>
+
+<!-- Page specific end of BODY content goes here -->
 @Html.Raw(Model.FooterJavaScript)
 
-<!-- Comment out the following if not using Google Translate v3 -->
 @if (ViewData["UseGoogleTranslate"] != null && (bool) ViewData["UseGoogleTranslate"])
 {
-    <script src="~/ccms/js/GoogleTranslations.js" id="ccms-lang-script" data-lang="@Model.LanguageName"></script>
+<!-- Google Translate v3 goes here (not editable) -->
+<script src="~/ccms/js/GoogleTranslations.js" id="ccms-lang-script" data-lang="@Model.LanguageName"></script>
 }
+<!-- Page scripts are injected here by Cosmos (if used - not editable) -->
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
