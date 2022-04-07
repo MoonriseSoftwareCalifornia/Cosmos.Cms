@@ -4,6 +4,7 @@ using CDT.Cosmos.Cms.Common.Models;
 using CDT.Cosmos.Cms.Common.Services.Configurations;
 using CDT.Cosmos.Cms.Data.Logic;
 using CDT.Cosmos.Cms.Models;
+using CDT.Cosmos.Cms.Services;
 using HtmlAgilityPack;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
@@ -35,6 +36,7 @@ namespace CDT.Cosmos.Cms.Controllers
         private readonly ArticleEditLogic _articleLogic;
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<LayoutsController> _logger;
+        private readonly Uri _blobPublicAbsoluteUrl;
 
         private bool LayoutExists(int id)
         {
@@ -102,6 +104,9 @@ namespace CDT.Cosmos.Cms.Controllers
             _dbContext = dbContext;
             _articleLogic = articleLogic;
             _logger = logger;
+            var htmlUtilities = new HtmlUtilities();
+
+            _blobPublicAbsoluteUrl = new Uri(htmlUtilities.IsAbsoluteUri(options.Value.SiteSettings.BlobPublicUrl) ? options.Value.SiteSettings.BlobPublicUrl : options.Value.SiteSettings.PublisherUrl);
         }
 
         /// <summary>
@@ -413,6 +418,35 @@ namespace CDT.Cosmos.Cms.Controllers
             model.ReadWriteMode = true;
             model.PreviewMode = true;
             return View("~/Views/Home/Index.cshtml", model);
+        }
+
+        /// <summary>
+        /// Exports a layout with a blank page
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
+        public async Task<IActionResult> ExportLayout()
+        {
+            var article = await _articleLogic.Create("Blank Page");
+
+            var htmlUtilities = new HtmlUtilities();
+
+            article.Layout.Head = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.Head, _blobPublicAbsoluteUrl);
+            article.Layout.HtmlHeader = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.HtmlHeader, _blobPublicAbsoluteUrl);
+            article.Layout.FooterHtmlContent = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.FooterHtmlContent, _blobPublicAbsoluteUrl);
+
+            article.HeaderJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
+            article.Content = htmlUtilities.RelativeToAbsoluteUrls(article.Content, _blobPublicAbsoluteUrl);
+            article.FooterJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = "Blank Page",
+                Inline = true,
+            };
+
+            Response.Headers.ContentDisposition = cd.ToString();
+
+            return View("~/Views/Home/Preview.cshtml", article);
         }
 
         /// <summary>
