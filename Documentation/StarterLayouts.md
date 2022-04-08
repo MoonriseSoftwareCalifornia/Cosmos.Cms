@@ -23,7 +23,7 @@ This is the official 5 starter template built by Bootstrap Team. The team provid
 
 * Author: [Bootstrap Team](https://getbootstrap.com/)
 * License: [MIT](https://github.com/twbs/bootstrap/blob/main/LICENSE)
-* Framework: JavaScript/Bootstrap
+* Framework: Plain JavaScript
 * Website: [https://getbootstrap.com/](https://getbootstrap.com/)
 * GitHub: [https://github.com/twbs/bootstrap](https://github.com/twbs/bootstrap)
 
@@ -34,5 +34,17 @@ This is the official 5 starter template built by Bootstrap Team. The team provid
 An example Bootstrap 5 template built as part of a tutorial by Traversy Media that is on YouTube. This layout was included because it comes with a YouTube video on how it was built.
 
 * Author: [Traversy Media](https://traversymedia.com/)
-* Framework: JavaScript/Bootstrap
+* Framework: Plain JavaScript
 * [YouTube tutorial](https://www.youtube.com/watch?v=4sosXZsdy-s)
+
+## Material Design 2
+
+![Material Design 2](https://cosmos-layouts.moonrise.net/Layouts/mdb-cfc/preview.jpg)
+
+This is a Bootstrap 5 theme that is enhanced with Material Design prinicples pioneered by Google. This theme comes with ample documentation, and, comes in difference frameworks such as plain JavaScript, React, Vue and others.  MD Bootstrap offers premium support that comes with website design tools.
+
+* Author: [MD Bootstrap](https://mdbootstrap.com/)
+* License: [MIT](https://github.com/mdbootstrap/mdb-ui-kit/blob/master/LICENSE)
+* Framework: Plain JavaScript (Other versions also available for Angular, React, jQuery, Vue and other framworks)
+* Website: [https://mdbootstrap.com/](https://mdbootstrap.com/)
+* GitHub: [https://github.com/mdbootstrap/mdb-ui-kit](https://github.com/twbs/bootstrap)
