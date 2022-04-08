@@ -26,3 +26,13 @@ This is the official 5 starter template built by Bootstrap Team. The team provid
 * Framework: JavaScript/Bootstrap
 * Website: [https://getbootstrap.com/](https://getbootstrap.com/)
 * GitHub: [https://github.com/twbs/bootstrap](https://github.com/twbs/bootstrap)
+
+## Bootstrap 5 Tutorial
+
+![Bootstrap 5 Tutorial by Traversy Media](https://cosmos-layouts.moonrise.net/Layouts/tm-dev/preview.jpg)
+ 
+An example Bootstrap 5 template built as part of a tutorial by Traversy Media that is on YouTube. This layout was included because it comes with a YouTube video on how it was built.
+
+* Author: [Traversy Media](https://traversymedia.com/)
+* Framework: JavaScript/Bootstrap
+* [YouTube tutorial](https://www.youtube.com/watch?v=4sosXZsdy-s)
