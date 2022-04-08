@@ -64,3 +64,16 @@ This is another high-quality Bootstrap 5 theme that is enhanced with Material De
 * [Website](https://www.creative-tim.com/)
 * [Documentation](https://www.creative-tim.com/learning-lab/bootstrap/overview/material-kit)
 * [GitHub](https://github.com/creativetimofficial/material-kit)
+
+## Clean Blog
+
+![Clean Blog](https://cosmos-layouts.moonrise.net/Layouts/sb-cb/preview.jpg)
+
+This is a theme suited for blogs that use Bootstrap. This layout is built by Starter Bootstrap.
+
+* Author: [Start Bootstrap](https://startbootstrap.com/)
+* License: [MIT](https://github.com/StartBootstrap/startbootstrap-clean-blog/blob/master/LICENSE)
+* Framework: Plain JavaScript/Bootstrap
+* [Website](https://startbootstrap.com/)
+* [Documentation](https://startbootstrap.com/theme/clean-blog)
+* [GitHub](https://github.com/StartBootstrap/startbootstrap-clean-blog)
