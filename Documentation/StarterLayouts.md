@@ -5,3 +5,4 @@ Below is a list of layouts that are ready to load into your Cosmos website.
 
 ## California Design System
 
+![California Design System](https://cosmos-layouts.moonrise.net/Layouts/ca-ds/preview.jpg)
