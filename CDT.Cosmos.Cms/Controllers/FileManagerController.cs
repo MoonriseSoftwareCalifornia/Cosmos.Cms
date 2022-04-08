@@ -32,6 +32,18 @@ namespace CDT.Cosmos.Cms.Controllers
     [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
     public class FileManagerController : BaseController
     {
+        // Private fields
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ArticleEditLogic _articleLogic;
+
+        // Page import constants
+        private const string COSMOS_HEAD_START = "<!-- BEGIN: page-specific head content (editable) -->";
+        private const string COSMOS_HEAD_END = "<!-- END: page-specific head content (editable) -->";
+        private const string COSMOS_BODY_START = "<!-- BEGIN: Page specific BODY content goes here (editable) -->";
+        private const string COSMOS_BODY_END = "<!-- END: Page specific BODY content (editable) -->";
+        private const string COSMOS_FOOTER_START = "<!-- BEGIN: Page specific *end* of BODY content goes here (editable) -->";
+        private const string COSMOS_FOOTER_END = "<!-- END: Page specific *end* of BODY content  (editable) -->";
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -63,6 +75,8 @@ namespace CDT.Cosmos.Cms.Controllers
             _logger = logger;
             _storageContext = storageContext;
             _hostEnvironment = hostEnvironment;
+            _userManager = userManager;
+            _articleLogic = articleLogic;
         }
 
         /// <summary>
@@ -75,6 +89,131 @@ namespace CDT.Cosmos.Cms.Controllers
             ViewData["BlobEndpointUrl"] = GetBlobRootUrl();
             return View();
         }
+        
+        /// <summary>
+        /// Imports a page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
+        public IActionResult ImportPage(int? id)
+        {
+            if (id.HasValue)
+            {
+                ViewData["ArticleId"] = id.Value;
+                return View();
+            }
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Import a view
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="metaData"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
+        public async Task<IActionResult> ImportPage(IEnumerable<IFormFile> files,
+            string metaData, string path)
+        {
+            if (files == null || files.Any() == false || int.TryParse(path, out int Id) == false)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(metaData)) return Unauthorized("metaData cannot be null or empty.");
+
+            //
+            // Get information about the chunk we are on.
+            //
+            var ms = new MemoryStream(Encoding.UTF8.GetBytes(metaData));
+
+            var serializer = new JsonSerializer();
+            FileUploadMetaData fileMetaData;
+            using (var streamReader = new StreamReader(ms))
+            {
+                fileMetaData =
+                    (FileUploadMetaData)serializer.Deserialize(streamReader, typeof(FileUploadMetaData));
+            }
+
+            if (fileMetaData == null) throw new Exception("Could not read the file's metadata");
+
+            try
+            {
+
+                var file = files.FirstOrDefault();
+                using var memstream = new MemoryStream();
+                await file.CopyToAsync(memstream);
+                var html = Encoding.UTF8.GetString(memstream.ToArray());
+
+                // Validate page can be parsed out
+                var totalLength = html.Length;
+                var cosmosHeadStart = html.IndexOf(COSMOS_HEAD_START) + COSMOS_HEAD_START.Length;
+                var cosmosHeadEnd = html.IndexOf(COSMOS_HEAD_END);
+                var cosmosBodyStart = html.IndexOf(COSMOS_BODY_START) + COSMOS_BODY_START.Length;
+                var cosmosBodyEnd = html.IndexOf(COSMOS_BODY_END);
+                var cosmosFooterStart = html.IndexOf(COSMOS_FOOTER_START) + COSMOS_FOOTER_START.Length;
+                var cosmosFooterEnd = html.IndexOf(COSMOS_FOOTER_END);
+
+                if (cosmosHeadStart == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find {COSMOS_HEAD_START}");
+                }
+                if (cosmosHeadEnd == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {COSMOS_HEAD_END}");
+                }
+                if (cosmosBodyStart == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {COSMOS_BODY_START}");
+                }
+                if (cosmosBodyEnd == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {COSMOS_BODY_END}");
+                }
+                if (cosmosFooterStart == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {COSMOS_FOOTER_START}");
+                }
+                if (cosmosFooterEnd == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {COSMOS_FOOTER_END}");
+                }
+                if (ModelState.IsValid)
+                {
+                    var article = await _articleLogic.Get(Id, EnumControllerName.Edit);
+
+                    var pageHead = html.Substring(cosmosHeadStart, cosmosHeadEnd - cosmosHeadStart);
+                    var pageBody = html.Substring(cosmosBodyStart, cosmosBodyEnd - cosmosBodyStart);
+                    var pageFooter = html.Substring(cosmosFooterStart, cosmosFooterEnd - cosmosFooterStart);
+
+                    article.HeaderJavaScript = pageHead;
+                    article.Content = pageBody;
+                    article.FooterJavaScript = pageFooter;
+
+                    // Get the user's ID for logging.
+                    var user = await _userManager.GetUserAsync(User);
+
+                    //await _articleLogic.UpdateOrInsert(article, user.Id);
+                }
+            }
+            catch (Exception e)
+            {
+                var t = e; // Debugging
+            }
+
+
+            var fileBlob = new FileUploadResult
+            {
+                uploaded = fileMetaData.TotalChunks - 1 <= fileMetaData.ChunkIndex,
+                fileUid = fileMetaData.UploadUid
+            };
+
+            return Json(fileBlob);
+        }
+
 
         /// <summary>
         /// Opens the file manager without the toolbar.

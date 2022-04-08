@@ -1,0 +1,60 @@
+﻿@using Kendo.Mvc.UI
+@addTagHelper *, Kendo.Mvc
+@{
+    var articleId = (int)ViewData["ArticleId"];
+}
+<style>
+    body {
+        background-color: #1e1e1e;
+    }
+
+    .k-dropzone {
+        min-height: 200px;
+        vertical-align: top;
+    }
+</style>
+<div class="continer-fluid mt-5 pt-2">
+    <div class="row">
+        <div class="col">
+            @(Html.Kendo().Upload()
+            .Name("files")
+            .Async(a => a
+            .Save("ImportPage", "FileManager")
+            .Remove("Remove", "FileManager")
+            .AutoUpload(true)
+            .ChunkSize(5242880) // bytes (5 MB) - AWS S3 multi upload requires 5 MB parts. Last part can be any size
+            )
+            .Events(e =>
+            e.Upload("getPath")
+            .Success("onUploadSuccess")
+            .Remove("getPath")
+            .Error("onError")
+            )
+            )
+        </div>
+    </div>
+</div>
+<script>
+    function getPath(e) {
+            e.data = {
+                path: "@articleId",
+                awsUploadId: "N/A"
+            };
+        }
+
+    function onUploadSuccess(e) {
+        //("#fileManager").data("kendoFileManager").refresh();
+    }
+    function onError(e) {
+        $("#fileManager").data("kendoFileManager").refresh();
+        if (typeof (e.XMLHttpRequest) !== "undefined") {
+            $("#files").data("kendoUpload").clearAllFiles();
+            $("#divEventMsg").html("Error: " + e.XMLHttpRequest.responseText);
+        } else if (typeof (e.xhr) !== "undefined") {
+            $("#divEventMsg").html("Error: " + e.xhr.responseText);
+        } else {
+            $("#divEventMsg").html("Error: Could not complete request.");
+        }
+        $("#eventDialog").data("kendoDialog").open();
+    }
+</script>
