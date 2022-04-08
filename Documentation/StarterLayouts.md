@@ -12,8 +12,9 @@ The Design System makes it easy for state digital teams to build accessible, con
 * Author: State of California, [Department of Technology](https://github.com/twbs/bootstrap/blob/main/LICENSE)
 * License: [MIT](https://github.com/twbs/bootstrap/blob/main/LICENSE)
 * Framework: JavaScript/Design System
-* Website: [https://designsystem.webstandards.ca.gov/](https://designsystem.webstandards.ca.gov/)
-* GitHub: [https://github.com/cagov/design-system](https://github.com/cagov/design-system)
+* [Website](https://designsystem.webstandards.ca.gov/)
+* [Documentation](https://designsystem.webstandards.ca.gov/get-started/)
+* [GitHub](https://github.com/cagov/design-system)
 
 ## Bootstrap 5 Starter
 
@@ -24,8 +25,9 @@ This is the official 5 starter template built by Bootstrap Team. The team provid
 * Author: [Bootstrap Team](https://getbootstrap.com/)
 * License: [MIT](https://github.com/twbs/bootstrap/blob/main/LICENSE)
 * Framework: Plain JavaScript
-* Website: [https://getbootstrap.com/](https://getbootstrap.com/)
-* GitHub: [https://github.com/twbs/bootstrap](https://github.com/twbs/bootstrap)
+* [Website](https://getbootstrap.com/)
+* [Docmentation](https://getbootstrap.com/docs/5.1/getting-started/introduction/)
+* [GitHub](https://github.com/twbs/bootstrap)
 
 ## Bootstrap 5 Tutorial
 
@@ -37,7 +39,7 @@ An example Bootstrap 5 template built as part of a tutorial by Traversy Media th
 * Framework: Plain JavaScript
 * [YouTube tutorial](https://www.youtube.com/watch?v=4sosXZsdy-s)
 
-## Material Design 2
+## Material Design 2 (MD Bootstrap)
 
 ![Material Design 2](https://cosmos-layouts.moonrise.net/Layouts/mdb-cfc/preview.jpg)
 
@@ -45,6 +47,20 @@ This is a Bootstrap 5 theme that is enhanced with Material Design prinicples pio
 
 * Author: [MD Bootstrap](https://mdbootstrap.com/)
 * License: [MIT](https://github.com/mdbootstrap/mdb-ui-kit/blob/master/LICENSE)
-* Framework: Plain JavaScript
-* Website: [https://mdbootstrap.com/](https://mdbootstrap.com/)
-* GitHub: [https://github.com/mdbootstrap/mdb-ui-kit](https://github.com/twbs/bootstrap)
+* Framework: Plain JavaScript/Bootstrap/Material Design
+* [Website](https://mdbootstrap.com/)
+* [Documentation](https://mdbootstrap.com/docs/standard/)
+* [GitHub](https://github.com/twbs/bootstrap)
+
+## Material Kit 2 (Creative Tim)
+
+![Material Kit 2 by Creative Tim](https://cosmos.moonrise.net/pub/images/layouts/material-kit.jpg)
+
+This is another high-quality Bootstrap 5 theme that is enhanced with Material Design prinicples pioneered by Google. This version is built by Creative Tim.  This theme also comes with [ample documentation](https://www.creative-tim.com/product/material-kit).
+
+* Author: [Creative Tim](https://www.creative-tim.com/)
+* License: [MIT](https://github.com/creativetimofficial/material-kit/blob/master/LICENSE.md)
+* Framework: Plain JavaScript/Bootstrap/Material Design
+* [Website](https://www.creative-tim.com/)
+* [Documentation](https://www.creative-tim.com/learning-lab/bootstrap/overview/material-kit)
+* [GitHub](https://github.com/creativetimofficial/material-kit)
