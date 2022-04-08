@@ -21,6 +21,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -41,6 +42,15 @@ namespace CDT.Cosmos.Cms.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly Uri _blobPublicAbsoluteUrl;
         private readonly IViewRenderService _viewRenderService;
+
+        // Page import constants
+        private const string COSMOS_HEAD_START = "<!-- BEGIN: page-specific head content (editable) -->";
+        private const string COSMOS_HEAD_END = "<!-- END: page-specific head content (editable) -->";
+        private const string COSMOS_BODY_START = "<!-- BEGIN: Page specific BODY content goes here (editable) -->";
+        private const string COSMOS_BODY_END = "<!-- END: Page specific BODY content (editable) -->";
+        private const string COSMOS_FOOTER_START = "<!-- BEGIN: Page specific *end* of BODY content goes here (editable) -->";
+        private const string COSMOS_FOOTER_END = "<!-- END: Page specific *end* of BODY content  (editable) -->";
+
 
         /// <summary>
         /// Constructor
@@ -587,7 +597,7 @@ namespace CDT.Cosmos.Cms.Controllers
             }
             else
             {
-               article  = await _articleLogic.Create("Blank Page");
+                article = await _articleLogic.Create("Blank Page");
             }
 
             var htmlUtilities = new HtmlUtilities();
@@ -599,7 +609,7 @@ namespace CDT.Cosmos.Cms.Controllers
             article.HeaderJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
             article.Content = htmlUtilities.RelativeToAbsoluteUrls(article.Content, _blobPublicAbsoluteUrl);
             article.FooterJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
-           
+
             var html = await _viewRenderService.RenderToStringAsync("~/Views/Editor/ExportPage.cshtml", article);
 
             var exportName = $"pageid-{article.ArticleNumber}-version-{article.VersionNumber}.html";
@@ -607,6 +617,98 @@ namespace CDT.Cosmos.Cms.Controllers
             var bytes = Encoding.UTF8.GetBytes(html);
 
             return File(bytes, "application/octet-stream", exportName);
+        }
+
+        /// <summary>
+        /// Imports a page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
+        public IActionResult ImportPage(int? id)
+        {
+            if (id.HasValue)
+            {
+                ViewData["ArticleId"] = id.Value;
+                return View();
+            }
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Import a view
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="metaData"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
+        public async Task<IActionResult> ImportPage(IEnumerable<IFormFile> files,
+            string metaData, int? Id)
+        {
+            if (files == null || files.Any() == false || Id.HasValue == false)
+            {
+                return NotFound();
+            }
+
+            var file = files.FirstOrDefault();
+            using var memstream = new MemoryStream();
+            await file.CopyToAsync(memstream);
+            var html = Encoding.UTF8.GetString(memstream.ToArray());
+
+            // Validate page can be parsed out
+
+            var cosmosHeadStart = html.IndexOf(COSMOS_HEAD_START);
+            var cosmosHeadEnd = html.IndexOf(COSMOS_HEAD_END);
+            var cosmosBodyStart = html.IndexOf(COSMOS_BODY_START);
+            var cosmosBodyEnd = html.IndexOf(COSMOS_BODY_END);
+            var cosmosFooterStart = html.IndexOf(COSMOS_FOOTER_START);
+            var cosmosFooterEnd = html.IndexOf(COSMOS_FOOTER_END);
+
+            if (cosmosHeadStart == -1)
+            {
+                ModelState.AddModelError("", $"Could not find {COSMOS_HEAD_START}");
+            }
+            if (cosmosHeadEnd == -1)
+            {
+                ModelState.AddModelError("", $"Could not find  {COSMOS_HEAD_END}");
+            }
+            if (cosmosBodyStart == -1)
+            {
+                ModelState.AddModelError("", $"Could not find  {COSMOS_BODY_START}");
+            }
+            if (cosmosBodyEnd == -1)
+            {
+                ModelState.AddModelError("", $"Could not find  {COSMOS_BODY_END}");
+            }
+            if (cosmosFooterStart == -1)
+            {
+                ModelState.AddModelError("", $"Could not find  {COSMOS_FOOTER_START}");
+            }
+            if (cosmosFooterEnd == -1)
+            {
+                ModelState.AddModelError("", $"Could not find  {COSMOS_FOOTER_END}");
+            }
+            if (ModelState.IsValid)
+            {
+                var article = await _articleLogic.Get(Id.Value, EnumControllerName.Edit);
+
+                var pageHead = html.Substring(cosmosHeadStart, cosmosHeadEnd);
+                var pageBody = html.Substring(cosmosBodyStart, cosmosBodyEnd);
+                var pageFooter = html.Substring(cosmosFooterStart, cosmosFooterEnd);
+
+                article.HeaderJavaScript = pageHead;
+                article.Content = pageBody;
+                article.FooterJavaScript = pageFooter;
+
+                // Get the user's ID for logging.
+                var user = await _userManager.GetUserAsync(User);
+
+                //await _articleLogic.UpdateOrInsert(article, user.Id);
+            }
+
+            return View();
         }
 
         /// <summary>
@@ -884,7 +986,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 FooterJavaScript = article.FooterJavaScript,
                 Content = article.Content,
                 EditingField = "HeaderJavaScript",
-                CustomButtons = new[] { "Preview", "Html" }
+                CustomButtons = new[] { "Preview", "Html", "Import" }
             });
         }
 

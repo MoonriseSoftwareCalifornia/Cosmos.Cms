@@ -32,6 +32,9 @@
         case "Help":
             window.open("https://cosmos.azureedge.net/edit_page#CodeEditor");
             break;
+        case "Import":
+            $("#importPageWindow").data("kendoDialog").open();
+            break;
         }
     }
 
@@ -146,6 +149,7 @@
         loadPublishLocalDateTime();
         $("#schedulingDialog").data("kendoDialog").close();
     };
+
 </script>
 
 <kendo-dialog name="htmlEditorDialog" title="Edit Code" modal="true" visible="false" min-width="500">
@@ -228,4 +232,16 @@
         <action action="savePublishDateTime" text="Set Date/Time" title="Save Date/Time">
         </action>
     </actions>
+</kendo-dialog>
+<kendo-dialog name="importPageWindow" title="Import" modal="true" visible="false" min-width="700">
+    <content>
+         @(Html.Kendo().Upload()
+            .Name("uploader")
+            .Multiple(true)
+            .Async(a => a
+                .Save("ImportPage", "Editor", new { Id = Model.Id })
+                .Remove("ImportPageRemove", "Editor")
+            )
+        )
+    </content>
 </kendo-dialog>
