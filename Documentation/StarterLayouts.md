@@ -41,10 +41,10 @@ An example Bootstrap 5 template built as part of a tutorial by Traversy Media th
 
 ![Material Design 2](https://cosmos-layouts.moonrise.net/Layouts/mdb-cfc/preview.jpg)
 
-This is a Bootstrap 5 theme that is enhanced with Material Design prinicples pioneered by Google. This theme comes with ample documentation, and, comes in difference frameworks such as plain JavaScript, React, Vue and others.  MD Bootstrap offers premium support that comes with website design tools.
+This is a Bootstrap 5 theme that is enhanced with Material Design prinicples pioneered by Google. This theme comes with ample documentation, and, [from their website](https://mdbootstrap.com/) you can obtain versions that support frameworks such as Angular, jQuery, React, and Vue.  MD Bootstrap offers premium support that comes with website design tools.
 
 * Author: [MD Bootstrap](https://mdbootstrap.com/)
 * License: [MIT](https://github.com/mdbootstrap/mdb-ui-kit/blob/master/LICENSE)
-* Framework: Plain JavaScript (Other versions also available for Angular, React, jQuery, Vue and other framworks)
+* Framework: Plain JavaScript
 * Website: [https://mdbootstrap.com/](https://mdbootstrap.com/)
 * GitHub: [https://github.com/mdbootstrap/mdb-ui-kit](https://github.com/twbs/bootstrap)
