@@ -11,4 +11,6 @@ The Design System makes it easy for state digital teams to build accessible, con
 
 * Author: State of California, [Department of Technology](https://github.com/twbs/bootstrap/blob/main/LICENSE)
 * License: [MIT](https://github.com/twbs/bootstrap/blob/main/LICENSE)
-* Framework: Plain JavaScript
+* Framework: JavaScript
+* Website: [https://designsystem.webstandards.ca.gov/](https://designsystem.webstandards.ca.gov/)
+* GitHub: [https://github.com/cagov/design-system](https://github.com/cagov/design-system)
