@@ -30,10 +30,18 @@
             $("#versionsDialog").data("kendoDialog").open();
             break;
         case "Help":
-            window.open("https://cosmos.azureedge.net/edit_page#CodeEditor");
+            //window.open("https://cosmos.azureedge.net/edit_page#CodeEditor");
+            break;
+        case "Export":
+            window.location.href = "@Url.Action("ExportPage", "Editor")/@Model.Id";
             break;
         case "Import":
-            $("#importPageWindow").data("kendoDialog").open();
+             if (ccmsEditorIsLocked === true) {
+                alert("Import page while it is locked by another.");
+             } else {
+                ccmsSendSignal("SetArticleLock");
+                window.open("@Url.Action("ImportPage", "FileManager", new {Model.Id})", '_blank', 'height=510,width=1200,menubar=no,location=no,status=no,titlebar=no,toolbar=no');
+             }
             break;
         }
     }
@@ -149,7 +157,6 @@
         loadPublishLocalDateTime();
         $("#schedulingDialog").data("kendoDialog").close();
     };
-
 </script>
 
 <kendo-dialog name="htmlEditorDialog" title="Edit Code" modal="true" visible="false" min-width="500">
@@ -232,16 +239,4 @@
         <action action="savePublishDateTime" text="Set Date/Time" title="Save Date/Time">
         </action>
     </actions>
-</kendo-dialog>
-<kendo-dialog name="importPageWindow" title="Import" modal="true" visible="false" min-width="700">
-    <content>
-         @(Html.Kendo().Upload()
-            .Name("uploader")
-            .Multiple(true)
-            .Async(a => a
-                .Save("ImportPage", "Editor", new { Id = Model.Id })
-                .Remove("ImportPageRemove", "Editor")
-            )
-        )
-    </content>
 </kendo-dialog>

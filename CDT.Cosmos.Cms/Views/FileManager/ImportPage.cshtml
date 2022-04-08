@@ -1,6 +1,7 @@
 ﻿@using Kendo.Mvc.UI
 @addTagHelper *, Kendo.Mvc
 @{
+    Layout = "_LayoutNoToolbar";
     var articleId = (int)ViewData["ArticleId"];
 }
 <style>
@@ -43,8 +44,9 @@
         }
 
     function onUploadSuccess(e) {
-        //("#fileManager").data("kendoFileManager").refresh();
+        window.opener.ccmsSendSignal("ArticleImported");
     }
+
     function onError(e) {
         $("#fileManager").data("kendoFileManager").refresh();
         if (typeof (e.XMLHttpRequest) !== "undefined") {
@@ -57,4 +59,5 @@
         }
         $("#eventDialog").data("kendoDialog").open();
     }
+
 </script>

@@ -393,6 +393,7 @@ namespace CDT.Cosmos.BlobService
         /// </summary>
         /// <param name="folderName"></param>
         /// <returns></returns>
+        /// <remarks>Creates the folder if it does not already exist.</remarks>
         public FileManagerEntry CreateFolder(string folderName)
         {
             var drivers = GetDrivers();

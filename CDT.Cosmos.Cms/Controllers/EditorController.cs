@@ -884,7 +884,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 FooterJavaScript = article.FooterJavaScript,
                 Content = article.Content,
                 EditingField = "HeaderJavaScript",
-                CustomButtons = new[] { "Preview", "Html", "Import" }
+                CustomButtons = new[] { "Preview", "Html", "Export", "Import" }
             });
         }
 

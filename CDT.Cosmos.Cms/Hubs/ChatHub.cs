@@ -85,6 +85,19 @@ namespace CDT.Cosmos.Cms.Hubs
         }
 
         /// <summary>
+        /// Signifies an article has been loaded, and everyone needs to refresh.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task ArticleImported(string id)
+        {
+            var idno = int.Parse(id);
+            var model = await _articleLogic.Get(idno, Controllers.EnumControllerName.Edit);
+            await ClearLocks(id);
+            await Clients.Group(id).SendAsync("ArticleReload", JsonConvert.SerializeObject(model));
+        }
+
+        /// <summary>
         /// Abandon edits, make everyone reload original.
         /// </summary>
         /// <param name="id"></param>

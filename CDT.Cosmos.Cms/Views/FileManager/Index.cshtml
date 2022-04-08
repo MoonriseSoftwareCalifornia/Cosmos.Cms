@@ -64,6 +64,8 @@
             <div class="col">
                 @(Html.Kendo().Upload()
                 .Name("files")
+                .Directory(true)
+                .DirectoryDrop(true)
                 .Async(a => a
                 .Save("Upload", "FileManager")
                 .Remove("Remove", "FileManager")

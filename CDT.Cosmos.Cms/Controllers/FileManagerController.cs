@@ -196,7 +196,7 @@ namespace CDT.Cosmos.Cms.Controllers
                     // Get the user's ID for logging.
                     var user = await _userManager.GetUserAsync(User);
 
-                    //await _articleLogic.UpdateOrInsert(article, user.Id);
+                    await _articleLogic.UpdateOrInsert(article, user.Id);
                 }
             }
             catch (Exception e)
@@ -798,9 +798,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 return Json("");
 
             if (string.IsNullOrEmpty(path) || path.Trim('/') == "") return Unauthorized("Cannot upload here. Please select the 'pub' folder first, or subfolder below that, then try again.");
-
-            if (string.IsNullOrEmpty(metaData)) return Unauthorized("metaData cannot be null or empty.");
-
+                        
             //
             // Get information about the chunk we are on.
             //
@@ -822,8 +820,26 @@ namespace CDT.Cosmos.Cms.Controllers
 
             var blobName = UrlEncode(fileMetaData.FileName.ToLower());
 
-            fileMetaData.FileName = blobName;
-            fileMetaData.RelativePath = path.TrimEnd('/') + "/" + blobName;
+            fileMetaData.FileName = blobName.ToLower();
+            fileMetaData.RelativePath = (path.TrimEnd('/') + "/" + fileMetaData.RelativePath).ToLower();
+
+            // Make sure full folder path exists
+            var parts = fileMetaData.RelativePath.ToLower().Trim('/').Split('/');
+            var part = "";
+            for (int i = 0; i < parts.Length - 1; i++)
+            {
+                if (i == 0 && parts[i] != "pub")
+                {
+                    throw new Exception("Must upload folders and files under /pub directory.");
+                }
+
+                part = $"{part}/{parts[i].ToLower()}";
+                if (part != "/pub")
+                {
+                    var folder = part.Trim('/');
+                    _storageContext.CreateFolder(folder);
+                }
+            }
 
             await using (var stream = file.OpenReadStream())
             {
@@ -842,6 +858,7 @@ namespace CDT.Cosmos.Cms.Controllers
 
             return Json(fileBlob);
         }
+
 
         #endregion
     }
