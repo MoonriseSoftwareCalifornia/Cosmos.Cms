@@ -63,7 +63,7 @@ The publisher repository is a "stock" out of the box Visual Studio application. 
 
 You can deploy Cosmos to Azure by clicking the following button (recommended) or manually install by following the directions below.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://cosmos.moonrise.net/Documentation/10-minute_install)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
 
 This documentation is still under development, so check back for more topics as they become available.
 
