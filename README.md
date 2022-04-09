@@ -1,4 +1,4 @@
-# Cosmos CM/AHP README
+# Cosmos CM/AHP Readme
 
 This project is Sponsored by  [![Tek Yantra Logo](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/tekyantra.png?raw=true)](https://tekyantra.com/) and Moonrise Software LLC.
 
