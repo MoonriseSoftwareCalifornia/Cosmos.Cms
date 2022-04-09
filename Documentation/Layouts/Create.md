@@ -31,4 +31,7 @@ Here are further tips in planning your layout:
 While you can design your layout as you build it, it is best to make certain decisions before you start.  Each isn't really specific to Cosmos as it applies to all website design:
 
 1. Log into Cosmos, and from the drop down menu in the upper left, choose "Layouts."
-2. 
+2. Click the "Create New" button.
+3. The code editor will open.
+
+
