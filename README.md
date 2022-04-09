@@ -1,4 +1,4 @@
-# Cosmos CM/AHP Readme
+# Cosmos
 
 This project is Sponsored by  [![Tek Yantra Logo](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/tekyantra.png?raw=true)](https://tekyantra.com/) and Moonrise Software LLC.
 
@@ -22,7 +22,7 @@ Now it is an open-source project.
 
 In under 15 minutes you can create a Cosmos website in Azure and you can explore the capabilities of Cosmos.  Here are the steps to get started:
 
-* Install Cosmos
+* [Install Cosmos](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
 * Choose a Layout
 * Create a home page
 
