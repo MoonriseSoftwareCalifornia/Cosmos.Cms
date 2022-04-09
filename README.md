@@ -12,7 +12,7 @@ Quick links: [Developer Help](https://github.com/CosmosSoftware/Cosmos.Cms/blob/
 
 ## About Cosmos
 
-Cosmos is a content management system and application hosting platform that can host dynamic HTML web pages along with web applications built in Angular, jQuery, React, Vue and other frameworks all at the same time.
+Cosmos is a hybrid system and that can host dynamic HTML web pages along with web applications built in Angular, jQuery, React, Vue and other frameworks all at the same time-and combines that with a robust content management system.
 
 ### Status
 
