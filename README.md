@@ -18,6 +18,26 @@ It was built by the staff of the California Department of Technology as a high p
 
 Now it is an open-source project.
 
+## Get Started with Cosmos
+
+In under 15 minutes you can create a Cosmos website in Azure and you can explore the capabilities of Cosmos.  Here are the steps to get started:
+
+* Install Cosmos
+* Choose a Layout
+* Create a home page
+
+## Create Content
+
+You have three ways to create content:
+
+* Use the built-in WYSIWYG Editor (best for non-technical folks)
+* Use the built-in Code Editor
+* Use your own IDE, such as Visual Studio Code on your Desktop, with Node.js and npm.
+
+## Upload Assets
+
+* Use the file manager
+
 ### Status
 
 * Cosmos CMS began as a project within the [State of California's](https://www.ca.gov/) [California Department of Technology](https://cdt.ca.gov/), Office of Enterprise Technology from 2019 through 2021 and was built as a collaboration between it's DevOps and software engineering teams.
