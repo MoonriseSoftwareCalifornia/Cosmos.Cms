@@ -12,7 +12,7 @@ Quick links: [Developer Help](https://github.com/CosmosSoftware/Cosmos.Cms/blob/
 
 ## About Cosmos
 
-Cosmos is a hybrid system and that can host Angular, jQuery, React, Vue and other framework applications at the same time combining these with a robust content management system.
+Cosmos is a hybrid system and that can host Angular, jQuery, React, Vue and other framework applications at the same time.  a robust content management system.
 
 ### Status
 
