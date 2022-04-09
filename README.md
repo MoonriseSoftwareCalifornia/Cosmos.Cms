@@ -10,9 +10,9 @@ This project is Sponsored by  [![Tek Yantra Logo](https://github.com/CosmosSoftw
 
 Quick links: [Developer Help](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/DevelopingWithCosmos.md) | [Manual Docker Install](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/README.md#docker-container-manual-install) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
 
-## About Cosmos CMS
+## About Cosmos
 
-This Readme describes the current status of this project, why it was started, and how you can join the team. Help us by giving us a "star" or "watch" this project.
+Cosmos is a combined content management system, and application hosting platform that can host dynamic HTML web pages along with web applications built in Angular, jQuery, React, Vue and other frameworks all at the same time.
 
 ### Status
 
