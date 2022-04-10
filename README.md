@@ -6,7 +6,7 @@
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FCosmosSoftware%2FCosmos.Cms%2Fmain%2FAutomation%2FAzure%2Fazuredeploy.json)
 
-Quick links: [Developer Help](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/DevelopingWithCosmos.md) | [Manual Docker Install](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/README.md#docker-container-manual-install) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
+Quick links: [Getting Started](https://github.com/CosmosSoftware/Cosmos.Cms#get-started-with-cosmos) | [Developer Help](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/DevelopingWithCosmos.md) | [Manual Docker Install](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/README.md#docker-container-manual-install) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
 
 ## About Cosmos
 
@@ -16,12 +16,12 @@ It was built by the staff of the California Department of Technology as a high p
 
 Now it is an open-source project.
 
-## Get Started with Cosmos
+## Getting Started with Cosmos
 
 In under 15 minutes you can create a Cosmos website in Azure and you can explore the capabilities of Cosmos.  Here are the steps to get started:
 
 * [Install Cosmos](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
-* Choose a Layout
+* [Choose a Layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md)
 * Create a home page
 
 ## Create Content
