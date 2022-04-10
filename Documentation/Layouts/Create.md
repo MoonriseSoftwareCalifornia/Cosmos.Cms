@@ -34,6 +34,15 @@ While you can design your layout as you build it, it is best to make certain dec
 2. Click the "Create New" button.
 3. The code editor will open.
 
-Notice tabs at the top named "Head," "Header Content," "Body," and "Footer Content."  Click on each and you will notice they change.  Right now, because this is a new layout, each will be blank. This is where your [decisions above](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Create.md#plan-your-layout) come into play.
+Notice tabs at the top named "Head," "Body Attributes," "Header Content," and "Footer Content."  Click on each and you will notice they change.  Right now, because this is a new layout, each will be blank. This is where your [decisions above](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Create.md#plan-your-layout) come into play.
 
-Click on the "Head" tab.  Here place links to style sheets or JavaScript libraries, Google Analytics snippets, and any other things you would like to appear within the `<head></head>` tags on every web page in your website.
+### Head
+Click on the "Head" tab.  Here place links to style sheets or JavaScript libraries, Google Analytics snippets, and any other things you would like to appear within the `<head></head>` on every web page in your website.
+
+### Body Attributes
+Sometimes you may want the `<body></body>` to have attributes that you cannot set with CSS or easily with JavaScript. In such a case you can add attributes that will be injected into the body tag. If this isn't the case, leave this blank.
+
+Here is an example: `myattribute="somevalue" anotherattribute="anothervalue"`
+
+### Header Content
+The body "header content" is injected at the top of the `<body></body>` on every page of your website. This might be a banner or perhaps a navigation bar. Leave this blank if you do not plan to have a banner or navigation bar.
