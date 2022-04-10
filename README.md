@@ -18,7 +18,9 @@ Now it is an open-source project.
 
 ## Getting Started with Cosmos
 
-In under 15 minutes you can create a Cosmos website in Azure and you can explore the capabilities of Cosmos.  Here are the steps to get started:
+In under 15 minutes you can create a Cosmos website in Azure and get started exploring its capabilities.
+
+Here is how:
 
 * [Install Cosmos](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
 * [Choose a Layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md)
