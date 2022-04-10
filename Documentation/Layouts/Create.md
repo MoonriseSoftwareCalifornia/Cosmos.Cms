@@ -1,5 +1,5 @@
 # Create a Layout
-The following shows how to create your own layout. If you are not familar Cosmos layouts, please see our [quick read about layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) before continuing.
+The following shows how to create your own layout. If you are not familar Cosmos layouts, please see our [*quick* read about layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) before continuing.
 
 Jump to:
 
