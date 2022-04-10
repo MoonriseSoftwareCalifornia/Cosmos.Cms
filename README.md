@@ -12,7 +12,7 @@ Quick links: [Getting Started](https://github.com/CosmosSoftware/Cosmos.Cms#get-
 
 Cosmos is a hybrid application hosting platform that supports Angular, jQuery, React, Vue and other framework applications at the same time--on the same website.  It also comes with a robust content management system.
 
-It was built by the staff of the California Department of Technology as a high performance, website framework built to broadcast content to the public in times of natural disasters and other emergencies.
+It was built by the staff of the California Department of Technology as an open, cloud-first high performance platform built to host websites that hosts applications and general content during times of natural disasters and other emergencies.
 
 Now it is an open-source project.
 
