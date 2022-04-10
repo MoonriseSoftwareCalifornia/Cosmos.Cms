@@ -27,3 +27,5 @@ Cosmos can host applications built with multiple frameworks such as Angular, jQu
 
 ### Changing Layouts
 You can change your layout at any time. WARNING! This can have unforseen consequences on your website. Proceed with care!
+
+Related: [Starter Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/StarterLayouts.md) | [Import a Layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md) | [Create a Layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Create.md)
