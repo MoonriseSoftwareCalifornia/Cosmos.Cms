@@ -9,6 +9,8 @@ The following will be needed before proceeding:
 * You are able to log into Cosmos as an administrator
 
 ## Plan Your Layout
+*Quick note: This section applies to any website you build--not just Cosmos.*
+
 Before deciding on look and feel, colors and fonts, and so forth, make some decisions about how you want your website structured. 
 
 Here are some things to consider--each will affect how your layout is built:
