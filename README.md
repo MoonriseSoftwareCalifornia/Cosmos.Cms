@@ -16,6 +16,7 @@ __Example Use Cases__
 * Websites that have an Angular, jQuery, React or Vue web-app as a "home page," and associated web pages built with the CMS tools for documentation.
 * A traditional website, built mostly with the CMS, but has a mixture of "web apps" included.
 * A web app site comtaining Angular, jQuery, React or Vue along with Tableau, Google Map apps, Bing, or MapBox applications.
+* Any situation where you need extreme performance and highly redundant, website, hosted in both AWS and Azure simulatneously
 
 It was built by the staff of the California Department of Technology as an open, cloud-first high performance platform built to host websites that hosts applications and general content during times of natural disasters and other emergencies.
 
