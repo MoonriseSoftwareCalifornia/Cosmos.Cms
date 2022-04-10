@@ -34,4 +34,6 @@ While you can design your layout as you build it, it is best to make certain dec
 2. Click the "Create New" button.
 3. The code editor will open.
 
+Notice tabs at the top named "Head," "Header Content," "Body," and "Footer Content."  Click on each and you will notice they change.  Right now, because this is a new layout, each will be blank. This is where your [decisions above](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Create.md#plan-your-layout) come into play.
 
+Click on the "Head" tab.  Here place links to style sheets or JavaScript libraries, Google Analytics snippets, and any other things you would like to appear within the `<head></head>` tags on every web page in your website.
