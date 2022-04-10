@@ -1,6 +1,12 @@
 # Create a Layout
 The following shows how to create your own layout. If you are not familar Cosmos layouts, please see our [quick read about layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) before continuing.
 
+Jump to:
+
+* [Plan your layout](#plan-your-layout)
+* [Step by step instructions](#step-by-step)
+* [Tips](#tips)
+
 ## Prerequisits
 The following will be needed before proceeding:
 * [Cosmos is installed](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
