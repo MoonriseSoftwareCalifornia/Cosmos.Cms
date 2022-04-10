@@ -1,6 +1,6 @@
 # Import Layout into Cosmos
 
-The following shows how to import a pre-built layout. If you are not familar Cosmos layouts, please see our *quick* read [about layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) before continuing.
+The following shows how to import a pre-built layout. If you are not familar Cosmos layouts, please see our [*quick* read about layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) before continuing.
 
 Several [pre-built layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/StarterLayouts.md) are available to import into Cosmos. Each is open-source and is customizable. Alternatively you can [create your own layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Create.md).
 
