@@ -45,4 +45,17 @@ Sometimes you may want the `<body></body>` to have attributes that you cannot se
 Here is an example: `myattribute="somevalue" anotherattribute="anothervalue"`
 
 ### Header Content
-The body "header content" is injected at the top of the `<body></body>` on every page of your website. This might be a banner or perhaps a navigation bar. Leave this blank if you do not plan to have a banner or navigation bar.
+The body "header content" is injected at the top of the `<body></body>` on every page of your website. This might be a banner or perhaps a navigation bar. Leave this blank if you do not plan to have a banner or navigation bar appear on each page.
+
+### Footer Content
+The body "footer content" is injected near the bottom of the `<body></body>` tag.  Typically this is used for a page footer to be placed on every page, or, JavaScript libraries or scripts that are needed at the bottom of every page. If neither is the case, leave this blank.
+
+## Tips
+
+* To get an idea of how a layout is instructed, [import a starter layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md) and "edit" it to see how it was built.
+* Keep layouts lean as possible. Only include what absolutely is necessary to appear in each web page.
+* When linking to framework assets (CSS, JavaScript, etc...) try to use [CDNs](https://en.wikipedia.org/wiki/Content_delivery_network) whenever possible.
+
+Related: [About Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) | [Starter Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/StarterLayouts.md) | [Import a Layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md)
+
+
