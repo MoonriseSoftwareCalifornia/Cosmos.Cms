@@ -26,6 +26,8 @@ Note: You can decide to use all these injects, or some, or none at all by leavin
 Cosmos can host applications built with multiple frameworks such as Angular, jQuery, React and Vue all on the same website. If doing so use a layout that uses "plain JavaScript and CSS" so it reduces the chance for conflicts with your other frameworks in use.
 
 ### Changing Layouts
-You can change your layout at any time. WARNING! This can have unforseen consequences on your website. Proceed with care!
+You can change your layout at any time from the Layouts page.  Once logged into editor, choose "Layouts" from the menu.  Here you will see a list of layouts loaded into your website. The layout with the circle with a check icon is your current default layout.  Move your mouse over a blank icon on the other layers. It will have the tool tip "make default." Click to start the process of making this the new default layout.
+
+WARNING! This can have unforseen consequences on your website. Proceed with care!
 
 Related: [Starter Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/StarterLayouts.md) | [Import a Layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md) | [Create a Layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Create.md)
