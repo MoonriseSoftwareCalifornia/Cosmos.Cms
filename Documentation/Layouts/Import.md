@@ -22,4 +22,4 @@ IMPORTANT! If you already have a "default" layout, this does not replace it. I j
 Once imported you may want to customize it for your needs.  You can edit the layout using the code editor. See the [create layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Create.md) for information on how to customize.
 
 ___
-Previous: [Install Cosmos] (https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md) | Next: [Create home page](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md) | Related: [About Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md)
+Previous: [Install Cosmos](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md) | Next: [Create home page](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md) | Related: [About Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md)
