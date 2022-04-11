@@ -19,4 +19,4 @@ Here are some quick facts about the code editor:
 * Microsoft provides [documentation](https://code.visualstudio.com/docs/editor/editingevolved) on how to use this editor.
 
 ___
-Previous: [Home](https://github.com/CosmosSoftware/Cosmos.Cms#cosmos) Next: [HTML Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) Related: [Creating with VS Code]()
+Previous: [Home](https://github.com/CosmosSoftware/Cosmos.Cms#cosmos) Next: [HTML Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) Related: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
