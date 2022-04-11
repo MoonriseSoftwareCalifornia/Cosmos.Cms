@@ -30,7 +30,7 @@ Here is how:
 
 * [Install Cosmos](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
 * [Choose a Layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md)
-* Create a home page
+* [Create a home page](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/CreateHomePage.md)
 
 ## Create Content
 
