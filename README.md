@@ -62,7 +62,7 @@ Cosmos CMS hosted websites built for the State of California's fire response of 
 
 [Please see our blog article](https://cosmos.moonrise.net/blog) that describes the unique architecture of this system.
 
-### Help contribute
+## Help contribute
 
 There are a number of ways you can help:
 
