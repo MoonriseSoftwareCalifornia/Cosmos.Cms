@@ -36,9 +36,9 @@ Here is how:
 
 You have three ways to create content:
 
-* Use the built-in WYSIWYG Editor (best for non-technical folks)
-* Use the built-in Code Editor
-* Use your own IDE, such as Visual Studio Code on your Desktop, with Node.js and npm.
+* Use the built-in [HTML or WYSIWYG Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) (best for non-technical folks)
+* Use the built-in [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md)
+* Use your own IDE, such as [Visual Studio Code on your Desktop](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md), with Node.js and npm.
 
 ## Upload Assets
 
