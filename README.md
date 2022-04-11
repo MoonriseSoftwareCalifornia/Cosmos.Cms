@@ -34,17 +34,17 @@ Here is how:
 
 ## Create Content
 
-You have three ways to create content:
+There are three ways to create content that can be hosted on Cosmos:
 
-* Use the built-in WYSIWYG Editor (best for non-technical folks)
-* Use the built-in Code Editor
-* Use your own IDE, such as Visual Studio Code on your Desktop, with Node.js and npm.
+* Use the built-in [HTML or WYSIWYG Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) (best for non-technical folks)
+* Use the built-in [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md)
+* Use [Visual Studio Code on your Desktop](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) with npm and import directly into Cosmos.
 
 ## Upload Assets
 
 * Use the file manager
 
-### Status
+## Project Status
 
 * Cosmos CMS began as a project within the [State of California's](https://www.ca.gov/) [California Department of Technology](https://cdt.ca.gov/), Office of Enterprise Technology from 2019 through 2021 and was built as a collaboration between it's DevOps and software engineering teams.
 * Starting in December of 2021 management at the Department of Technology decided to make this project open-source.
@@ -62,7 +62,7 @@ Cosmos CMS hosted websites built for the State of California's fire response of 
 
 [Please see our blog article](https://cosmos.moonrise.net/blog) that describes the unique architecture of this system.
 
-### Help contribute
+## Help contribute
 
 There are a number of ways you can help:
 
