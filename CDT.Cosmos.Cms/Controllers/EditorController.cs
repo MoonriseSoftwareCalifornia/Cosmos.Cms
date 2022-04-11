@@ -20,6 +20,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -79,7 +80,14 @@ namespace CDT.Cosmos.Cms.Controllers
 
             var htmlUtilities = new HtmlUtilities();
 
-            _blobPublicAbsoluteUrl = new Uri(htmlUtilities.IsAbsoluteUri(options.Value.SiteSettings.BlobPublicUrl) ? options.Value.SiteSettings.BlobPublicUrl : options.Value.SiteSettings.PublisherUrl);
+            if (htmlUtilities.IsAbsoluteUri(options.Value.SiteSettings.BlobPublicUrl))
+            {
+                _blobPublicAbsoluteUrl = new Uri(options.Value.SiteSettings.BlobPublicUrl);
+            }
+            else
+            {
+                _blobPublicAbsoluteUrl = new Uri(options.Value.SiteSettings.PublisherUrl.TrimEnd('/') + "/" + options.Value.SiteSettings.BlobPublicUrl.TrimStart('/'));
+            }
 
             _viewRenderService = viewRenderService;
         }
