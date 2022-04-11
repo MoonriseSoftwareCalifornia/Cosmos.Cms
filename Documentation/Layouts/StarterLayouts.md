@@ -77,3 +77,6 @@ This is a theme suited for blogs that use Bootstrap. This layout is built by Sta
 * [Website](https://startbootstrap.com/)
 * [Documentation](https://startbootstrap.com/theme/clean-blog)
 * [GitHub](https://github.com/StartBootstrap/startbootstrap-clean-blog)
+
+___
+Previous: [Import a layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md) Next: [Create a layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Create.md) Related: [About Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md)
