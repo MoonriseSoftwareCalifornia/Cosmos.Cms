@@ -17,3 +17,6 @@ Here are some quick facts about the code editor:
 * It is compatible with any HTML 5 modern web browser.
 * Is is not compatible with mobile web browsers, or mobile devices (i.e. cell phones).
 * Microsoft provides [documentation](https://code.visualstudio.com/docs/editor/editingevolved) on how to use this editor.
+
+___
+Previous: [Home](https://github.com/CosmosSoftware/Cosmos.Cms#cosmos) Next: [HTML Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) Related: [Creating with VS Code]()
