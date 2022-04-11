@@ -18,4 +18,4 @@ Cosmos pages could also host other applications that compliment the one on your 
 If you are choosing this pattern for your Cosmos site.
 
 ___
-Previous: [Choose a layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md) Next:[Edit Pages]() Related: [Build and host web apps]()
+Previous: [Choose a layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/Import.md) Next:[Edit Pages]() Related: [Build and host web apps](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/BuildAndHostWebApps.md)
