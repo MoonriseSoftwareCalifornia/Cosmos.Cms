@@ -8,3 +8,11 @@ Here you will see no pages listed. There is a button at the top that says "Creat
 
 Tip: If you selected a ready-made layout during install, chances are that layout contains a "home page" template. Select that as your first page then edit it to suit your needs.
 
+## Web App as your Home Page
+You may want to have a web app built using Angular, jQuery, React, Vue, Google Map, Map Box, or ESRI Map as your home page.
+
+For any of these instances Cosmos "pages" can then be used for documentation for users regarding your app. Examples include instructions on how to use the application, or, how to read the map, or where to get more information.
+
+Cosmos pages could also host other applications that compliment the one on your home page.
+
+If you are choosing this pattern for your Cosmos site.
