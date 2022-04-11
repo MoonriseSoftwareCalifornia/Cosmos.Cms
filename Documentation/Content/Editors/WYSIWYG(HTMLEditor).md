@@ -25,7 +25,7 @@ Start by either navigating to the page you want to modify using the "Editor" or 
 
 This will open a list of "versions" of that page.
 
-Look at the "Edit Tools" column. You should see a button for the "Code Editor" and if available for the "HTML Editor." Click on the HTML Editor to edit.
+Look at the "Edit Tools" column. You should see a button for the "Code Editor," and if available, a button for the "HTML Editor." Click on the HTML Editor to edit.
 
 If you do not see the HTML Editor button, the web page may not be [enabled for HTML editor use](#how-to-enable).
 ___
