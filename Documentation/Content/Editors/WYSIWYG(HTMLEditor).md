@@ -21,7 +21,7 @@ WYSIWYG editors are so handly because you can style a document while you write i
 Cosmos comes with the [Kendo UI WYSIWYG editor](https://demos.telerik.com/kendo-ui/editor/index) that has some enhancements. It comes with many functions you may expect with word processors and you can test-drive those functions on the [product documentation website](https://demos.telerik.com/kendo-ui/editor/all-tools).
 
 ## How to define editable areas
-The HTML editor isn't enabled for every web page by default.  It is setup to only edit those sections of a web page that have `<div></div>` blocks "marked editable" by the [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md).
+The HTML editor isn't enabled for every web page by default.  It is setup to only edit those sections of a web page that have DIV tags "marked editable" by the [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md).
 
 Here is an example of a DIV marked editable:
 
