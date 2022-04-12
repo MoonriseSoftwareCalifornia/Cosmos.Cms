@@ -8,7 +8,7 @@ Jump to:
 * [Main tool bar](#main-tool-bar)
   * [Edit mode indicator](https://github.com/CosmosSoftware/Cosmos.Cms/edit/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md#edit-mode-indicator)
   * [How to publish page](#how-to-publishpublishing-status)
-* [How to use the editor](#how-to-use)
+* [Editing Tools](#editing-tools)
 * [Tryout the editor online](https://demos.telerik.com/kendo-ui/editor/all-tools)
 * [How to define editable areas](#how-to-define-editable-areas)
 * [Define what tools are available](#define-which-editor-tools-are-available-per-block)
@@ -72,7 +72,7 @@ Here are some tips:
 
 **IMPORTANT!** If you change publishing date/time it will NOT take effect until you save the web page.
 
-## How to use
+## Editing Tools
 
 *Tip: See the [Kendo Editor product site](https://demos.telerik.com/kendo-ui/editor/all-tools) to try out the editor's functionality online.*
 
