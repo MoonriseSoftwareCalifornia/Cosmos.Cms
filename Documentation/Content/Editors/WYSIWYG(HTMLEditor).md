@@ -4,11 +4,11 @@ The Cosmos HTML editor enables the *non-technical persons* to create and edit co
 
 Jump to:
 
-* [How to define editable areas](#how-to-define-editable-areas)
 * [How to open the editor](#how-to-open-the-editor)
 * [How to use the editor](#how-to-use)
-* [Define what tools are available](#define-which-editor-tools-are-available-per-block)
 * [Tryout the editor online](https://demos.telerik.com/kendo-ui/editor/all-tools)
+* [How to define editable areas](#how-to-define-editable-areas)
+* [Define what tools are available](#define-which-editor-tools-are-available-per-block)
 
 Cosmos comes with two editors: the HTML Editor and Code Editor. Alternatively, you can develop with VS Code and import your work directly into Cosmos.  See [our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) on how to do that.
 
