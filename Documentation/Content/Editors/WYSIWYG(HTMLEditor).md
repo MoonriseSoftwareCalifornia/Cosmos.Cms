@@ -58,7 +58,7 @@ With this tool you can insert:
   * CSS style(s)
   * Width and or Height value
 
-###Insert Page URL/File URL/External URL
+### Insert Page URL/File URL/External URL
 To use click on the plus button and the following dialog will appear:
 
 ![Insert link dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-custom-insert-dialog-link.png)
@@ -68,11 +68,17 @@ How to use Page/File/External URL Link Insert:
 * Link to a file on the current website, click the plus button to open the file browser.
 * To link to an external URL, simply paste the URL in the top text box.
 * Then fill out the rest of the dialog as necessary.
+* Click "Insert" when done.
 
 ### Insert Image
 Not click on the "Insert Image" tab.
 
 ![Insert image dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-custom-insert-dialog-img.png)
+
+How to use:
+* Link to an image uploaded to the current website by clicking the plus button. This will open the file browser.
+* Fill out the rest of the dialog as necessary.
+* Click "Insert" when done.
 
 ## How to define editable areas
 The HTML editor isn't enabled for every web page by default.  It is setup to only edit those sections of a web page that have DIV tags "marked editable" by the [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md).
