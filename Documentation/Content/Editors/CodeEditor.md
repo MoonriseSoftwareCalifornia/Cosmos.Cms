@@ -75,6 +75,9 @@ Here are a few tips:
 * Changing a title will also create an automatic redirect from the old URL to the new.
 * If you change a title remember to save your edits.
 
-## Shared (Multi-user) editing
+### Chat and Shared (Multi-user) editing
 
 The code editor allows for more then one person to be working on the same web page and version at a time.  For more information [please see our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SharedEditing.md) regarind shared editing.
+
+___
+Previous: [Creating Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) Next: [HTML Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) Related: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)
