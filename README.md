@@ -6,7 +6,7 @@
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FCosmosSoftware%2FCosmos.Cms%2Fmain%2FAutomation%2FAzure%2Fazuredeploy.json)
 
-Quick links: [Getting Started](#getting-started-with-cosmos) | [Create Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) | [Create is VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
+Quick links: [Getting Started](#getting-started-with-cosmos) | [Create Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) | [Create with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
 
 ## Be Creative!
 
