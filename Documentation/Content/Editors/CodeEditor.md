@@ -27,7 +27,31 @@ Look at the "Edit Tools" column. You should see a button for the "Code Editor." 
 
 ![Main tool bar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/code-editor-top-tool-bar.png)
 
-At the top of the Code Editor you will see a tool bar like the one above
+At the top of the Code Editor you will see a tool bar like the one above. Here is a synopsys of the available functions, working from left to right.
+
+### Menu (Drop down)
+* first is the main drop down menu. Here you can:
+  * Save (saves page)
+  * Close
+  * Files (opens file manager)
+  * Preview
+  * Html (Opens the page in the HTML Editor)
+  * Export (Exports the page to edit on your desktop)
+  * Import (Imports the page content from your computer)
+
+### Edit mode indicator
+This item will change color based on the edit status of this web page version.
+* Green as shown above means the current user is editing the document and all others are locked out.
+* Red indicates the file is locked for editing, it will also display user who has the file locked.
+* Dark gray means the current item is not being edited by anyone.
+
+### Publishing Status
+Next there will be a button that displays the "publishing status" of the current version of the web page.
+* While it says "Draft," this version is not viewable by the public.
+* "Publishing" makes the version available for the public.
+* To publish click the "Draft" open to open the dialog shwon below
+
+![Publishing dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/publishing-datetime-dialog.png)
 
 ## Shared (Multi-user) editing
 
