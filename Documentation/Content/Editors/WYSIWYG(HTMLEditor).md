@@ -43,7 +43,7 @@ Upon first opening the HTML Editor you will see blocks on the page that have blu
 
 ![HTML Editor no toolbar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-no-toolbar.png)
 
-Click within one of these blocks an the HTML Editor Toolbar for that block will appear as seen below.
+The HTML Editor Toolbar appears when an editable block is clicked on (see below).
 
 ![HTML Editor Toolbar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/editor-toolbar.png)
 
