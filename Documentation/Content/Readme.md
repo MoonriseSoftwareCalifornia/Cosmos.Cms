@@ -8,16 +8,6 @@ The code editor allows editing of HTML, JavaScript, CSS and TypeScript using the
 
 This editor is best used by software engineers who are developing web pages that are rich JavaScript/CSS/HTML content for Cosmos.
 
-Also use the code editor to "mark" `<div></div>` blocks as "content editable" for the [HTML Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) like this:
-
-`<div contenteditable="true"><!-- Everything in here can be edited by the HTML editor --></div>`
-
-Here are some quick facts about the code editor:
-
-* It is compatible with any HTML 5 modern web browser.
-* Is is not compatible with mobile web browsers, or mobile devices (i.e. cell phones).
-* Microsoft provides [documentation](https://code.visualstudio.com/docs/editor/editingevolved) on how to use this editor.
-
 Read more: [Code Editor documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md)
 
 ## [HTML Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)
