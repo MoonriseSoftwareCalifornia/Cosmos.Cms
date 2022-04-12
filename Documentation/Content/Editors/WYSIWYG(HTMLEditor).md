@@ -39,9 +39,35 @@ Previous: [Create and Edit Content](https://github.com/CosmosSoftware/Cosmos.Cms
 
 ## How to Use
 Upon first opening the HTML Editor you will see blocks on the page that have blue dashes around each like the screen shot below.
+
 ![HTML Editor no toolbar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-no-toolbar.png)
 
 Click within one of these blocks an the HTML Editor Toolbar for that block will appear as seen below.
+
 ![HTML Editor Toolbar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/editor-toolbar.png)
 
+
+## Define which editor tools are available per block
+
+*Note: This is something usually done by a developer on behalf of a content author using the HTML editor.*
+
+Sometimes it is wise to define the tools available to the HTML editor per block.  For example, you may what to limit what stylistic things people can do with content, not allow images to be embedded, or you may want to add tools to the default set already give.
+
+Recall that blocks are made editable by marking them with the "contenteditable" attribute like this:
+
+`<div contenteditable='true'></div>`
+
+When defined like above, the editable block will have the default set of tools.
+
+To specify the tools, create the attribute "ccms-editor-tools" like below:
+
+`<div contenteditable='true' ccms-editor-tools='bold,italic,underline'></div>`
+
+In the above example, the toolbar will only have the bold, italic and underline tools plus the Cosmos "insert tool" (always available) visible.
+
+Here is the complete list of "default" tools if none are define as above:
+
+`bold, italic, underline, strikethrough, justifyLeft, justifyCenter, justifyRight, justifyFull, insertUnorderedList, insertOrderedList, insertUpperRomanList, insertLowerRomanList, indent, outdent, createLink, unlink, insertImag, insertFile, tableWizard, createTable, addRowAbove, addRowBelow, addColumnLeft, addColumnRight, deleteRow, deleteColumn, mergeCellsHorizontally", mergeCellsVertically, splitCellHorizontally, splitCellVertically, tableAlignLeft, tableAlignCenter, tableAlignRight, viewHtml, formatting, cleanFormatting, foreColor, backColor`
+
+For more information regarding available tools, please see the [Kendo editor documentation](https://demos.telerik.com/aspnet-core/editor/all-tools).
 
