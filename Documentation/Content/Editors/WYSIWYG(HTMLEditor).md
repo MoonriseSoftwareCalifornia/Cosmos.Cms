@@ -44,7 +44,35 @@ The HTML Editor Toolbar appears when an editable block is clicked on (see below)
 ![HTML Editor Toolbar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/editor-toolbar.png)
 
 ## Custom Insert Tool
-On the toolbar you will notice the following button: ![Custom Insert Button](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-custom-insert-btn.png)
+On the toolbar you will notice the following button: ![Custom Insert Tool](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-custom-insert-btn.png).
+
+With this tool you can insert:
+* A link to a web page or file uploaded to the website, or an external URL with the following custom properties:
+  * CSS style(s)
+  * CSS class(es)
+  * Tool tip text
+  * Open in another web page.
+* Embed an uploaded image with the following properties:
+  * Image alt text
+  * CSS class(es)
+  * CSS style(s)
+  * Width and or Height value
+
+###Insert Page URL/File URL/External URL
+To use click on the plus button and the following dialog will appear:
+
+![Insert link dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-custom-insert-dialog-link.png)
+
+How to use Page/File/External URL Link Insert:
+* Link to an existing page by typing the page title.
+* Link to a file on the current website, click the plus button to open the file browser.
+* To link to an external URL, simply paste the URL in the top text box.
+* Then fill out the rest of the dialog as necessary.
+
+### Insert Image
+Not click on the "Insert Image" tab.
+
+![Insert image dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-custom-insert-dialog-img.png)
 
 ## How to define editable areas
 The HTML editor isn't enabled for every web page by default.  It is setup to only edit those sections of a web page that have DIV tags "marked editable" by the [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md).
