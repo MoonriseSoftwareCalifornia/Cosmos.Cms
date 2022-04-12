@@ -54,17 +54,15 @@ Click within one of these blocks an the HTML Editor Toolbar for that block will 
 
 Sometimes it is wise to define the tools available to the HTML editor per block.  For example, you may what to limit what stylistic things people can do with content, not allow images to be embedded, or you may want to add tools to the default set already give.
 
-Recall that blocks are made editable by marking them with the "contenteditable" attribute like this:
+Recall that blocks are made editable by marking them with the "contenteditable" attribute like this (this will contain the default set of editor tools):
 
 `<div contenteditable='true'></div>`
 
-When defined like above, the editable block will have the default set of tools.
-
-To specify the tools, create the attribute "ccms-editor-tools" like below:
+To specify which editor tools are available for a block, create the attribute "ccms-editor-tools". The below example limits the editor to bold, italic and underline tools plus the Cosmos "insert tool" (always available) visible.
 
 `<div contenteditable='true' ccms-editor-tools='bold,italic,underline'></div>`
 
-In the above example, the toolbar will only have the bold, italic and underline tools plus the Cosmos "insert tool" (always available) visible.
+### Default list of tools
 
 Here is the complete list of "default" tools if none are define as above:
 
