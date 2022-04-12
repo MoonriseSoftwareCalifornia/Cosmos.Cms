@@ -41,12 +41,12 @@ Here is how:
 There are three ways to create content that can be hosted on Cosmos:
 
 * Use the built-in [HTML or WYSIWYG Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) (best for non-technical folks)
-* Use the built-in [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md)
-* Use [Visual Studio Code on your Desktop](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) with npm and import directly into Cosmos.
+* Use the built-in [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) (best for developers)
+* Use [Visual Studio Code on your Desktop](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) with `npm build` and import directly into Cosmos. (best for building web-apps)
 
 ## Upload Assets
 
-* Use the file manager
+Use the file manager to upload one or more files at a time. You can also upload whole folders at once.
 
 ## Project Status
 
