@@ -12,3 +12,5 @@ The HTML and Code editors allow for multiple people to be working on the same we
 # Chat Feature
 
 Everyone logged in to the Editor will have a "Chat" button at the top of every page.  Click this to initiate a group chat with everyone logged in at the moment.
+
+![Chat dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/chat-dialog.png)
