@@ -45,7 +45,7 @@ This item will change color based on the edit status of this web page version.
 * Red indicates the file is locked for editing, it will also display user who has the file locked.
 * Dark gray means the current item is not being edited by anyone.
 
-### Publishing Status
+### How to Publish/Publishing Status
 Next there will be a button that displays the "publishing status" of the current version of the web page.
 * While it says "Draft," this version is not viewable by the public.
 * "Publishing" makes the version available for the public.
@@ -61,6 +61,7 @@ Here are some tips:
 * You can publish in the future by setting a future date and time.
 * Setting the date and time to "now" or earlier will make the version viewable right away.
 
+**IMPORTANT!** If you change publishing date/time it will NOT take effect until you save the web page.
 
 
 ## Shared (Multi-user) editing
