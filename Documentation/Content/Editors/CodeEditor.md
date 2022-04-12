@@ -23,6 +23,12 @@ This will open a list of "versions" of that page.
 
 Look at the "Edit Tools" column. You should see a button for the "Code Editor." Click on that to open the editor.
 
-## Shared (Multi-user) Editing
+## Main tool bar
+
+![Main tool bar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/code-editor-top-tool-bar.png)
+
+At the top of the Code Editor you will see a tool bar like the one above
+
+## Shared (Multi-user) editing
 
 The code editor allows for more then one person to be working on the same web page and version at a time.  For more information [please see our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SharedEditing.md) regarind shared editing.
