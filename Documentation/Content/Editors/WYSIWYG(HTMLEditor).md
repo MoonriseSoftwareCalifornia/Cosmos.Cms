@@ -5,10 +5,14 @@ The Cosmos HTML editor enables the *non-technical persons* to create and edit co
 Jump to:
 
 * [How to open the editor](#how-to-open-the-editor)
+* [Main tool bar](#main-tool-bar)
+  * [Edit mode indicator](https://github.com/CosmosSoftware/Cosmos.Cms/edit/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md#edit-mode-indicator)
+  * [How to publish page](#how-to-publishpublishing-status)
 * [How to use the editor](#how-to-use)
 * [Tryout the editor online](https://demos.telerik.com/kendo-ui/editor/all-tools)
 * [How to define editable areas](#how-to-define-editable-areas)
 * [Define what tools are available](#define-which-editor-tools-are-available-per-block)
+* [Shared (multi user) editing](#shared-multi-user-editing)
 
 Cosmos comes with two editors: the HTML Editor and Code Editor. Alternatively, you can develop with VS Code and import your work directly into Cosmos.  See [our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) on how to do that.
 
@@ -31,7 +35,44 @@ If you do not see the HTML Editor button, the web page may not be [enabled for H
 ___
 Previous: [Create and Edit Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) Next: [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Releated: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
 
-## How to Use
+## Main tool bar
+
+![HTML Editor main tool bar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-top-tool-bar.png)
+
+At the top of the Code Editor you will see a tool bar like the one above. Here is a synopsys of the available functions, working from left to right.
+
+### Menu (Drop down)
+* The "Menu" button is a drop down menu with the following selections:
+  * Save  (saves page)
+  * Close
+  * Files (opens file manager)
+  * Preview
+  * Code View (opens the page in the Code Editor)
+### Edit mode indicator
+This item will change color based on the edit status of this web page version.
+* Green as shown above means the current user is editing the document and all others are locked out.
+* Red indicates the file is locked for editing, it will also display user who has the file locked.
+* Dark gray means the current item is not being edited by anyone.
+
+### How to Publish/Publishing Status
+Next there will be a button that displays the "publishing status" of the current version of the web page.
+* While it says "Draft," this version is not viewable by the public.
+* "Publishing" makes the version available for the public.
+* To publish click the "Draft" open to open the dialog shwon below
+
+![Publishing dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/publishing-datetime-dialog.png)
+
+Using this dialog choose the date and time in your local time zone when you want this version of the web page to go public.
+
+Here are some tips:
+* All date and times are set relative to the time zone shown. Above it is in Pacific Standard Time.
+* To "un-publish" and item, simply click the "clear date/time" button.
+* You can publish in the future by setting a future date and time.
+* Setting the date and time to "now" or earlier will make the version viewable right away.
+
+**IMPORTANT!** If you change publishing date/time it will NOT take effect until you save the web page.
+
+## How to use
 
 *Tip: See the [Kendo Editor product site](https://demos.telerik.com/kendo-ui/editor/all-tools) to try out the editor's functionality online.*
 
