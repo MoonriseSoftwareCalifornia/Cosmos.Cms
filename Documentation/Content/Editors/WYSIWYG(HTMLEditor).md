@@ -27,6 +27,12 @@ Here is an example of a DIV marked editable:
 
 `<div contenteditable="true"><!-- Everything in here can be edited by the HTML editor --></div>`
 
+*Please note:*
+
+* *After the page is first saved, Cosmos converts the attribute "contenteditable" to a new attribute called "data-ccms-ceid" with a unique attribute value.  This new attribute not only marks editable blocks, it also assigns a unique ID to the block.*
+* *Remove the attributes "contenteditable" and "data-ccms-ceid" to make a block no longer editable by the HTML editor.*
+
+
 ## How to open the editor
 Start by either navigating to the page you want to modify using the "Editor" or by selecting the web page by choosing "Menu" then "Pages," then selecting "Edit" button by the page you want to work with.
 
