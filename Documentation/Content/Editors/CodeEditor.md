@@ -53,6 +53,16 @@ Next there will be a button that displays the "publishing status" of the current
 
 ![Publishing dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/publishing-datetime-dialog.png)
 
+Using this dialog choose the date and time in your local time zone when you want this version of the web page to go public.
+
+Here are some tips:
+* All date and times are set relative to the time zone shown. Above it is in Pacific Standard Time.
+* To "un-publish" and item, simply click the "clear date/time" button.
+* You can publish in the future by setting a future date and time.
+* Setting the date and time to "now" or earlier will make the version viewable right away.
+
+
+
 ## Shared (Multi-user) editing
 
 The code editor allows for more then one person to be working on the same web page and version at a time.  For more information [please see our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SharedEditing.md) regarind shared editing.
