@@ -30,12 +30,12 @@ Look at the "Edit Tools" column. You should see a button for the "Code Editor." 
 At the top of the Code Editor you will see a tool bar like the one above. Here is a synopsys of the available functions, working from left to right.
 
 ### Menu (Drop down)
-* first is the main drop down menu. Here you can:
+* The "Menu" button is a drop down menu with the following selections:
   * Save (saves page)
   * Close
   * Files (opens file manager)
   * Preview
-  * Html (Opens the page in the HTML Editor)
+  * Html (opens the page in the HTML Editor)
   * Export (Exports the page to edit on your desktop)
   * Import (Imports the page content from your computer)
 
