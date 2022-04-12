@@ -12,6 +12,8 @@ Quick links: [Getting Started](#getting-started-with-cosmos) | [Create Content](
 
 Cosmos is a Content Management System that's been called a "*developer's dream*" because it not only contains what you'd expect in a lightweight CMS, but it also supports hosting web-apps built your favorite framework such as Angular, jQuery, React, Vue, Google Maps, Map Box, ESRI, Bing Maps ...and others.
 
+See our [live framework demos](https://cosmos.moonrise.net/Demos)!
+
 <details><summary>Example Use Cases</summary>
  <ul>
   <li>Originally designed to host web content for emergencies for the State of California.</li>
