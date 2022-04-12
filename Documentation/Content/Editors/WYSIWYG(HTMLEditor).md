@@ -114,5 +114,9 @@ Here is the complete list of "default" tools if none are define as above:
 
 For more information regarding *all the available tools*, please see the [Kendo editor documentation](https://demos.telerik.com/aspnet-core/editor/all-tools).
 
+## Shared (Multi-user) Editing
+
+The HTML editor allows for more then one person to be working on the same web page and version at a time.  For more information [please see our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SharedEditing.md) regarind shared editing.
+
 ___
 Previous: [Create content](https://github.com/CosmosSoftware/Cosmos.Cms#create-content) Next: [Code editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Related: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
