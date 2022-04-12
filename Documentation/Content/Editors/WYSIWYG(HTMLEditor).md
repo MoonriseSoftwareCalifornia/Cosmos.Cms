@@ -45,6 +45,9 @@ ___
 Previous: [Create and Edit Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) Next: [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Releated: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
 
 ## How to Use
+
+*Tip: See the [Kendo Editor product site](https://demos.telerik.com/kendo-ui/editor/all-tools) to try out the editor's functionality online.
+
 Upon first opening the HTML Editor you will see blocks on the page that have blue dashes around each like the screen shot below.
 
 ![HTML Editor no toolbar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/html-editor-no-toolbar.png)
