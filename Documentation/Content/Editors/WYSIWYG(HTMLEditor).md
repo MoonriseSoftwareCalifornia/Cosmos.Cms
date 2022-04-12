@@ -6,6 +6,7 @@ Jump to:
 * [How to open the editor](#how-to-open-the-editor)
 * [How to use editing functions](#how-to-use)
 * [Define what tools are available](#define-which-editor-tools-are-available-per-block)
+* [Tryout the editor online](https://demos.telerik.com/kendo-ui/editor/all-tools)
 
 Cosmos comes with two editors: the HTML Editor and Code Editor. Alternatively, you can develop with VS Code and import your work directly into Cosmos.  See [our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) on how to do that.
 
@@ -46,7 +47,7 @@ Previous: [Create and Edit Content](https://github.com/CosmosSoftware/Cosmos.Cms
 
 ## How to Use
 
-*Tip: See the [Kendo Editor product site](https://demos.telerik.com/kendo-ui/editor/all-tools) to try out the editor's functionality online.
+*Tip: See the [Kendo Editor product site](https://demos.telerik.com/kendo-ui/editor/all-tools) to try out the editor's functionality online.*
 
 Upon first opening the HTML Editor you will see blocks on the page that have blue dashes around each like the screen shot below.
 
