@@ -1,10 +1,12 @@
 # WYSIWYG (HTML Editor)
 
+The Cosmos HTML editor enables the *non-technical persons* to create and edit content on their own. The following describes how to use the editor, and how to set a web page for it's use.
+
 Jump to:
 
 * [How to define editable areas](#how-to-define-editable-areas)
 * [How to open the editor](#how-to-open-the-editor)
-* [How to use editing functions](#how-to-use)
+* [How to use the editor](#how-to-use)
 * [Define what tools are available](#define-which-editor-tools-are-available-per-block)
 * [Tryout the editor online](https://demos.telerik.com/kendo-ui/editor/all-tools)
 
@@ -13,26 +15,10 @@ Cosmos comes with two editors: the HTML Editor and Code Editor. Alternatively, y
 Below explains how to use the *HTML Editor*, also known as the "WYSIWYG Editor."
 
 ## What you see is what you get (WYSIWYG)
-Cosmos' HTML editor is meant to enable the *non-technical person* to create and edit content on their own.
 
 Most people are familiar with using word processors such as Google Docs, Microsoft Word and WordPerfect. Each is considered a "[WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG)" editors because as you write and stylize the page, it displays exactly how the document is going to print or be viewable to another on a computer.
 
-WYSIWYG editors are so handly because you can style a document while you write it, and you do not have to be an expert to do so.
-
-Cosmos comes with the [Kendo UI WYSIWYG editor](https://demos.telerik.com/kendo-ui/editor/index) that has some enhancements. It comes with many functions you may expect with word processors and you can test-drive those functions on the [product documentation website](https://demos.telerik.com/kendo-ui/editor/all-tools).
-
-## How to define editable areas
-The HTML editor isn't enabled for every web page by default.  It is setup to only edit those sections of a web page that have DIV tags "marked editable" by the [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md).
-
-Here is an example of a DIV marked editable:
-
-`<div contenteditable="true"><!-- Everything in here can be edited by the HTML editor --></div>`
-
-*Please note:*
-
-* *After the page is first saved, Cosmos converts the attribute "contenteditable" to a new attribute called "data-ccms-ceid" with a unique attribute value.  This new attribute not only marks editable blocks, it also assigns a unique ID to the block.*
-* *Remove the attributes "contenteditable" and "data-ccms-ceid" to make a block no longer editable by the HTML editor.*
-
+Cosmos comes with the [Kendo UI WYSIWYG editor](https://demos.telerik.com/kendo-ui/editor/index) with some enhancements specific to Cosmos. It comes with many functions you may expect with word processors and you can test-drive those functions on the [product documentation website](https://demos.telerik.com/kendo-ui/editor/all-tools).
 
 ## How to open the editor
 Start by either navigating to the page you want to modify using the "Editor" or by selecting the web page by choosing "Menu" then "Pages," then selecting "Edit" button by the page you want to work with.
@@ -57,6 +43,17 @@ The HTML Editor Toolbar appears when an editable block is clicked on (see below)
 
 ![HTML Editor Toolbar](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/editor-toolbar.png)
 
+## How to define editable areas
+The HTML editor isn't enabled for every web page by default.  It is setup to only edit those sections of a web page that have DIV tags "marked editable" by the [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md).
+
+Here is an example of a DIV marked editable:
+
+`<div contenteditable="true"><!-- Everything in here can be edited by the HTML editor --></div>`
+
+*Please note:*
+
+* *After the page is first saved, Cosmos converts the attribute "contenteditable" to a new attribute called "data-ccms-ceid" with a unique attribute value.  This new attribute not only marks editable blocks, it also assigns a unique ID to the block.*
+* *Remove the attributes "contenteditable" and "data-ccms-ceid" to make a block no longer editable by the HTML editor.*
 
 ## Define which editor tools are available per block
 
