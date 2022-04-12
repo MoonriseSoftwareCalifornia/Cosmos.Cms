@@ -6,7 +6,7 @@ Here is how to do it:
  
  ## Create a web page using Cosmos
  
- Begin the process by creating a new web page with Cosmos. If you already have a page you want to use, then skip this step.
+ Begin the process by creating a new web page with Cosmos that will house your web app. If you already have a page you want to use, then skip to step 3 "Open page in code editor."
  
  1. Click the "Menu" button and select "Pages."
  2. From the page list page, click the "New Page" button.
