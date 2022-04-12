@@ -26,10 +26,12 @@ Read more: [Code Editor documentation](https://github.com/CosmosSoftware/Cosmos.
 
 Read more: [HTML editor documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)
 
-## Visual Studio Code
+## [Visual Studio Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
 
 The best means to build web apps is to use Visual Studio Code with npm.  Angular, React, Vue and other applications can be built locally on your desktop computer, then imported into Cosmos for hosting.
 
 Cosmos does not restrict the type of framework used. You can have multiple applications written in different frameworks all hosted on the same website. Choose the "best of breed" for your needs.
+
+Read more: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
 ___
 Previous: [Home](https://github.com/CosmosSoftware/Cosmos.Cms#cosmos) Next: [HTML Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) Related: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
