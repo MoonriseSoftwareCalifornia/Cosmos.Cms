@@ -63,6 +63,17 @@ Here are some tips:
 
 **IMPORTANT!** If you change publishing date/time it will NOT take effect until you save the web page.
 
+### Title Field
+
+![Title field](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/editor-title.png)
+
+The title field serves two purposes. It gives the web page a title and it also defines the URL path with the including of the forward slash `/`.
+
+Here are a few tips:
+* Keep titles as short as possible.
+* Titles are automatically turned into valid URLs for the web page.
+* Changing a title will also create an automatic redirect from the old URL to the new.
+* If you change a title remember to save your edits.
 
 ## Shared (Multi-user) editing
 
