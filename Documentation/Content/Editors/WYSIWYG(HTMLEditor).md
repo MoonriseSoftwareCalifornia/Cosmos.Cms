@@ -7,7 +7,7 @@ Jump to:
 * [How to use editing functions](#how-to-use)
 * [Define what tools are available](#define-which-editor-tools-are-available-per-block)
 
-Cosmos comes with two editors: the HTML Editor and Code Editor. Alternatively, you can develop with VS Code and import directly into Cosmos.  See [our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) on how to do that.
+Cosmos comes with two editors: the HTML Editor and Code Editor. Alternatively, you can develop with VS Code and import your work directly into Cosmos.  See [our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) on how to do that.
 
 Below explains how to use the *HTML Editor*, also known as the "WYSIWYG Editor."
 
