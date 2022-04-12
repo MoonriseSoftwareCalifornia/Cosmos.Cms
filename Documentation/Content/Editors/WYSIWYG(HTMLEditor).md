@@ -5,6 +5,7 @@ Jump to:
 * [How to Enable for a Web Page](#how-to-enable-for-a-web-page)
 * [How to open the editor](#how-to-open-the-editor)
 * [How to use editing functions](#how-to-use)
+* [Define what tools are available](#define-which-editor-tools-are-available-per-block)
 
 Cosmos comes with two editors: the HTML Editor and Code Editor. Alternatively, you can develop with VS Code and import directly into Cosmos.  See [our documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) on how to do that.
 
@@ -71,3 +72,5 @@ Here is the complete list of "default" tools if none are define as above:
 
 For more information regarding available tools, please see the [Kendo editor documentation](https://demos.telerik.com/aspnet-core/editor/all-tools).
 
+___
+Previous: [Create content](https://github.com/CosmosSoftware/Cosmos.Cms#create-content) Next: [Code editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Releated: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
