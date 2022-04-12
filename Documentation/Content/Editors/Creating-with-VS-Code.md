@@ -1,6 +1,8 @@
 # ![VS Code Icon](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/vs-code-icon.png) Creating with VS Code
 
-Cosmos has tools for developing web applications and content with an outside editor. We show how to create Angular, React, Vue and other web apps with Visual Studio Code and npm, then import these into Cosmos.  Here is how to do it:
+Cosmos has tools for developing web applications and content with an outside editor. We show how to create Angular, React, Vue and other web apps with Visual Studio Code and npm, then import these into Cosmos.
+
+Here is how to do it:
  
  ## Create a web page using Cosmos
  
