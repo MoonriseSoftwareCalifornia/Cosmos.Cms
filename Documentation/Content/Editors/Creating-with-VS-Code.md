@@ -1,13 +1,19 @@
 # Tutorial: Creating with VS Code ![VS Code Icon](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/vs-code-icon.png)
 
-Cosmos has tools for developing web applications and content with an outside editor. In this tutorial we show how to create a web app with Visual Studio Code and npm, and then import these into Cosmos.
+With Cosmos, you can develop rich web applications and content on your desktop and import them directly into Cosmos.
+
+In this tutorial we show how to...
+
+1. [Create a web page](#step-1-create-a-web-page-using-cosmos) in Cosmos then export it to your desktop.
+2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, Angular, and npm.
+3. [Then import](#step-3-import-the-web-page) the build into Cosmos.
 
 ## Prerequisites
 
 A few things need to be in place before performing this tutorial.  Here they are:
 
-* Visual Studio Code is installed on your computer
-* [Node.js](https://nodejs.org/) is installed on your computer
+* [Visual Studio Code](https://code.visualstudio.com) is installed on your computer
+* [Node.js](https://nodejs.org) is installed on your computer
 * [Angular](https://angular.io) installed as well.
  
 ## Step 1: Create a web page using Cosmos
@@ -31,17 +37,12 @@ Begin the process by creating a new web page with Cosmos that will house your co
 
 This will download a web page ready that you will need later. Remember where you downloaded it.
 
-## Step 2: Create an Angular web app
+## Step 2: Create an Angular web app and build it
 
-## Step 3: Build your app with npm
+## Step 3: Import the web page
 
-## Step 4: Import the web page
+## Post Import Steps
 
-## Step 5: Import the assets
-
-## Step 6: Adjust paths
-
-## Step 7: Preview
 
 
 
