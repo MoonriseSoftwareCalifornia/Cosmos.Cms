@@ -43,6 +43,8 @@ This will download a web page ready that you will need later. Remember where you
 
 Here we use the example application called [Building a template-driven form](https://angular.io/guide/forms#building-a-template-driven-form) from [Angular.io](https://angular.io/) website.
 
+### Download, build and view the demo app
+
 * [Download the source code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/angular-app.zip) and open it with Visual Studio Code (VSC).
 * Open a terminal in VSC and install the dependencies like this: `npm install`
 * Now run the application with the command: `ng serve`
@@ -52,6 +54,21 @@ Here we use the example application called [Building a template-driven form](htt
 Now you should see something like this:
 
 ![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-run-example.png)
+
+If your application looks like above, all is good.  Notice that it does not include the "layout" elements of your Cosmos website?
+
+Now we are going to start encorporating those elements into your application. When that is done we will import it into Cosmos.
+
+### Encorporate the layout elements
+
+* Locate the webpage you exported from Cosmos and add it to your project.
+* You should now see the file added to your `src` folder like below (your file name might be different).
+
+![Exported file now in src folder](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-file-added.png)
+
+Open the exported file. Notice the layout content in the `<head> and <body>` is called out with comments.
+
+These comments show where the layout content is injected, and where you can put your application content.
 
 ## Step 3: Import the web page
 
