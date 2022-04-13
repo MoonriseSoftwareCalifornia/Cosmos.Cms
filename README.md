@@ -15,6 +15,7 @@ Cosmos is a Content Management System that's been called a "*developer's dream*"
 See our [live framework demos](https://cosmos.moonrise.net/Demos).
 
 <details><summary>Example Use Cases</summary>
+ <div style='border-style: solid;'>
  <ul>
   <li>Originally designed to host web content for emergencies for the State of California.</li>
   <li>Host an Angular, jQuery, React or Vue web-app as a "home page" along with other pages with documentation.</li>
@@ -22,6 +23,7 @@ See our [live framework demos](https://cosmos.moonrise.net/Demos).
   <li>A dashboard website with graphs, charts, maps along with report pages and documentation.</li>
   <li>A CMS with an extremely easy HTML editing interface for non-technical users needing to make quick edits.</li>
  </ul>
+ </div>
  </details>
 
 Cosmos was built by the staff of the California Department of Technology as an open, cloud-first high performance platform built to host websites during times of natural disasters and other emergencies. It was used from 2019 - 2021 for fire response, and in 2020 for COVID response.
