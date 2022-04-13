@@ -12,9 +12,9 @@ In this tutorial we show how to...
 
 A few things need to be installed on your computer before starting this tutorial.
 
-* [Visual Studio Code](https://code.visualstudio.com)
-* [Node.js](https://nodejs.org)
-* [Angular](https://angular.io)
+1 [Visual Studio Code](https://code.visualstudio.com)
+2 [Node.js](https://nodejs.org)
+3 [Angular CLI](https://angular.io/cli) using the following command `npm install -g @angular/cli`
 
 Let's begin...
  
@@ -40,6 +40,18 @@ Start by creating a new web page with Cosmos that will house your web app.
 This will download a web page ready that you will need later. Remember where you downloaded it.
 
 ## Step 2: Create an Angular web app and build it
+
+Here we use the example application called [Building a template-driven form](https://angular.io/guide/forms#building-a-template-driven-form) from [Angular.io](https://angular.io/) website.
+
+* [Download the source code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/angular-app.zip) and open it with Visual Studio Code (VSC).
+* Open a terminal in VSC and install the dependencies like this: `npm install`
+* Now run the application with the command: `ng serve`
+* The development web server will start, and soon in the terminal you will see the development server URL.
+* Open the URL in a web browser.
+
+Now you should see something like this:
+
+![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-run-example.png)
 
 ## Step 3: Import the web page
 
