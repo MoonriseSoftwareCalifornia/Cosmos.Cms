@@ -10,15 +10,17 @@ In this tutorial we show how to...
 
 ## Prerequisites
 
-A few things need to be in place before performing this tutorial.  Here they are:
+A few things need to be installed on your computer before starting this tutorial.
 
-* [Visual Studio Code](https://code.visualstudio.com) is installed on your computer
-* [Node.js](https://nodejs.org) is installed on your computer
-* [Angular](https://angular.io) installed as well.
+* [Visual Studio Code](https://code.visualstudio.com)
+* [Node.js](https://nodejs.org)
+* [Angular](https://angular.io)
+
+Let's begin...
  
 ## Step 1: Create a web page using Cosmos
  
-Begin the process by creating a new web page with Cosmos that will house your content and/or web app. If you already have a page you want to use, then skip to step 3 "Open page in code editor."
+Start by creating a new web page with Cosmos that will house your web app.
  
  * Click the "Menu" button and select "Pages."
  * From the page list page, click the "New Page" button.
@@ -26,7 +28,7 @@ Begin the process by creating a new web page with Cosmos that will house your co
 
 ![Create page dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/create-page-dialog.png)
 
- * In the above dialog give the page a title.
+ * In the above dialog give the page a title. For now use "My App".
  * There is no need to choose a page template, so click "Create" and you should see the HTML editor open it up.
 
 ![New Lorem Ipsum Page](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/new-lorem-ipsom-page.png)
