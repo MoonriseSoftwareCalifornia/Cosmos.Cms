@@ -8,11 +8,11 @@
 
 Quick links: [Getting Started](#getting-started-with-cosmos) | [Create Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) | [Create with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
 
-## Be Creative!
+## Be Creative
 
 Cosmos is a Content Management System that's been called a "*developer's dream*" because it not only contains what you'd expect in a lightweight CMS, but it also supports hosting web-apps built your favorite framework such as Angular, jQuery, React, Vue, Google Maps, Map Box, ESRI, Bing Maps ...and others.
 
-See our [live framework demos](https://cosmos.moonrise.net/Demos)!
+See our [live framework demos](https://cosmos.moonrise.net/Demos).
 
 <details><summary>Example Use Cases</summary>
  <ul>
