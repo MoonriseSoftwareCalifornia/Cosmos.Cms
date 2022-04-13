@@ -45,8 +45,8 @@ Here we use the example application called [Building a template-driven form](htt
 
 ### Download, build and view the demo app
 
-* [Download the source code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/angular-app.zip) and open it with Visual Studio Code (VSC).
-* Open a terminal in VSC and install the dependencies like this: `npm install`
+* [Download the source code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/angular-app.zip) and open it with Visual Studio Code (VS Code).
+* Open a terminal in VS Code and install the dependencies like this: `npm install`
 * Now run the application with the command: `ng serve`
 * The development web server will start, and soon in the terminal you will see the development server URL.
 * Open the URL in a web browser.
@@ -66,9 +66,32 @@ Now we are going to start encorporating those elements into your application. Wh
 
 ![Exported file now in src folder](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-file-added.png)
 
-Open the exported file. Notice the layout content in the `<head> and <body>` is called out with comments.
+*Tip: Before doing anything else, open the exported file in a web browser to make sure everything displays as expected.
 
-These comments show where the layout content is injected, and where you can put your application content.
+Open the exported file in VS Code. Notice the layout content in the `<head> and <body>` is called out with HTML comments, and also the HTML comments that show where you can put your application content on the page.
+
+Let's take a closer look...
+
+### HEAD editable area
+Look inside the `<head></head>` for the comments that indicate where you can put your page-specific code that belongs in the HEAD.
+
+![<!--  BEGIN: Cosmos Layout HEAD content inject (not editable). --><!--  END: Cosmos HEAD inject (not editable). -->](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-head-editable.png)
+
+IMPORTANT: As you place your page-specific HEAD code between the comments shown above, **do not delete the comments.** The import processes needs thes present to work.
+
+### BODY editable area
+Using VS Code scroll down the exported page and find the comments indicated where you can place the code for your web application that needs to go inside the `<body></body>`.
+
+![<!-- BEGIN: Page specific BODY content goes here (editable) --><!-- END: Page specific BODY content (editable) -->](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-body-editable.png)
+
+Place the bulk of your application code here that belongs in the BODY. Like before, **do not delete** the HTML comments elsewise the import process will break.
+
+### Below footer (bottom of BODY) editable area
+The last opportunity to place page-specific code is after the layout footer and at the bottom of the `<body></body>`. Look for the following HTML comment:
+
+![<!-- BEGIN: Page specific *end* of BODY content goes here (editable) --><!-- END: Page specific *end* of BODY content  (editable) -->](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-footer-editable.png)
+
+Insert your end-of-page content here, and as before **do not delete** the HTML comments.
 
 ## Step 3: Import the web page
 
