@@ -1,6 +1,8 @@
 ﻿@using CDT.Cosmos.Cms.Services
 @using Microsoft.Extensions.Options;
 @using CDT.Cosmos.Cms.Common.Services.Configurations
+@using CDT.Cosmos.Cms.Controllers
+
 @inject IOptions<CosmosConfig> options
 @model ArticleViewModel
 @{
@@ -8,25 +10,21 @@
     ViewData["Title"] = Model.Title;
 }
 
-<!-- BEGIN: Cosmos header inject (not editable) -->
+@Html.Raw(PageImportConstants.COSMOS_BODY_HEADER_START)
 @Html.Raw(Model.Layout.HtmlHeader)
-<!-- END: Cosmos header inject (not editable) -->
+@Html.Raw(PageImportConstants.COSMOS_BODY_HEADER_END)
 
-<!-- BEGIN: Page specific BODY content goes here (editable) -->
 @Html.Raw(Model.Content)
-<!-- END: Page specific BODY content (editable) -->
 
-<!-- BEGIN: Cosmos footer inject (not editable) -->
+@Html.Raw(PageImportConstants.COSMOS_BODY_FOOTER_START)
 @Html.Raw(Model.Layout.FooterHtmlContent)
-<!-- END: Cosmos footer inject (not editable) -->
+@Html.Raw(PageImportConstants.COSMOS_BODY_FOOTER_END)
 
-<!-- BEGIN: Page specific *end* of BODY content goes here (editable) -->
 @Html.Raw(Model.FooterJavaScript)
-<!-- END: Page specific *end* of BODY content  (editable) -->
 
 @if (ViewData["UseGoogleTranslate"] != null && (bool) ViewData["UseGoogleTranslate"])
 {
-<!-- BEGIN: Google Translate v3 (not editable) -->
+@Html.Raw(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_START)
 <script src="@options.Value.EditorUrls.FirstOrDefault().Url/ccms/js/GoogleTranslations.js" id="ccms-lang-script" data-lang="@Model.LanguageName"></script>
-<!-- END: Google Translate v3 (not editable) -->
+@Html.Raw(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END)
 }

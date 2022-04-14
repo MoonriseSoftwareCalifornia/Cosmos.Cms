@@ -36,14 +36,6 @@ namespace CDT.Cosmos.Cms.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ArticleEditLogic _articleLogic;
 
-        // Page import constants
-        private const string COSMOS_HEAD_START = "<!-- BEGIN: page-specific head content (editable) -->";
-        private const string COSMOS_HEAD_END = "<!-- END: page-specific head content (editable) -->";
-        private const string COSMOS_BODY_START = "<!-- BEGIN: Page specific BODY content goes here (editable) -->";
-        private const string COSMOS_BODY_END = "<!-- END: Page specific BODY content (editable) -->";
-        private const string COSMOS_FOOTER_START = "<!-- BEGIN: Page specific *end* of BODY content goes here (editable) -->";
-        private const string COSMOS_FOOTER_END = "<!-- END: Page specific *end* of BODY content  (editable) -->";
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -148,50 +140,152 @@ namespace CDT.Cosmos.Cms.Controllers
                 await file.CopyToAsync(memstream);
                 var html = Encoding.UTF8.GetString(memstream.ToArray());
 
+                // Load the HTML document.
+                var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                htmlDoc.LoadHtml(html);
+
+
+                var headHtml = htmlDoc.DocumentNode.SelectSingleNode("//head").InnerHtml.Trim();
+                var bodyHtml = htmlDoc.DocumentNode.SelectSingleNode("//body").InnerHtml.Trim();
+
+
                 // Validate page can be parsed out
-                var totalLength = html.Length;
-                var cosmosHeadStart = html.IndexOf(COSMOS_HEAD_START) + COSMOS_HEAD_START.Length;
-                var cosmosHeadEnd = html.IndexOf(COSMOS_HEAD_END);
-                var cosmosBodyStart = html.IndexOf(COSMOS_BODY_START) + COSMOS_BODY_START.Length;
-                var cosmosBodyEnd = html.IndexOf(COSMOS_BODY_END);
-                var cosmosFooterStart = html.IndexOf(COSMOS_FOOTER_START) + COSMOS_FOOTER_START.Length;
-                var cosmosFooterEnd = html.IndexOf(COSMOS_FOOTER_END);
+                var headTotalLength = headHtml.Length;
+                var bodyTotalLength = bodyHtml.Length;
+
+                // -----------------------------------------------------
+                // Remove Cosmos Head Injection
+                var cosmosHeadStart = headHtml.IndexOf(PageImportConstants.COSMOS_HEAD_START);
+                var cosmosHeadEnd = headHtml.IndexOf(PageImportConstants.COSMOS_HEAD_END) + PageImportConstants.COSMOS_HEAD_END.Length;
 
                 if (cosmosHeadStart == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find {COSMOS_HEAD_START}");
-                }
+                    ModelState.AddModelError("", $"Could not find {PageImportConstants.COSMOS_HEAD_START}");
+                } 
                 if (cosmosHeadEnd == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find  {COSMOS_HEAD_END}");
+                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_HEAD_END}");
                 }
-                if (cosmosBodyStart == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {COSMOS_BODY_START}");
-                }
-                if (cosmosBodyEnd == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {COSMOS_BODY_END}");
-                }
-                if (cosmosFooterStart == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {COSMOS_FOOTER_START}");
-                }
-                if (cosmosFooterEnd == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {COSMOS_FOOTER_END}");
-                }
+
                 if (ModelState.IsValid)
                 {
+                    headHtml = headHtml.Remove(cosmosHeadStart, cosmosHeadEnd - cosmosHeadStart);
+                }
+
+                // -----------------------------------------------------
+                // Remove Cosmos Script Injection into bottom of head
+                var cosmosHeadScriptsStart = headHtml.IndexOf(PageImportConstants.COSMOS_HEAD_SCRIPTS_START);
+                var cosmosHeadScriptsEnd = headHtml.IndexOf(PageImportConstants.COSMOS_HEAD_SCRIPTS_END) + PageImportConstants.COSMOS_HEAD_SCRIPTS_END.Length;
+
+                if (cosmosHeadScriptsStart == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_HEAD_SCRIPTS_START}");
+                }
+                if (cosmosHeadScriptsEnd == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_HEAD_SCRIPTS_END}");
+                }
+                
+                if (ModelState.IsValid)
+                {
+                    headHtml = headHtml.Remove(cosmosHeadScriptsStart, cosmosHeadScriptsEnd - cosmosHeadScriptsStart);
+                }
+
+                // -----------------------------------------------------
+                // Remove Cosmos body header Injection
+                var cosmosBodyHeaderStart = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_HEADER_START);
+                var cosmosBodyHeaderEnd = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_HEADER_END) + PageImportConstants.COSMOS_BODY_HEADER_END.Length;
+
+                if (cosmosBodyHeaderStart == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_HEADER_START}");
+                }
+                if (cosmosBodyHeaderEnd == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_HEADER_END}");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    bodyHtml = bodyHtml.Remove(cosmosBodyHeaderStart, cosmosBodyHeaderEnd - cosmosBodyHeaderStart);
+                }
+
+                // -----------------------------------------------------
+                // Remove Cosmos body footer Injection
+                var cosmosBodyFooterStart = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_FOOTER_START);
+                var cosmosBodyFooterEnd = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_FOOTER_END) + PageImportConstants.COSMOS_BODY_FOOTER_END.Length;
+
+                if (cosmosBodyFooterStart == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_FOOTER_START}");
+                }
+                if (cosmosBodyFooterEnd == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_FOOTER_END}");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    bodyHtml = bodyHtml.Remove(cosmosBodyFooterStart, cosmosBodyFooterEnd - cosmosBodyFooterStart);
+                }
+
+                // -----------------------------------------------------
+                // Remove Cosmos Google Translate footer Injection (if present)
+                var cosmosGoogleTranslateStart = bodyHtml.IndexOf(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_START);
+                var cosmosGoogleTranslateEnd = bodyHtml.IndexOf(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END);
+
+                if ((cosmosGoogleTranslateStart > -1) || (cosmosGoogleTranslateEnd > -1))
+                {
+                    if (cosmosGoogleTranslateStart == -1)
+                    {
+                        ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_GOOGLE_TRANSLATE_START}");
+                    }
+                    else if (cosmosGoogleTranslateEnd == -1)
+                    {
+                        ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END}");
+                    }
+
+                    if (ModelState.IsValid)
+                    {
+                        bodyHtml = bodyHtml.Remove(cosmosGoogleTranslateStart, (cosmosGoogleTranslateEnd + PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END.Length) - cosmosGoogleTranslateStart);
+                    }
+                }
+
+
+                // -----------------------------------------------------
+                // Remove Cosmos end of body scripts Injection (if present)
+                var cosmosBodyEndScriptsStart = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_END_SCRIPTS_START);
+                var cosmosBodyEndScriptsEnd = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_END_SCRIPTS_END);
+
+                if ((cosmosBodyEndScriptsStart > -1) || (cosmosBodyEndScriptsEnd > -1))
+                {
+                    if (cosmosBodyEndScriptsStart == -1)
+                    {
+                        ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_END_SCRIPTS_START}");
+                    }
+                    if (cosmosBodyEndScriptsEnd == -1)
+                    {
+                        ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_END_SCRIPTS_END}");
+                    }
+
+                    if (ModelState.IsValid)
+                    {
+                        bodyHtml = bodyHtml.Remove(cosmosBodyEndScriptsStart, (cosmosBodyEndScriptsEnd + PageImportConstants.COSMOS_BODY_END_SCRIPTS_END.Length) - cosmosBodyEndScriptsStart);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+
+                    var pageBody = bodyHtml.Substring(0, cosmosBodyFooterStart);
+                    var pageFooter = bodyHtml.Substring(cosmosBodyFooterStart, bodyHtml.Length - cosmosBodyFooterStart);
+
+                    var trims = new char[] { ' ', '\n', '\r' };
+
                     var article = await _articleLogic.Get(Id, EnumControllerName.Edit);
-
-                    var pageHead = html.Substring(cosmosHeadStart, cosmosHeadEnd - cosmosHeadStart);
-                    var pageBody = html.Substring(cosmosBodyStart, cosmosBodyEnd - cosmosBodyStart);
-                    var pageFooter = html.Substring(cosmosFooterStart, cosmosFooterEnd - cosmosFooterStart);
-
-                    article.HeaderJavaScript = pageHead;
-                    article.Content = pageBody;
-                    article.FooterJavaScript = pageFooter;
+                    article.HeaderJavaScript = headHtml.Trim();
+                    article.Content = pageBody.Trim();
+                    article.FooterJavaScript = pageFooter.Trim();
 
                     // Get the user's ID for logging.
                     var user = await _userManager.GetUserAsync(User);
@@ -202,6 +296,7 @@ namespace CDT.Cosmos.Cms.Controllers
             catch (Exception e)
             {
                 var t = e; // Debugging
+                throw;
             }
 
 
@@ -861,5 +956,60 @@ namespace CDT.Cosmos.Cms.Controllers
 
 
         #endregion
+    }
+
+    /// <summary>
+    /// Page Import Constants
+    /// </summary>
+    public static class PageImportConstants
+    {
+        /// <summary>
+        /// Marks the start of the head injection
+        /// </summary>
+        public const string COSMOS_HEAD_START = "<!--  BEGIN: Cosmos Layout HEAD content inject (not editable). -->";
+        /// <summary>
+        /// Marks the end of the head injection
+        /// </summary>
+        public const string COSMOS_HEAD_END = "<!--  END: Cosmos HEAD inject (not editable). -->";
+        /// <summary>
+        /// Marks the begining of the optional head script injection
+        /// </summary>
+        public const string COSMOS_HEAD_SCRIPTS_START = "<!-- BEGIN: Optional Cosmos script section injected (not editable). -->";
+        /// <summary>
+        /// Marks the end of the optional head script injection
+        /// </summary>
+        public const string COSMOS_HEAD_SCRIPTS_END = "<!-- END: Optional Cosmos script section injected  (not editable). -->";
+        /// <summary>
+        /// Marks the beginning of the header injection
+        /// </summary>
+        public const string COSMOS_BODY_HEADER_START = "<!-- BEGIN: Cosmos header inject (not editable) -->";
+        /// <summary>
+        /// Marks the end of the header injection
+        /// </summary>
+        public const string COSMOS_BODY_HEADER_END = "<!-- END: Cosmos header inject (not editable) -->";
+        /// <summary>
+        /// Marks the start of the footer injection
+        /// </summary>
+        public const string COSMOS_BODY_FOOTER_START = "<!-- BEGIN: Cosmos footer inject (not editable) -->";
+        /// <summary>
+        /// Marks the end of the footer injection
+        /// </summary>
+        public const string COSMOS_BODY_FOOTER_END = "<!-- END: Cosmos footer inject (not editable) -->";
+        /// <summary>
+        /// Marks the start of Google Translate injection
+        /// </summary>
+        public const string COSMOS_GOOGLE_TRANSLATE_START = "<!-- BEGIN: Google Translate v3 (not editable) -->";
+        /// <summary>
+        /// Marks the endo of Google Translate injection
+        /// </summary>
+        public const string COSMOS_GOOGLE_TRANSLATE_END = "<!-- END: Google Translate v3 (not editable) -->";
+        /// <summary>
+        /// Marks the start of the end-of-body script injection
+        /// </summary>
+        public const string COSMOS_BODY_END_SCRIPTS_START = "<!-- BEGIN: Optional Cosmos script section injected (not editable). -->";
+        /// <summary>
+        /// Marks the end of the end-of-body script injection
+        /// </summary>
+        public const string COSMOS_BODY_END_SCRIPTS_END = "<!-- END: Optional Cosmos script section (not editable). -->";
     }
 }

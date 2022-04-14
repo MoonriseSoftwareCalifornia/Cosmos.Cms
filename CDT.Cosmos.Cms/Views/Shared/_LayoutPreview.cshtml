@@ -1,25 +1,25 @@
 ﻿@model ArticleViewModel
+@using CDT.Cosmos.Cms.Controllers
 <!DOCTYPE html>
 <html lang="@Model.LanguageCode">
 <head>
-<!--  BEGIN: Cosmos Layout HEAD content inject (not editable). -->
+
+@Html.Raw(PageImportConstants.COSMOS_HEAD_START)
 <title>@Model.Title</title>
 @Html.Raw(Model.Layout.Head)
-<!--  END: Cosmos HEAD inject (not editable). -->
+@Html.Raw(PageImportConstants.COSMOS_HEAD_END)
 
-<!-- BEGIN: page-specific head content (editable) -->
 @Html.Raw(Model.HeaderJavaScript)
-<!-- END: page-specific head content (editable) -->
 
-<!-- BEGIN: Application insights injected (if used - not editable). -->
+@Html.Raw(PageImportConstants.COSMOS_HEAD_SCRIPTS_START)
 @Html.Raw(JavaScriptSnippet.FullScript)
-<!-- END: Application insights  (if used - not editable). -->
+@Html.Raw(PageImportConstants.COSMOS_HEAD_SCRIPTS_END)
 </head>
 <body>
 @RenderBody()
 
-<!-- BEGIN: Cosmos script section injected (if used - not editable). -->
+@Html.Raw(PageImportConstants.COSMOS_BODY_END_SCRIPTS_START)
 @await RenderSectionAsync("Scripts", false)
-<!-- END: Cosmos script section (if used - not editable). -->
+@Html.Raw(PageImportConstants.COSMOS_BODY_END_SCRIPTS_END)
 </body>
 </html>
