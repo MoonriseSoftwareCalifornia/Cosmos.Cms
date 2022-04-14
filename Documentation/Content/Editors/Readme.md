@@ -1,6 +1,6 @@
-# Create and Edit Content
+# Built-in Editors
 
-Three paths are availble for creating content that can be hosted with Cosmos.  You can use which one(s) work best for you. An overview of each is given here.
+Cosmos comes with two editors, each of which is briefly described below.
 
 ## [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md)
 
@@ -16,12 +16,5 @@ Read more: [Code Editor documentation](https://github.com/CosmosSoftware/Cosmos.
 
 Read more: [HTML editor documentation](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)
 
-## [Visual Studio Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
-
-The best means to build web apps is to use Visual Studio Code with npm.  Angular, React, Vue and other applications can be built locally on your desktop computer, then imported into Cosmos for hosting.
-
-Cosmos does not restrict the type of framework used. You can have multiple applications written in different frameworks all hosted on the same website. Choose the "best of breed" for your needs.
-
-Read more: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
 ___
-Previous: [Home](https://github.com/CosmosSoftware/Cosmos.Cms#cosmos) Next: [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Related: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md)
+Previous: [Creating Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) Next: [Creating with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)

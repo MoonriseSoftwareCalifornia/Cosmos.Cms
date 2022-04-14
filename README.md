@@ -6,21 +6,29 @@
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FCosmosSoftware%2FCosmos.Cms%2Fmain%2FAutomation%2FAzure%2Fazuredeploy.json)
 
-Quick links: [Getting Started](#getting-started-with-cosmos) | [Developer Help](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/DevelopingWithCosmos.md) | [Manual Docker Install](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/README.md#docker-container-manual-install) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
+Quick links: [Getting Started](#getting-started-with-cosmos) | [Create Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) | [Create with VS Code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) | [Technical Documentation](https://cosmos.moonrise.net/documentation)
 
-## About Cosmos
+## Be Creative
 
-Cosmos is a hybrid application hosting platform that supports Angular, jQuery, React, Vue and other framework applications, and it also comes with a robust content management system.  It is a true *mash-up* platform.
+Cosmos is a Content Management System that's been called a "*developer's dream*" because it not only contains what you'd expect in a lightweight CMS, but it also supports hosting web-apps built your favorite framework such as Angular, jQuery, React, Vue, Google Maps, Map Box, ESRI, Bing Maps ...and others.
 
-__Example Use Cases__
-* Websites that have an Angular, jQuery, React or Vue web-app as a "home page," and associated web pages built with the CMS tools for documentation.
-* A traditional website, built mostly with the CMS, but has a mixture of "web apps" included.
-* A web app site comtaining Angular, jQuery, React or Vue along with Tableau, Google Map apps, Bing, or MapBox applications.
-* Any situation where you need extreme performance and highly redundant, website, hosted in both AWS and Azure simulatneously
+See our [live framework demos](https://cosmos.moonrise.net/Demos).
 
-It was built by the staff of the California Department of Technology as an open, cloud-first high performance platform built to host websites that hosts applications and general content during times of natural disasters and other emergencies.
+<details><summary>Example Use Cases</summary>
+ <div style='border-style: solid;'>
+ <ul>
+  <li>Originally designed to host web content for emergencies for the State of California.</li>
+  <li>Host an Angular, jQuery, React or Vue web-app as a "home page" along with other pages with documentation.</li>
+  <li>Website hosts multiple web-apps each built with different framework.</li>
+  <li>A dashboard website with graphs, charts, maps along with report pages and documentation.</li>
+  <li>A CMS with an extremely easy HTML editing interface for non-technical users needing to make quick edits.</li>
+ </ul>
+ </div>
+ </details>
 
-Now it is an open-source project.
+Cosmos was built by the staff of the California Department of Technology as an open, cloud-first high performance platform built to host websites during times of natural disasters and other emergencies. It was used from 2019 - 2021 for fire response, and in 2020 for COVID response.
+
+The California Department of Technology decided to open source the project at the end of 2021.
 
 ## Getting Started with Cosmos
 
@@ -37,12 +45,12 @@ Here is how:
 There are three ways to create content that can be hosted on Cosmos:
 
 * Use the built-in [HTML or WYSIWYG Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md) (best for non-technical folks)
-* Use the built-in [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md)
-* Use [Visual Studio Code on your Desktop](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) with npm and import directly into Cosmos.
+* Use the built-in [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) (best for developers)
+* Use [Visual Studio Code on your Desktop](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/Creating-with-VS-Code.md) with `npm build` and import directly into Cosmos. (best for building web-apps)
 
 ## Upload Assets
 
-* Use the file manager
+Use the file manager to upload one or more files at a time. You can also upload whole folders at once.
 
 ## Project Status
 
