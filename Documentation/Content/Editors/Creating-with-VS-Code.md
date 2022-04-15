@@ -2,7 +2,7 @@
 
 With Cosmos, you can develop rich web applications and content on your desktop and import them directly into Cosmos.
 
-In this tutorial we show how to...
+In this tutorial I will show how to...
 
 1. [Create a web page](#step-1-create-a-web-page-using-cosmos) in Cosmos then export it to your desktop.
 2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, Angular, and npm.
@@ -14,13 +14,38 @@ A few things need to be installed on your computer before starting this tutorial
 
 1 [Visual Studio Code](https://code.visualstudio.com)
 2 [Node.js](https://nodejs.org)
-3 [Angular CLI](https://angular.io/cli) using the following command `npm install -g @angular/cli`
 
 Let's begin...
  
-## Step 1: Create a web page using Cosmos
- 
-Start by creating a new web page with Cosmos that will house your web app.
+## Step 1: Create an React web app
+
+This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot).
+
+It uses the following:
+
+* React js
+* React Router
+* React Hooks
+* Context API
+* Flickr API
+
+Follow the [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the [Readme document](https://github.com/Yog9/SnapShot#snap-shot-) to build download, install and build your application.
+
+When you run this app you should see something like below.
+
+![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SnapShotDemo.png)
+
+Now we are going to get this application ready to import into Cosmos.
+
+## Step 2: Add layout elements
+
+A keen eye will notice that the application above does not include the "layout" elements of my [Cosmos website](https://cosmos.moonrise.net).
+
+Specifically, the application is missing the header and footer are missing.
+
+Before diving into building your React app, we need to create a web page on Comsos that will house your application.
+
+Start by creating a new web page:
  
  * Click the "Menu" button and select "Pages."
  * From the page list page, click the "New Page" button.
@@ -39,21 +64,7 @@ Start by creating a new web page with Cosmos that will house your web app.
 
 This will download a web page ready that you will need later. Remember where you downloaded it.
 
-## Step 2: Create an React web app
-
-Here we use the example application called [Snap Shot](https://github.com/Yog9/SnapShot) on [GitHub](https://github.com/Yog9/SnapShot).
-
-Follow [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the Readme document.
-
-Now you should see something like this:
-
-![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-run-example.png)
-
-If your application looks like above, all is good.  Notice that it does not include the "layout" elements of your Cosmos website?
-
-Now we are going to start encorporating those elements into your application. When that is done we will import it into Cosmos.
-
-### Encorporate the layout elements
+## Step 2:
 
 * Locate the webpage you exported from Cosmos and add it to your project.
 * You should now see the file added to your `src` folder like below (your file name might be different).
