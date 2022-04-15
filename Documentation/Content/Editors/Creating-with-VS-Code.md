@@ -118,6 +118,26 @@ Create a folder to hold your application's assets.  I created the following fold
 
 ![File Manager](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-filemanager.png)
 
+Here are the steps to upload the files:
+
+1. With your folder selected, click the "upload files" button.
+2. Open the folder on your computer where the files exist.
+3. Select all these files *except index.html*, plus the `static` folder, and drop it on the uploader.
+4. After files have uploaded click the "close" button.
+
+Using the file manager, check what was just uploaded.
+
+### Import the web page
+
+Next we need to import the `index.html` into Cosmos. Here are the steps:
+
+1. Click the "Menu" button then select "Pages."
+2. Find the page you created above and click "Edit." On the next page select "Code View."
+3. Once the code editor opens, select "Menu" then "Import."
+4. The import dialog open, click the "Select files" button, and select the `index.html` file in the "build" folder.
+
+
+
 
 
 Previous: [Create and Edit Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) Next: [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Releated: [HTML (WYSIWYG) Editor](https://github.com/CosmosSoftware/Cosmos.Cms/edit/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)
