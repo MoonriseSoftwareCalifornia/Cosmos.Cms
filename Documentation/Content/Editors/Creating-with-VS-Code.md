@@ -2,7 +2,7 @@
 
 With Cosmos, you can develop rich web applications and content on your desktop and import them directly into Cosmos.
 
-In this tutorial we show how to...
+In this tutorial I will show how to...
 
 1. [Create a web page](#step-1-create-a-web-page-using-cosmos) in Cosmos then export it to your desktop.
 2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, Angular, and npm.
@@ -14,13 +14,14 @@ A few things need to be installed on your computer before starting this tutorial
 
 1 [Visual Studio Code](https://code.visualstudio.com)
 2 [Node.js](https://nodejs.org)
-3 [Angular CLI](https://angular.io/cli) using the following command `npm install -g @angular/cli`
 
 Let's begin...
- 
-## Step 1: Create a web page using Cosmos
- 
-Start by creating a new web page with Cosmos that will house your web app.
+
+## Step 1: Create a web page in Cosmos then export it
+
+The web app we are building will be hosted by Cosmos.  We need to create a place for it, so create a web page in Cosmos then export it.
+
+Here is how:
  
  * Click the "Menu" button and select "Pages."
  * From the page list page, click the "New Page" button.
@@ -37,65 +38,103 @@ Start by creating a new web page with Cosmos that will house your web app.
  * Then, click "Menu" then "Code View" to open the code editor.
  * Next, click the "Code Editor" button and click "Export."
 
-This will download a web page ready that you will need later. Remember where you downloaded it.
+This will download a web page that you will need it next.
 
-## Step 2: Create an Angular web app and build it
+## Step 2: Create an React web app
 
-Here we use the example application called [Building a template-driven form](https://angular.io/guide/forms#building-a-template-driven-form) from [Angular.io](https://angular.io/) website.
+This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot).
 
-### Download, build and view the demo app
+It uses the following:
 
-* [Download the source code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/angular-app.zip) and open it with Visual Studio Code (VS Code).
-* Open a terminal in VS Code and install the dependencies like this: `npm install`
-* Now run the application with the command: `ng serve`
-* The development web server will start, and soon in the terminal you will see the development server URL.
-* Open the URL in a web browser.
+* React js
+* React Router
+* React Hooks
+* Context API
+* Flickr API
 
-Now you should see something like this:
+Follow the [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the [Readme document](https://github.com/Yog9/SnapShot#snap-shot-) to install dependencies and build your application.
 
-![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-run-example.png)
+Run the app and you should see something like below.
 
-If your application looks like above, all is good.  Notice that it does not include the "layout" elements of your Cosmos website?
+![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SnapShotDemo.png)
 
-Now we are going to start encorporating those elements into your application. When that is done we will import it into Cosmos.
+A keen eye will notice that the application above does not include the "layout" elements of my [Cosmos website](https://cosmos.moonrise.net).
 
-### Encorporate the layout elements
+Specifically, the application is missing the header and footer elements.
+
+Now we are going to get this application ready to import into Cosmos.
+
+## Step 3: Merge the app with the export page
+
+Now we are going to merge the app we just create with our layout.
+
+Let's start with this:
 
 * Locate the webpage you exported from Cosmos and add it to your project.
 * You should now see the file added to your `src` folder like below (your file name might be different).
 
 ![Exported file now in src folder](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-file-added.png)
 
-*Tip: Before doing anything else, open the exported file in a web browser to make sure everything displays as expected.
+Open the exported file in VS Code notice HTML comments within the `<head></head>` and the `<body></body>` of the page that mark areas as `(not editable)`.
 
-Open the exported file in VS Code. Notice the layout content in the `<head> and <body>` is called out with HTML comments, and also the HTML comments that show where you can put your application content on the page.
+Below is a screenshot of an example where you can see what the comments look like.
 
-Let's take a closer look...
+![HEAD screen shot](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-head-layout.png)
 
-### HEAD editable area
-Look inside the `<head></head>` for the comments that indicate where you can put your page-specific code that belongs in the HEAD.
+The content within these comments are part of the layout.  It is important to not edit anything within these blocks.
 
-![<!--  BEGIN: Cosmos Layout HEAD content inject (not editable). --><!--  END: Cosmos HEAD inject (not editable). -->](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-head-editable.png)
+*IMPORTANT!: Do not remove the HTML comments as these are needed during the import process.*
 
-IMPORTANT: As you place your page-specific HEAD code between the comments shown above, **do not delete the comments.** The import processes needs thes present to work.
+Now complete the following steps:
 
-### BODY editable area
-Using VS Code scroll down the exported page and find the comments indicated where you can place the code for your web application that needs to go inside the `<body></body>`.
+* Rename your `index.html` page to something like `original-index.html` and rename the import page to `index.html'.
+* Copy the code from  `original-index.html` and put it in your new `index.html` making sure the uneditable areas are not changed.
+* Build and start your app to see the results.
 
-![<!-- BEGIN: Page specific BODY content goes here (editable) --><!-- END: Page specific BODY content (editable) -->](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-body-editable.png)
+## Step 4: Test and Debug your app
 
-Place the bulk of your application code here that belongs in the BODY. Like before, **do not delete** the HTML comments elsewise the import process will break.
+It is not unusual to have conflicts between the CSS and JavaScript functions of your layout and your application.  If you choose a "lean" layout you will minimize any problems.
 
-### Below footer (bottom of BODY) editable area
-The last opportunity to place page-specific code is after the layout footer and at the bottom of the `<body></body>`. Look for the following HTML comment:
+Below is a screenshot of the finished app that now has the layout elements implemented, and I have resolved any CSS conflicts.
 
-![<!-- BEGIN: Page specific *end* of BODY content goes here (editable) --><!-- END: Page specific *end* of BODY content  (editable) -->](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-footer-editable.png)
+![Finished App Screenshot](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-ready-to-import.png)
 
-Insert your end-of-page content here, and as before **do not delete** the HTML comments.
+Now we are ready to import this into Cosmos.
 
-## Step 3: Import the web page
+## Step 5: Import the app
 
-## Post Import Steps
+The import process happens in four steps:
+
+1. Run the command `npm run build` to create the run package.
+2. Upload assests to Cosmos
+3. Import the web page
+4. Correct JavaScript and CSS paths in web page
+
+### Uploading assets
+
+Login to the Cosmos Editor for your website, then select "Menu" then "Files."  This will open the file manager.
+
+Create a folder to hold your application's assets.  I created the following folder `/pub/apps/snapshot` as show in the picture below.
+
+![File Manager](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-filemanager.png)
+
+Here are the steps to upload the files:
+
+1. With your folder selected, click the "upload files" button.
+2. Open the folder on your computer where the files exist.
+3. Select all these files *except index.html*, plus the `static` folder, and drop it on the uploader.
+4. After files have uploaded click the "close" button.
+
+Using the file manager, check what was just uploaded.
+
+### Import the web page
+
+Next we need to import the `index.html` into Cosmos. Here are the steps:
+
+1. Click the "Menu" button then select "Pages."
+2. Find the page you created above and click "Edit." On the next page select "Code View."
+3. Once the code editor opens, select "Menu" then "Import."
+4. The import dialog open, click the "Select files" button, and select the `index.html` file in the "build" folder.
 
 
 
