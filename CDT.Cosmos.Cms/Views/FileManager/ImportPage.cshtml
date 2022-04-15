@@ -44,7 +44,8 @@
         }
 
     function onUploadSuccess(e) {
-        window.opener.ccmsSendSignal("ArticleImported");
+        window.opener.ccmsSendSignal("ArticleSaved");
+        window.opener.location = window.opener.location;
     }
 
     function onError(e) {
