@@ -39,17 +39,11 @@ Start by creating a new web page with Cosmos that will house your web app.
 
 This will download a web page ready that you will need later. Remember where you downloaded it.
 
-## Step 2: Create an Angular web app and build it
+## Step 2: Create an React web app
 
-Here we use the example application called [Building a template-driven form](https://angular.io/guide/forms#building-a-template-driven-form) from [Angular.io](https://angular.io/) website.
+Here we use the example application called [Snap Shot](https://github.com/Yog9/SnapShot) on [GitHub](https://github.com/Yog9/SnapShot).
 
-### Download, build and view the demo app
-
-* [Download the source code](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/angular-app.zip) and open it with Visual Studio Code (VS Code).
-* Open a terminal in VS Code and install the dependencies like this: `npm install`
-* Now run the application with the command: `ng serve`
-* The development web server will start, and soon in the terminal you will see the development server URL.
-* Open the URL in a web browser.
+Follow [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the Readme document.
 
 Now you should see something like this:
 
