@@ -114,7 +114,9 @@ The import process happens in four steps:
 
 Login to the Cosmos Editor for your website, then select "Menu" then "Files."  This will open the file manager.
 
+Create a folder to hold your application's assets.  I created the following folder `/pub/apps/snapshot` as show in the picture below.
 
+![File Manager](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-filemanager.png)
 
 
 
