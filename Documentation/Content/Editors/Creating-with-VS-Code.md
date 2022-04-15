@@ -16,36 +16,12 @@ A few things need to be installed on your computer before starting this tutorial
 2 [Node.js](https://nodejs.org)
 
 Let's begin...
- 
-## Step 1: Create an React web app
 
-This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot).
+## Step 1: Create a web page in Cosmos then export it
 
-It uses the following:
+The web app we are building will be hosted by Cosmos.  We need to create a place for it, so create a web page in Cosmos then export it.
 
-* React js
-* React Router
-* React Hooks
-* Context API
-* Flickr API
-
-Follow the [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the [Readme document](https://github.com/Yog9/SnapShot#snap-shot-) to build download, install and build your application.
-
-When you run this app you should see something like below.
-
-![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SnapShotDemo.png)
-
-Now we are going to get this application ready to import into Cosmos.
-
-## Step 2: Add layout elements
-
-A keen eye will notice that the application above does not include the "layout" elements of my [Cosmos website](https://cosmos.moonrise.net).
-
-Specifically, the application is missing the header and footer are missing.
-
-Before diving into building your React app, we need to create a web page on Comsos that will house your application.
-
-Start by creating a new web page:
+Here is how:
  
  * Click the "Menu" button and select "Pages."
  * From the page list page, click the "New Page" button.
@@ -62,43 +38,58 @@ Start by creating a new web page:
  * Then, click "Menu" then "Code View" to open the code editor.
  * Next, click the "Code Editor" button and click "Export."
 
-This will download a web page ready that you will need later. Remember where you downloaded it.
+This will download a web page that you will need it next.
 
-## Step 2:
+## Step 2: Create an React web app
+
+This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot).
+
+It uses the following:
+
+* React js
+* React Router
+* React Hooks
+* Context API
+* Flickr API
+
+Follow the [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the [Readme document](https://github.com/Yog9/SnapShot#snap-shot-) to install dependencies and build your application.
+
+Run the app and you should see something like below.
+
+![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SnapShotDemo.png)
+
+A keen eye will notice that the application above does not include the "layout" elements of my [Cosmos website](https://cosmos.moonrise.net).
+
+Specifically, the application is missing the header and footer elements.
+
+Now we are going to get this application ready to import into Cosmos.
+
+## Step 3: Merge the app with the export page
+
+Now we are going to merge the app we just create with our layout.
+
+Let's start with this:
 
 * Locate the webpage you exported from Cosmos and add it to your project.
 * You should now see the file added to your `src` folder like below (your file name might be different).
 
 ![Exported file now in src folder](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-file-added.png)
 
-*Tip: Before doing anything else, open the exported file in a web browser to make sure everything displays as expected.
+Open the exported file in VS Code notice HTML comments within the `<head></head>` and the `<body></body>` of the page that mark areas as `(not editable)`.
 
-Open the exported file in VS Code. Notice the layout content in the `<head> and <body>` is called out with HTML comments, and also the HTML comments that show where you can put your application content on the page.
+The content within these comments are part of the layout.  It is important to not edit anything within these blocks.
 
-Let's take a closer look...
+*IMPORTANT!: Do not remove the HTML comments as these are needed during the import process.*
 
-### HEAD editable area
-Look inside the `<head></head>` for the comments that indicate where you can put your page-specific code that belongs in the HEAD.
+Now complete the following steps:
 
-![<!--  BEGIN: Cosmos Layout HEAD content inject (not editable). --><!--  END: Cosmos HEAD inject (not editable). -->](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-head-editable.png)
+* Rename your `index.html` page to something like `original-index.html` and rename the import page to `index.html'.
+* Copy the code from  `original-index.html` and put it in your new `index.html` making sure the uneditable areas are not changed.
+* Build and start your app to see the results.
 
-IMPORTANT: As you place your page-specific HEAD code between the comments shown above, **do not delete the comments.** The import processes needs thes present to work.
+## Step 4: Test and Debug your app
 
-### BODY editable area
-Using VS Code scroll down the exported page and find the comments indicated where you can place the code for your web application that needs to go inside the `<body></body>`.
-
-![<!-- BEGIN: Page specific BODY content goes here (editable) --><!-- END: Page specific BODY content (editable) -->](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-body-editable.png)
-
-Place the bulk of your application code here that belongs in the BODY. Like before, **do not delete** the HTML comments elsewise the import process will break.
-
-### Below footer (bottom of BODY) editable area
-The last opportunity to place page-specific code is after the layout footer and at the bottom of the `<body></body>`. Look for the following HTML comment:
-
-![<!-- BEGIN: Page specific *end* of BODY content goes here (editable) --><!-- END: Page specific *end* of BODY content  (editable) -->](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-footer-editable.png)
-
-Insert your end-of-page content here, and as before **do not delete** the HTML comments.
-
-## Step 3: Import the web page
+It is not unusual to have conflicts between the CSS and JavaScript functions of your layout and your application.  If you choose a "lean" layout you will minimize any problems.
 
 ## Post Import Steps
 
