@@ -77,6 +77,10 @@ Let's start with this:
 
 Open the exported file in VS Code notice HTML comments within the `<head></head>` and the `<body></body>` of the page that mark areas as `(not editable)`.
 
+Below is a screenshot of an example where you can see what the comments look like.
+
+![HEAD screen shot](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-head-layout.png)
+
 The content within these comments are part of the layout.  It is important to not edit anything within these blocks.
 
 *IMPORTANT!: Do not remove the HTML comments as these are needed during the import process.*
@@ -91,7 +95,24 @@ Now complete the following steps:
 
 It is not unusual to have conflicts between the CSS and JavaScript functions of your layout and your application.  If you choose a "lean" layout you will minimize any problems.
 
-## Post Import Steps
+Below is a screenshot of the finished app that now has the layout elements implemented, and I have resolved any CSS conflicts.
+
+![Finished App Screenshot](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-ready-to-import.png)
+
+Now we are ready to import this into Cosmos.
+
+## Step 5: Import the app
+
+The import process happens in four steps:
+
+1. Run the command `npm run build` to create the run package.
+2. Upload assests to Cosmos
+3. Import the web page
+4. Correct JavaScript and CSS paths in web page
+
+### Uploading assets
+
+Login to the Cosmos Editor for your website, then select "Menu" then "Files."  This will open the file manager.
 
 
 
