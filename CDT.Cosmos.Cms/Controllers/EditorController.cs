@@ -706,15 +706,6 @@ namespace CDT.Cosmos.Cms.Controllers
                 // Get the user's ID for logging.
                 var user = await _userManager.GetUserAsync(User);
 
-                //if (model.Published.HasValue)
-                //{
-                //    model.Content = MinifyHtml(model.Content);
-                //    model.HeaderJavaScript = MinifyHtml(model.HeaderJavaScript);
-                //    model.FooterJavaScript = MinifyHtml(model.FooterJavaScript);
-                //}
-
-
-
 
                 // START SAVE TO DATABASE ********
                 //

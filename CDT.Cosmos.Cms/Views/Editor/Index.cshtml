@@ -20,7 +20,6 @@
         <div class="col">
             <h3>@ViewData["Title"]</h3>
             <hr />
-            <p>The following is a list of all active web pages for this website.</p>
             @if (canEdit || User.IsInRole("Authors") || teamMemberLogic?.CanCreatePage() == true)
             {
                 <a class="btn btn-sm btn-primary" asp-action="Create">New Page</a>
@@ -43,6 +42,7 @@
             .Info(true)
             .PreviousNext(true)
             .Refresh(true)
+            .Position(GridPagerPosition.Top)
             )
             .Sortable()
             .Editable(editable => editable.Mode(GridEditMode.InLine).ConfirmDelete("Are you sure you want to trash this article?").CancelDelete("Do not trash article."))

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -81,7 +82,7 @@ namespace CDT.Cosmos.Cms.Controllers
             ViewData["BlobEndpointUrl"] = GetBlobRootUrl();
             return View();
         }
-        
+
         /// <summary>
         /// Imports a page
         /// </summary>
@@ -108,9 +109,9 @@ namespace CDT.Cosmos.Cms.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
         public async Task<IActionResult> ImportPage(IEnumerable<IFormFile> files,
-            string metaData, string path)
+            string metaData, string id)
         {
-            if (files == null || files.Any() == false || int.TryParse(path, out int Id) == false)
+            if (files == null || files.Any() == false || int.TryParse(id, out int Id) == false)
             {
                 return null;
             }
@@ -131,6 +132,12 @@ namespace CDT.Cosmos.Cms.Controllers
             }
 
             if (fileMetaData == null) throw new Exception("Could not read the file's metadata");
+
+            var uploadResult = new PageImportResult
+            {
+                uploaded = fileMetaData.TotalChunks - 1 <= fileMetaData.ChunkIndex,
+                fileUid = fileMetaData.UploadUid
+            };
 
             try
             {
@@ -160,11 +167,11 @@ namespace CDT.Cosmos.Cms.Controllers
 
                 if (cosmosHeadStart == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find {PageImportConstants.COSMOS_HEAD_START}");
-                } 
+                    ModelState.AddModelError("", $"Could not find {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_HEAD_START)}");
+                }
                 if (cosmosHeadEnd == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_HEAD_END}");
+                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_HEAD_END)}");
                 }
 
                 if (ModelState.IsValid)
@@ -179,13 +186,13 @@ namespace CDT.Cosmos.Cms.Controllers
 
                 if (cosmosHeadScriptsStart == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_HEAD_SCRIPTS_START}");
+                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_HEAD_SCRIPTS_START)}");
                 }
                 if (cosmosHeadScriptsEnd == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_HEAD_SCRIPTS_END}");
+                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_HEAD_SCRIPTS_END)}");
                 }
-                
+
                 if (ModelState.IsValid)
                 {
                     headHtml = headHtml.Remove(cosmosHeadScriptsStart, cosmosHeadScriptsEnd - cosmosHeadScriptsStart);
@@ -198,11 +205,11 @@ namespace CDT.Cosmos.Cms.Controllers
 
                 if (cosmosBodyHeaderStart == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_HEADER_START}");
+                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_HEADER_START)}");
                 }
                 if (cosmosBodyHeaderEnd == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_HEADER_END}");
+                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_HEADER_END)}");
                 }
 
                 if (ModelState.IsValid)
@@ -217,11 +224,11 @@ namespace CDT.Cosmos.Cms.Controllers
 
                 if (cosmosBodyFooterStart == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_FOOTER_START}");
+                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_FOOTER_START)}");
                 }
                 if (cosmosBodyFooterEnd == -1)
                 {
-                    ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_FOOTER_END}");
+                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_FOOTER_END)}");
                 }
 
                 if (ModelState.IsValid)
@@ -238,11 +245,11 @@ namespace CDT.Cosmos.Cms.Controllers
                 {
                     if (cosmosGoogleTranslateStart == -1)
                     {
-                        ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_GOOGLE_TRANSLATE_START}");
+                        ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_START)}");
                     }
                     else if (cosmosGoogleTranslateEnd == -1)
                     {
-                        ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END}");
+                        ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END)}");
                     }
 
                     if (ModelState.IsValid)
@@ -261,11 +268,11 @@ namespace CDT.Cosmos.Cms.Controllers
                 {
                     if (cosmosBodyEndScriptsStart == -1)
                     {
-                        ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_END_SCRIPTS_START}");
+                        ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_END_SCRIPTS_START)}");
                     }
                     if (cosmosBodyEndScriptsEnd == -1)
                     {
-                        ModelState.AddModelError("", $"Could not find  {PageImportConstants.COSMOS_BODY_END_SCRIPTS_END}");
+                        ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_END_SCRIPTS_END)}");
                     }
 
                     if (ModelState.IsValid)
@@ -292,21 +299,33 @@ namespace CDT.Cosmos.Cms.Controllers
 
                     await _articleLogic.UpdateOrInsert(article, user.Id);
                 }
+                else
+                {
+                    uploadResult.Errors = SerializeErrors(ModelState);
+                }
             }
             catch (Exception e)
             {
-                var t = e; // Debugging
+                _logger.LogError("Web page import failed.", e);
                 throw;
             }
 
 
-            var fileBlob = new FileUploadResult
-            {
-                uploaded = fileMetaData.TotalChunks - 1 <= fileMetaData.ChunkIndex,
-                fileUid = fileMetaData.UploadUid
-            };
+            return Json(uploadResult);
+        }
 
-            return Json(fileBlob);
+        /// <summary>
+        /// Returns model state errors as serialization
+        /// </summary>
+        /// <param name="modelState"></param>
+        /// <returns></returns>
+        private string SerializeErrors(ModelStateDictionary modelState)
+        {
+            var errors = modelState.Values
+                .Where(w => w.ValidationState == ModelValidationState.Invalid).Select(s => s.Errors)
+                .ToList();
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(errors);
         }
 
 
@@ -497,7 +516,7 @@ namespace CDT.Cosmos.Cms.Controllers
 
                 return Json(filteredModel);
             }
-            
+
 
             return Json(model);
         }
@@ -893,7 +912,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 return Json("");
 
             if (string.IsNullOrEmpty(path) || path.Trim('/') == "") return Unauthorized("Cannot upload here. Please select the 'pub' folder first, or subfolder below that, then try again.");
-                        
+
             //
             // Get information about the chunk we are on.
             //
