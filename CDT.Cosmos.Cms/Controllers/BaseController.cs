@@ -7,6 +7,7 @@ using CDT.Cosmos.Cms.Services;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -376,6 +377,21 @@ namespace CDT.Cosmos.Cms.Controllers
             var result = Signal_PostProcess<T>(encrypted);
 
             return result;
+        }
+
+
+        /// <summary>
+        /// Returns model state errors as serialization
+        /// </summary>
+        /// <param name="modelState"></param>
+        /// <returns></returns>
+        internal string SerializeErrors(ModelStateDictionary modelState)
+        {
+            var errors = modelState.Values
+                .Where(w => w.ValidationState == ModelValidationState.Invalid).Select(s => s.Errors)
+                .ToList();
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(errors);
         }
 
         /// <summary>

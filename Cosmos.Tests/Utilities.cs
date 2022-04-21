@@ -507,7 +507,7 @@ namespace Cosmos.Tests
                 GetArticleEditLogic(dbContext),
                 GetSqlDbSyncContext(options),
                 options,
-                logger)
+                logger, null)
             {
                 ControllerContext = { HttpContext = GetMockContext(user) }
             }; ;

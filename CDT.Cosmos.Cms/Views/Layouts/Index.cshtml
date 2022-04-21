@@ -6,8 +6,11 @@
     var previewTemplate = $"<a class=\"btn btn-sm btn-primary\" href=\"{Url.Action("Preview", "Layouts")}/#: Id #\" title=\"Preview\"><span class=\"fa fa-binoculars\"></span></a>";
     var notesTemplate = $"<a class=\"btn btn-sm  btn-primary\" href=\"{Url.Action("EditNotes", "Layouts")}/#: Id #\" title=\"Edit Notes\"><span class=\"fa fa-clipboard\"></span></a>";
     var editCodeTemplate = $"<a class=\"btn btn-sm  btn-primary\" href=\"{Url.Action("EditCode", "Layouts")}/#: Id #\" title=\"Edit Code\"><span class=\"fa fa-edit\"></span></a>";
+    
+    var exportTemplate =   $"<a class=\"btn btn-sm btn-primary\" href=\"{Url.Action("ExportLayout", "Layouts")}/#: Id #\" title=\"Export layout\"><span class=\"fa-solid fa-cloud-arrow-down\"></span></a>";
+    
     var btnGroup = "<div class=\"btn-group\" role=\"group\" aria-label=\"Basic example\">#= getDefaultButton(IsDefault, Id) #" +
-                   previewTemplate + notesTemplate + editCodeTemplate + "</div>";
+                   previewTemplate + notesTemplate + editCodeTemplate + exportTemplate + "</div>";
 }
 <div class="container mt-5 pt-2">
     <div class="row">
@@ -17,8 +20,11 @@
             <p>Shown below lists the layouts loaded into your website.  Each gives your website a specific look for each page in your website.</p>
             <p>Click &quot;Create New&quot; to start building your own style.</p>
         
-            <a class="btn btn-sm btn-primary" href="@Url.Action("Create")">Create New</a>
-            <a class="btn btn-sm btn-primary" title="Import one of the community layouts." href="@Url.Action("CommunityLayouts")">Import Layout</a>
+            <a class="btn btn-sm btn-primary" href="@Url.Action("Create")">Create</a>
+            <a class="btn btn-sm btn-primary" title="Export an empty layout." href="@Url.Action("ExportLayout")">Export</a>
+            <a class="btn btn-sm btn-primary" title="Upload custom layout." href="@Url.Action("Upload")">Upload</a>
+            |
+            <a class="btn btn-sm btn-primary" title="Import one of the community layouts." href="@Url.Action("CommunityLayouts")">Community Layouts</a>
 
             @(Html.Kendo().Grid<LayoutIndexViewModel>().Name("grid")
             .Columns(col =>

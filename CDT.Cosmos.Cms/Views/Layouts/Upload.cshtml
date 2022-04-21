@@ -1,0 +1,81 @@
+﻿@using Kendo.Mvc.UI
+@model LayoutFileUploadViewModel
+<div class="container mt-5 pt-2">
+    <div class="row">
+        <div class="col">
+            <h3>Upload Layout</h3>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col bg-dark text-light">
+            <form id="frmUpload" method="post" enctype="multipart/form-data" asp-action="Upload" asp-controller="Layouts">
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.Name)
+                <div class="mb-3">
+                    <label for="Layout" class="form-label text-light"></label>
+                    <kendo-combobox name="Layout" style="width:100%" datatextfield="LayoutName"
+                                    option-label="Select layout or type new layout name"
+                                    datavaluefield="LayoutId"
+                                    on-select="onChange"
+                                    on-on-change="onChange"
+                                    class="form-control">
+                        <datasource type="DataSourceTagHelperType.Custom">
+                            <transport>
+                                <read url="@Url.Action("GetLayoutList", "Layouts")" />
+                            </transport>
+                        </datasource>
+                    </kendo-combobox>
+                    <span asp-validation-for="Name" class="text-warning"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label text-light"></label>
+                    <span asp-validation-for="Description" class="text-warning"></span>
+                    <kendo-editor for="Description">
+                    </kendo-editor>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="File" class="form-label text-light"></label>
+                    <kendo-upload name="File" for="File" aria-label="File" multiple="false">
+                    </kendo-upload>
+                    <span asp-validation-for="File" class="text-warning"></span>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <a href="@Url.Action("Index")" class="btn btn-primary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+        function onChange(e) {
+            if (e.item) {
+                var dataItem = this.dataItem(e.item);
+                if (dataItem.LayoutName !== "Select layout or type new layout name") {
+                    
+                    $("#Description").data("kendoEditor").value(dataItem.Notes);
+                } else {
+                    $("#Description").data("kendoEditor").value("");
+                    $("#Id").val("0");
+                    $("#Name").val($("#Layer").data("kendoComboBox").text());
+                }
+            }
+            else {
+                $("#Id").val("0");
+                $("#Name").val($("#Layer").data("kendoComboBox").text());
+            }
+        }
+
+       $( "#frmUpload" ).submit(function( e ) {
+            var combobox = $("#Layout").data("kendoComboBox");
+            var layerId = combobox.value();
+            var layerName = combobox.text();
+            $("#Id").val(layerId);
+            $("#Name").val(layerName);
+        });
+</script>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

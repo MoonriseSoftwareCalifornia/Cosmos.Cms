@@ -1,4 +1,5 @@
-﻿using CDT.Cosmos.Cms.Common.Data;
+﻿using CDT.Cosmos.BlobService.Models;
+using CDT.Cosmos.Cms.Common.Data;
 using CDT.Cosmos.Cms.Common.Data.Logic;
 using CDT.Cosmos.Cms.Common.Models;
 using CDT.Cosmos.Cms.Common.Services.Configurations;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,10 +38,73 @@ namespace CDT.Cosmos.Cms.Controllers
         private readonly ArticleEditLogic _articleLogic;
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<LayoutsController> _logger;
+        private readonly Uri _blobPublicAbsoluteUrl;
+        private readonly IViewRenderService _viewRenderService;
+
+
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="userManager"></param>
+        /// <param name="articleLogic"></param>
+        /// <param name="syncContext"></param>
+        /// <param name="options"></param>
+        /// <param name="logger"></param>
+        /// <param name="viewRenderService"></param>
+        public LayoutsController(ApplicationDbContext dbContext,
+            UserManager<IdentityUser> userManager,
+            ArticleEditLogic articleLogic,
+            SqlDbSyncContext syncContext,
+            IOptions<CosmosConfig> options,
+            ILogger<LayoutsController> logger,
+            IViewRenderService viewRenderService) : base(dbContext, userManager, articleLogic, options)
+        {
+            if (options.Value.SiteSettings.AllowSetup ?? true)
+            {
+                throw new Exception("Permission denied. Website in setup mode.");
+            }
+
+            if (syncContext.IsConfigured())
+                dbContext.LoadSyncContext(syncContext);
+
+            _dbContext = dbContext;
+            _articleLogic = articleLogic;
+            _logger = logger;
+
+            var htmlUtilities = new HtmlUtilities();
+
+            if (htmlUtilities.IsAbsoluteUri(options.Value.SiteSettings.BlobPublicUrl))
+            {
+                _blobPublicAbsoluteUrl = new Uri(options.Value.SiteSettings.BlobPublicUrl);
+            }
+            else
+            {
+                _blobPublicAbsoluteUrl = new Uri(options.Value.SiteSettings.PublisherUrl.TrimEnd('/') + "/" + options.Value.SiteSettings.BlobPublicUrl.TrimStart('/'));
+            }
+
+            _viewRenderService = viewRenderService;
+        }
 
         private bool LayoutExists(int id)
         {
             return _dbContext.Layouts.Any(e => e.Id == id);
+        }
+
+        /// <summary>
+        /// Gets a list of layouts
+        /// </summary>
+        /// <param name="includeDefault">Default = false</param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetLayoutList(bool includeDefault = false)
+        {
+            if (includeDefault)
+            {
+                return Json(await _dbContext.Layouts.OrderBy(o => o.LayoutName).Select(s => new { LayoutId = s.Id, s.LayoutName, s.Notes }).ToListAsync());
+            }
+
+            return Json(await _dbContext.Layouts.Where(w => w.IsDefault == false).OrderBy(o => o.LayoutName).Select(s => new { LayoutId = s.Id, s.LayoutName, s.Notes }).ToListAsync());
         }
 
         /// <summary>
@@ -74,35 +139,6 @@ namespace CDT.Cosmos.Cms.Controllers
         {
             _ = await base.UpdateTimeStamps();
             _ = await FlushCdn(_logger, new[] { "/*" });
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="dbContext"></param>
-        /// <param name="userManager"></param>
-        /// <param name="articleLogic"></param>
-        /// <param name="syncContext"></param>
-        /// <param name="options"></param>
-        /// <param name="logger"></param>
-        public LayoutsController(ApplicationDbContext dbContext,
-            UserManager<IdentityUser> userManager,
-            ArticleEditLogic articleLogic,
-            SqlDbSyncContext syncContext,
-            IOptions<CosmosConfig> options,
-            ILogger<LayoutsController> logger) : base(dbContext, userManager, articleLogic, options)
-        {
-            if (options.Value.SiteSettings.AllowSetup ?? true)
-            {
-                throw new Exception("Permission denied. Website in setup mode.");
-            }
-
-            if (syncContext.IsConfigured())
-                dbContext.LoadSyncContext(syncContext);
-
-            _dbContext = dbContext;
-            _articleLogic = articleLogic;
-            _logger = logger;
         }
 
         /// <summary>
@@ -288,7 +324,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 HtmlHeader = layout.HtmlHeader,
                 BodyHtmlAttributes = layout.BodyHtmlAttributes,
                 FooterHtmlContent = layout.FooterHtmlContent,
-                EditingField = ""
+                EditingField = "Head"
             };
             return View(model);
         }
@@ -417,6 +453,48 @@ namespace CDT.Cosmos.Cms.Controllers
         }
 
         /// <summary>
+        /// Exports a layout with a blank page
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
+        public async Task<IActionResult> ExportLayout(int? id)
+        {
+            var article = await _articleLogic.Create("Blank Page");
+
+            var view = "~/Views/Layouts/ExportLayout.cshtml";
+            var exportName = $"layoutid-{article.Layout.Id }.html";
+
+            if (id.HasValue)
+            {
+                var layout = await _dbContext.Layouts.FindAsync(id.Value);
+                article.Layout = new LayoutViewModel(layout);
+            }
+            else
+            {
+                view = "~/Views/Layouts/ExportBlank.cshtml";
+                exportName = "blank-layout.html";
+            }
+
+            var htmlUtilities = new HtmlUtilities();
+
+            article.Layout.Head = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.Head, _blobPublicAbsoluteUrl);
+            article.Layout.HtmlHeader = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.HtmlHeader, _blobPublicAbsoluteUrl);
+            article.Layout.FooterHtmlContent = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.FooterHtmlContent, _blobPublicAbsoluteUrl);
+
+            article.HeaderJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
+            article.Content = htmlUtilities.RelativeToAbsoluteUrls(article.Content, _blobPublicAbsoluteUrl);
+            article.FooterJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
+
+            var html = await _viewRenderService.RenderToStringAsync(view, article);
+
+
+
+            var bytes = Encoding.UTF8.GetBytes(html);
+
+            return File(bytes, "application/octet-stream", exportName);
+        }
+
+        /// <summary>
         /// Set a layout as the default layout.
         /// </summary>
         /// <param name="id"></param>
@@ -540,21 +618,124 @@ namespace CDT.Cosmos.Cms.Controllers
         }
 
         /// <summary>
+        /// Upload a view
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>You can upload a new layout, or a file to replace a layout NOT set as default.</remarks>
+        public IActionResult Upload(int? id)
+        {
+            if (id.HasValue)
+            {
+                var layout = _dbContext.Layouts.FirstOrDefaultAsync(f => f.Id == id.Value && f.IsDefault == false);
+            }
+            return View(new LayoutFileUploadViewModel());
+        }
+
+        /// <summary>
         /// Upload a layout
         /// </summary>
-        /// <param name="files"></param>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="file"></param>
         /// <returns></returns>
-        public async Task<IActionResult> UploadLayout(IEnumerable<IFormFile> files)
+        /// <remarks>You can upload a new layout, or a file to replace a layout NOT set as default.</remarks>
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile file, int? id, string name, string description)
         {
-            var utilities = new LayoutUtilities();
-            var file = files.FirstOrDefault();
-            using var memoryStream = new MemoryStream();
-            await file.CopyToAsync(memoryStream);
-            var html = Encoding.UTF8.GetString(memoryStream.ToArray());
+            if (string.IsNullOrEmpty(name))
+            {
+                ModelState.AddModelError("Name", "Layer name required.");
+            }
+            if (file == null)
+            {
+                ModelState.AddModelError("File", "Please select a file.");
+            }
 
-            var layout = utilities.ParseHtml(html);
+            if (id.HasValue == false)
+            {
+                id = 0;
+            }
 
-            return View(layout);
+            var layout = await _dbContext.Layouts.FirstOrDefaultAsync(f => f.Id == id.Value);
+
+            if (layout != null && layout.IsDefault)
+            {
+                ModelState.AddModelError("Id", "Cannot upload and replace the default layout.");
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                if (layout != null && layout.IsDefault)
+                {
+                    ModelState.AddModelError("", "Cannot upload a layout to replace the 'default' layout.");
+                    return View();
+                }
+
+                using var memstream = new MemoryStream();
+                await file.CopyToAsync(memstream);
+                var html = Encoding.UTF8.GetString(memstream.ToArray());
+
+                // Load the HTML document.
+                var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                htmlDoc.LoadHtml(html);
+
+                var headNode = htmlDoc.DocumentNode.SelectSingleNode("//head");
+                var headHtml = headNode.InnerHtml.Trim();
+
+                // -----------------------------------------------------
+                // Remove Cosmos Head Injection
+                var cosmosHeadStart = headHtml.IndexOf(LayoutImportConstants.COSMOS_HEAD_START) + LayoutImportConstants.COSMOS_HEAD_START.Length;
+                var cosmosHeadEnd = headHtml.IndexOf(LayoutImportConstants.COSMOS_HEAD_END);
+
+                if (cosmosHeadStart == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find {HttpUtility.HtmlEncode(LayoutImportConstants.COSMOS_HEAD_START)}");
+                }
+                if (cosmosHeadEnd == -1)
+                {
+                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(LayoutImportConstants.COSMOS_HEAD_END)}");
+                }
+
+                // Capture the layout head content
+                if (ModelState.IsValid)
+                {
+                    headNode.InnerHtml = headHtml.Substring(cosmosHeadStart, cosmosHeadEnd - cosmosHeadStart);
+
+                    var utilities = new LayoutUtilities();
+                    if (layout == null)
+                    {
+                        layout = utilities.ParseHtml(htmlDoc.DocumentNode.OuterHtml);
+
+                        layout.IsDefault = false;
+                        layout.LayoutName = name;
+                        layout.Notes = description;
+
+                        _dbContext.Layouts.Add(layout);
+                    }
+                    else
+                    {
+                        var uploadedLayout = utilities.ParseHtml(htmlDoc.DocumentNode.OuterHtml);
+
+                        layout.BodyHtmlAttributes = uploadedLayout.BodyHtmlAttributes;
+                        layout.FooterHtmlContent = uploadedLayout.FooterHtmlContent;
+                        layout.Head = uploadedLayout.Head;
+                        layout.HtmlHeader = uploadedLayout.HtmlHeader;
+
+                        layout.IsDefault = false;
+                        layout.LayoutName = name;
+                        layout.Notes = description;
+                    }
+
+
+                    //await _dbContext.SaveChangesAsync();
+
+                    return RedirectToAction("EditCode", new { layout.Id });
+                }
+            }
+
+            return View();
         }
 
         /// <summary>

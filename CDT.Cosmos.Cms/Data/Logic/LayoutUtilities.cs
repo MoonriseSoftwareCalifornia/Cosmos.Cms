@@ -114,7 +114,7 @@ namespace CDT.Cosmos.Cms.Data.Logic
         }
 
         /// <summary>
-        /// Creates a layout from HTML.
+        /// Creates a new layout from HTML.
         /// </summary>
         /// <param name="html"></param>
         /// <returns></returns>

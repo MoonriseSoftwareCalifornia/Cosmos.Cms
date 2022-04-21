@@ -315,21 +315,6 @@ namespace CDT.Cosmos.Cms.Controllers
         }
 
         /// <summary>
-        /// Returns model state errors as serialization
-        /// </summary>
-        /// <param name="modelState"></param>
-        /// <returns></returns>
-        private string SerializeErrors(ModelStateDictionary modelState)
-        {
-            var errors = modelState.Values
-                .Where(w => w.ValidationState == ModelValidationState.Invalid).Select(s => s.Errors)
-                .ToList();
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(errors);
-        }
-
-
-        /// <summary>
         /// Opens the file manager without the toolbar.
         /// </summary>
         /// <param name="id">option id</param>
@@ -978,7 +963,7 @@ namespace CDT.Cosmos.Cms.Controllers
     }
 
     /// <summary>
-    /// Page Import Constants
+    /// Page import constants
     /// </summary>
     public static class PageImportConstants
     {
@@ -991,7 +976,7 @@ namespace CDT.Cosmos.Cms.Controllers
         /// </summary>
         public const string COSMOS_HEAD_END = "<!--  END: Cosmos HEAD inject (not editable). -->";
         /// <summary>
-        /// Marks the begining of the optional head script injection
+        /// Marks the beginning of the optional head script injection
         /// </summary>
         public const string COSMOS_HEAD_SCRIPTS_START = "<!-- BEGIN: Optional Cosmos script section injected (not editable). -->";
         /// <summary>
@@ -1001,19 +986,19 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <summary>
         /// Marks the beginning of the header injection
         /// </summary>
-        public const string COSMOS_BODY_HEADER_START = "<!-- BEGIN: Cosmos header inject (not editable) -->";
+        public const string COSMOS_BODY_HEADER_START = "<!-- BEGIN: Cosmos Layout BODY HEADER content (not editable) -->";
         /// <summary>
         /// Marks the end of the header injection
         /// </summary>
-        public const string COSMOS_BODY_HEADER_END = "<!-- END: Cosmos header inject (not editable) -->";
+        public const string COSMOS_BODY_HEADER_END = "<!-- END: Cosmos Layout BODY HEADER content (not editable) -->";
         /// <summary>
         /// Marks the start of the footer injection
         /// </summary>
-        public const string COSMOS_BODY_FOOTER_START = "<!-- BEGIN: Cosmos footer inject (not editable) -->";
+        public const string COSMOS_BODY_FOOTER_START = "<!-- BEGIN: Cosmos Layout BODY FOOTER (not editable) -->";
         /// <summary>
         /// Marks the end of the footer injection
         /// </summary>
-        public const string COSMOS_BODY_FOOTER_END = "<!-- END: Cosmos footer inject (not editable) -->";
+        public const string COSMOS_BODY_FOOTER_END = "<!-- END: Cosmos Layout BODY FOOTER (not editable) -->";
         /// <summary>
         /// Marks the start of Google Translate injection
         /// </summary>
@@ -1030,5 +1015,36 @@ namespace CDT.Cosmos.Cms.Controllers
         /// Marks the end of the end-of-body script injection
         /// </summary>
         public const string COSMOS_BODY_END_SCRIPTS_END = "<!-- END: Optional Cosmos script section (not editable). -->";
+    }
+
+    /// <summary>
+    /// Layout import marker constants
+    /// </summary>
+    public static class LayoutImportConstants
+    {
+        /// <summary>
+        /// Marks the start of the head injection
+        /// </summary>
+        public const string COSMOS_HEAD_START = "<!--  BEGIN: Cosmos Layout HEAD content. -->";
+        /// <summary>
+        /// Marks the end of the head injection
+        /// </summary>
+        public const string COSMOS_HEAD_END = "<!--  END: Cosmos Layout HEAD content. -->";
+        // <summary>
+        /// Marks the beginning of the header injection
+        /// </summary>
+        public const string COSMOS_BODY_HEADER_START = "<!-- BEGIN: Cosmos Layout BODY HEADER content -->";
+        /// <summary>
+        /// Marks the end of the header injection
+        /// </summary>
+        public const string COSMOS_BODY_HEADER_END = "<!-- END: Cosmos Layout BODY HEADER content -->";
+        /// <summary>
+        /// Marks the start of the footer injection
+        /// </summary>
+        public const string COSMOS_BODY_FOOTER_START = "<!-- BEGIN: Cosmos Layout BODY FOOTER content -->";
+        /// <summary>
+        /// Marks the end of the footer injection
+        /// </summary>
+        public const string COSMOS_BODY_FOOTER_END = "<!-- END: Cosmos Layout BODY FOOTER content -->";
     }
 }

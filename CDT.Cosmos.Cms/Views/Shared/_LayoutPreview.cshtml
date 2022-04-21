@@ -1,6 +1,6 @@
 ﻿@model ArticleViewModel
 @using CDT.Cosmos.Cms.Controllers
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="@Model.LanguageCode">
 <head>
 
@@ -9,7 +9,17 @@
 @Html.Raw(Model.Layout.Head)
 @Html.Raw(PageImportConstants.COSMOS_HEAD_END)
 
+<!-- 
+    START: ADD YOUR HEAD CONTENT HERE 
+    Note: This comment block can be removed.
+-->
+
 @Html.Raw(Model.HeaderJavaScript)
+
+<!-- 
+    END: ADD YOUR HEAD CONTENT HERE 
+    Note: This comment block can be removed.
+-->
 
 @Html.Raw(PageImportConstants.COSMOS_HEAD_SCRIPTS_START)
 @Html.Raw(JavaScriptSnippet.FullScript)
@@ -17,7 +27,6 @@
 </head>
 <body>
 @RenderBody()
-
 @Html.Raw(PageImportConstants.COSMOS_BODY_END_SCRIPTS_START)
 @await RenderSectionAsync("Scripts", false)
 @Html.Raw(PageImportConstants.COSMOS_BODY_END_SCRIPTS_END)

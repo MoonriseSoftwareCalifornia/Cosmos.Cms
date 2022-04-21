@@ -20,7 +20,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -72,7 +71,6 @@ namespace CDT.Cosmos.Cms.Controllers
                 dbContext.LoadSyncContext(syncContext);
 
             _logger = logger;
-            //_blobEndpointUrl = options.Value.BlobServiceConfigs.BlobPublicUrl.TrimEnd('/') + "/pub/";
             _dbContext = dbContext;
             _options = options;
             _userManager = userManager;
@@ -280,7 +278,7 @@ namespace CDT.Cosmos.Cms.Controllers
             else
             {
                 //
-                // We are here because the new versison is being based on a
+                // We are here because the new version is being based on a
                 // specific older version, not the latest version.
                 //
                 //
