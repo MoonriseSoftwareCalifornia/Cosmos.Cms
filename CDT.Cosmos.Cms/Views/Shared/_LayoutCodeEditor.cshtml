@@ -338,6 +338,11 @@
             }
             createAndLoadEditor(id);
         }
+        
+        function cancelPublishDateTime() {
+            loadPublishLocalDateTime();
+            $("#schedulingDialog").data("kendoDialog").close();
+        };
 
         //
         // Creates and loads a Monaco Editor.

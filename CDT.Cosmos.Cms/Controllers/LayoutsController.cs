@@ -1,5 +1,4 @@
-﻿using CDT.Cosmos.BlobService.Models;
-using CDT.Cosmos.Cms.Common.Data;
+﻿using CDT.Cosmos.Cms.Common.Data;
 using CDT.Cosmos.Cms.Common.Data.Logic;
 using CDT.Cosmos.Cms.Common.Models;
 using CDT.Cosmos.Cms.Common.Services.Configurations;
@@ -17,7 +16,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -641,6 +639,7 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <returns></returns>
         /// <remarks>You can upload a new layout, or a file to replace a layout NOT set as default.</remarks>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(IFormFile file, int? id, string name, string description)
         {
             if (string.IsNullOrEmpty(name))
@@ -735,7 +734,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 }
             }
 
-            return View();
+            return View(new LayoutFileUploadViewModel() { Description = description, File = file, Id = (id == 0 || id == null) ? null : id.Value, Name = name });
         }
 
         /// <summary>

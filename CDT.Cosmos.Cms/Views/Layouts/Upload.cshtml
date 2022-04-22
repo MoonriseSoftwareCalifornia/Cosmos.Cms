@@ -5,19 +5,24 @@
         <div class="col">
             <h3>Upload Layout</h3>
             <hr />
+            <p>Select an existing layout or enter a new layout name. Then add notes and finally select the file to upload.</p>
         </div>
     </div>
     <div class="row">
         <div class="col bg-dark text-light">
             <form id="frmUpload" method="post" enctype="multipart/form-data" asp-action="Upload" asp-controller="Layouts">
+                @Html.AntiForgeryToken()
                 @Html.HiddenFor(m => m.Id)
                 @Html.HiddenFor(m => m.Name)
-                <div class="mb-3">
-                    <label for="Layout" class="form-label text-light"></label>
-                    <kendo-combobox name="Layout" style="width:100%" datatextfield="LayoutName"
-                                    option-label="Select layout or type new layout name"
+                <div asp-validation-summary="All" class="text-warning"></div>
+                <div class="mb-3 mt-3">
+                    <label for="Layout" class="form-label text-light">Search for existing layout to replace, or type new layout name:</label>
+                    <kendo-combobox name="Layout" style="width:100%" datatextfield="LayoutName" autocomplete="off"
+                                    option-label="Start typing to search or enter new name" suggest="true"
                                     datavaluefield="LayoutId"
                                     on-select="onChange"
+                                    value="@Model.Id"
+                                    text="@Model.Name"
                                     on-on-change="onChange"
                                     class="form-control">
                         <datasource type="DataSourceTagHelperType.Custom">
@@ -27,6 +32,7 @@
                         </datasource>
                     </kendo-combobox>
                     <span asp-validation-for="Name" class="text-warning"></span>
+                    <span asp-validation-for="Id" class="text-warning"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Description" class="form-label text-light"></label>
@@ -66,10 +72,13 @@
                 $("#Name").val($("#Layer").data("kendoComboBox").text());
             }
         }
-
+       
        $( "#frmUpload" ).submit(function( e ) {
             var combobox = $("#Layout").data("kendoComboBox");
             var layerId = combobox.value();
+            if (layerId === null || layerId === "" || isNaN(layerId)) {
+                layerId = 0;
+            }
             var layerName = combobox.text();
             $("#Id").val(layerId);
             $("#Name").val(layerName);
