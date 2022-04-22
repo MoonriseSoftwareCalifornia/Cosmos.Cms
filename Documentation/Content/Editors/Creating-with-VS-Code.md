@@ -12,33 +12,27 @@ In this tutorial I will show how to...
 
 A few things need to be installed on your computer before starting this tutorial.
 
-1 [Visual Studio Code](https://code.visualstudio.com)
-2 [Node.js](https://nodejs.org)
+1. You've [installed Cosmos](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md) and have  "[layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md)." 
+2. [Visual Studio Code](https://code.visualstudio.com)
+3. [Node.js](https://nodejs.org)
 
 Let's begin...
 
-## Step 1: Create a web page in Cosmos then export it
+## Step 1: Export your layout
 
-The web app we are building will be hosted by Cosmos.  We need to create a place for it, so create a web page in Cosmos then export it.
+The web app we are building will be hosted by Cosmos and the layout contains all the common elements for each page of your website.
+
+Start by exporting your layout so you can encorporate it with your web app. 
 
 Here is how:
  
- * Click the "Menu" button and select "Pages."
- * From the page list page, click the "New Page" button.
- * You will see the following dialog:
+ * Click the "Menu" button and select "Layouts."
+ * Download the "default" layout by clicking the "export" button
+ * Alternatively, click the download button for one of the other layouts you have.
 
-![Create page dialog](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/create-page-dialog.png)
+Once the page downloads open it with your code editor (in our case Visual Studio Code).
 
- * In the above dialog give the page a title. For now use "My App".
- * There is no need to choose a page template, so click "Create" and you should see the HTML editor open it up.
-
-![New Lorem Ipsum Page](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/new-lorem-ipsom-page.png)
-
- * Click the "Menu" button and "Save."
- * Then, click "Menu" then "Code View" to open the code editor.
- * Next, click the "Code Editor" button and click "Export."
-
-This will download a web page that you will need it next.
+Look at the HTML comments, and you will find what parts of the page are "uneditable" because they are part of the layout, and what parts are editable--this is where you put your web app.
 
 ## Step 2: Create an React web app
 
@@ -64,13 +58,13 @@ Specifically, the application is missing the header and footer elements.
 
 Now we are going to get this application ready to import into Cosmos.
 
-## Step 3: Merge the app with the export page
+## Step 3: Merge the app with the exported layout
 
-Now we are going to merge the app we just create with our layout.
+Now we are going to merge the app we just create with the layout.
 
 Let's start with this:
 
-* Locate the webpage you exported from Cosmos and add it to your project.
+* Locate the layout you exported from Cosmos and add it to your project.
 * You should now see the file added to your `src` folder like below (your file name might be different).
 
 ![Exported file now in src folder](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-file-added.png)
