@@ -2,12 +2,13 @@
 
 Traditional content management systems (CMS) have you create web content using built-in HTML and code editors. Cosmos goes beyond by allowing you to use your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio, then upload your work into Cosmos to host.
 
-In this tutorial I will show how to create a web application externally using Visual Studio Code, then import it to host by Cosmos.
+In this tutorial I will show how to create a web application using Visual Studio Code then import it into Cosmos.
 
 Specifically, this tutorial shows the following:
 
-1. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
-2. [Then import](#step-3-import-the-web-page) the build into Cosmos to host.
+1. [Export a layout]()
+2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
+3. [Then import](#step-3-import-the-web-page) the build into Cosmos to host.
 
 ## Prerequisites
 
