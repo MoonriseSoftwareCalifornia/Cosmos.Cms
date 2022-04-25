@@ -1,18 +1,16 @@
 # Tutorial: Creating React Web App with VS Code and Hosting it with Cosmos
 
-Traditional content management systems (CMS) have you create web content using built-in HTML and code editors. Cosmos goes beyond by allowing you to use your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio, then upload your work into Cosmos to host.
+Traditional content management systems (CMS) have you create web content using built-in HTML and code editors. Cosmos goes beyond by allowing you to use your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) or code editor such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio, then upload your work into Cosmos to host.
 
-In this tutorial I will show how to create a web application using Visual Studio Code then import it into Cosmos.
+In this tutorial wwe will create a React web application using Visual Studio Code then import it into Cosmos using these
 
-Specifically, this tutorial shows the following:
-
-1. [Export a layout]()
+1. [Export a layout](#step-1-export-your-layout)
 2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
-3. [Then import](#step-3-import-the-web-page) the build into Cosmos to host.
+3. [Then import](#step-3-import-the-web-page) the application into Cosmos to host.
 
 ## Prerequisites
 
-To do this tutorial yourself, please have the following ready:
+To follow along you will need:
 
 1. [Cosmos is installed ](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
 2. [Visual Studio Code](https://code.visualstudio.com)
@@ -121,9 +119,5 @@ Next we need to import the `index.html` into Cosmos. Here are the steps:
 2. Find the page you created above and click "Edit." On the next page select "Code View."
 3. Once the code editor opens, select "Menu" then "Import."
 4. The import dialog open, click the "Select files" button, and select the `index.html` file in the "build" folder.
-
-
-
-
 
 Previous: [Create and Edit Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) Next: [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Releated: [HTML (WYSIWYG) Editor](https://github.com/CosmosSoftware/Cosmos.Cms/edit/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)
