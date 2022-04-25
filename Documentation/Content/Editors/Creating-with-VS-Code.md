@@ -1,15 +1,13 @@
-# Tutorial: Creating with VS Code ![VS Code Icon](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/vs-code-icon.png)
+# Tutorial: Creating React Web App with VS Code and Hosting it with Cosmos
 
-The predominant model with traditional content management systems (CMS) is that web content is created using the HTML and code editors tools built into it.
-
-Cosmos enables you to create web applications and content **externally** with your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio, then upload your work into Cosmos to host.
+Traditional content management systems (CMS) have you create web content using built-in HTML and code editors. Cosmos goes beyond by allowing you to use your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio, then upload your work into Cosmos to host.
 
 In this tutorial I will show how to create a web application externally using Visual Studio Code, then import it to host by Cosmos.
 
 Specifically, this tutorial shows the following:
 
-1. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, Angular, and npm.
-2. [Then import](#step-3-import-the-web-page) the build into Cosmos.
+1. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
+2. [Then import](#step-3-import-the-web-page) the build into Cosmos to host.
 
 ## Prerequisites
 
@@ -18,18 +16,14 @@ To do this tutorial yourself, please have the following ready:
 1. [Cosmos is installed ](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
 2. [Visual Studio Code](https://code.visualstudio.com)
 3. [Node.js](https://nodejs.org) is installed on your development computer.
-
-When ready, let's begin with our first step.
+4. You know how to edit HTML, JavaScript and CSS
+5. Know how to use [npm](https://docs.npmjs.com/cli/v6/commands/npm-build?msclkid=2ec764f0c49f11ec841c784956bfacb5) to build an application
 
 ## Step 1: Export your layout
 
-[Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) contains all the common elements that appear on each page of your website. Layouts enable you to be "[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)" (don't repeat yourself).
+[Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) contains all the common elements that appear on each page of your website. Layouts enable you to be "[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)" (don't repeat yourself). For this tutorial we want the web app to be placed within the website layout. Our first step then, is to export the layout so we can embed our application within it.
 
-For this tutorial we want the web app to be placed within the website layout.
-
-Start by exporting your layout so you can encorporate it with your web app later. 
-
-Here is how:
+To export the layout do the following:
  
  * Log into the "Editor" for your website and click the "Menu" button, then select "Layouts."
  * Download the "default" layout by clicking the "export" button
@@ -58,17 +52,11 @@ Run the app and you should see something like below.
 
 ![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SnapShotDemo.png)
 
-A keen eye will notice that the application above does not include the "layout" elements of my [Cosmos website](https://cosmos.moonrise.net).
-
-Specifically, the application is missing the header and footer elements.
-
-Now we are going to get this application ready to import into Cosmos.
-
 ## Step 3: Merge the app with the exported layout
 
-Now we are going to merge the app we just create with the layout.
+I want this application to be hosting within my website. Notice that right now the application above does not include the standard header of my [website](https://cosmos.moonrise.net).  Now we are going to merge the app we just create with the layout so my web app looks like it belong in my website.
 
-Let's start with this:
+Let us start with this:
 
 * Locate the layout you exported from Cosmos and add it to your project.
 * You should now see the file added to your `src` folder like below (your file name might be different).
@@ -88,7 +76,7 @@ The content within these comments are part of the layout.  It is important to no
 Now complete the following steps:
 
 * Rename your `index.html` page to something like `original-index.html`.
-* Copy the layout you exported before into the project and rename it to `index.html'.
+* Rename the layout file to `index.html'.
 * Copy the React code from  `original-index.html` and put it in your new `index.html` making sure the uneditable areas are not changed.
 * Build and start your app to see the results.
 
