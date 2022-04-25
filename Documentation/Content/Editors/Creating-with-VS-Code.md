@@ -1,22 +1,25 @@
 # Tutorial: Creating with VS Code ![VS Code Icon](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/vs-code-icon.png)
 
-With Cosmos, you can develop rich web applications and content on your desktop and import them directly into Cosmos.
+The predominant model with most content management systems (CMS) is that web content is created within the CMS using the tools built into it such as built in HTML and code editors.
 
-In this tutorial I will show how to...
+Cosmos is different in that you are not limited to creating content with the built-in tools. You can create web applications and content **externally** with your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio, then upload your work into Cosmos.
 
-1. [Create a web page](#step-1-create-a-web-page-using-cosmos) in Cosmos then export it to your desktop.
-2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, Angular, and npm.
-3. [Then import](#step-3-import-the-web-page) the build into Cosmos.
+In this tutorial I will show how to create a web application externally to Cosmos, then import it to host by Cosmos.
+
+Specifically, this tutorial shows the following:
+
+1. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, Angular, and npm.
+2. [Then import](#step-3-import-the-web-page) the build into Cosmos.
 
 ## Prerequisites
 
-A few things need to be installed on your computer before starting this tutorial.
+Before embarking you will need to have the following ready:
 
-1. You've [installed Cosmos](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md) and have  "[layout](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md)." 
+1. [Cosmos is installed ](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
 2. [Visual Studio Code](https://code.visualstudio.com)
-3. [Node.js](https://nodejs.org)
+3. [Node.js](https://nodejs.org) is installed on your development computer.
 
-Let's begin...
+When ready, let's begin with our first step.
 
 ## Step 1: Export your layout
 
