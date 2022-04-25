@@ -28,17 +28,13 @@ To export the layout do the following:
  * Log into the "Editor" for your website and click the "Menu" button, then select "Layouts."
  * Download the "default" layout by clicking the "export" button
 
-Once the page downloads open it with your code editor (in our case Visual Studio Code).
+Once the page downloads open it with your code editor (in our case Visual Studio Code) and find the HTML comments within. Notice the "uneditable" sections. These are part of the layout and need to be left alone. Elsewhere within the code there will be HTML comments that indicate where you should place your application code.
 
-Find the HTML comments within the code. You will find what parts of the page are "uneditable" because they are part of the layout and what parts are editable.
+Now close that file so we can start building the React application.
 
-Your code will go within those "editable" blocks.
+## Step 2: Create the React web application
 
-## Step 2: Create an React web app
-
-This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot).
-
-It uses the following:
+This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot). It is a photo gallery that draws upon the Flickr API.  More specifically, it uses the following:
 
 * React js
 * React Router
@@ -54,7 +50,7 @@ Run the app and you should see something like below.
 
 ## Step 3: Merge the app with the exported layout
 
-I want this application to be hosting within my website. Notice that right now the application above does not include the standard header of my [website](https://cosmos.moonrise.net).  Now we are going to merge the app we just create with the layout so my web app looks like it belong in my website.
+I want this application to be hosting within my website--which has a standard *header* and *footer* on each page. Notice that right now the application above does not include the standard header of my [website](https://cosmos.moonrise.net).  Now we are going to merge the app we just create with the layout so my web app looks like it belong in my website.
 
 Let us start with this:
 
