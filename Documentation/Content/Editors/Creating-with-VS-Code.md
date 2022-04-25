@@ -1,10 +1,10 @@
 # Tutorial: Creating with VS Code ![VS Code Icon](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/vs-code-icon.png)
 
-The predominant model with most content management systems (CMS) is that web content is created within the CMS using the tools built into it such as built in HTML and code editors.
+The predominant model with traditional content management systems (CMS) is that web content is created using the HTML and code editors tools built into it.
 
-Cosmos is different in that you are not limited to creating content with the built-in tools. You can create web applications and content **externally** with your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio, then upload your work into Cosmos.
+Cosmos enables you to create web applications and content **externally** with your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio, then upload your work into Cosmos to host.
 
-In this tutorial I will show how to create a web application externally to Cosmos, then import it to host by Cosmos.
+In this tutorial I will show how to create a web application externally using Visual Studio Code, then import it to host by Cosmos.
 
 Specifically, this tutorial shows the following:
 
@@ -13,7 +13,7 @@ Specifically, this tutorial shows the following:
 
 ## Prerequisites
 
-Before embarking you will need to have the following ready:
+To do this tutorial yourself, please have the following ready:
 
 1. [Cosmos is installed ](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
 2. [Visual Studio Code](https://code.visualstudio.com)
@@ -23,19 +23,22 @@ When ready, let's begin with our first step.
 
 ## Step 1: Export your layout
 
-The web app we are building will be hosted by Cosmos and the layout contains all the common elements for each page of your website.
+[Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) contains all the common elements that appear on each page of your website. Layouts enable you to be "[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)" (don't repeat yourself).
 
-Start by exporting your layout so you can encorporate it with your web app. 
+For this tutorial we want the web app to be placed within the website layout.
+
+Start by exporting your layout so you can encorporate it with your web app later. 
 
 Here is how:
  
- * Click the "Menu" button and select "Layouts."
+ * Log into the "Editor" for your website and click the "Menu" button, then select "Layouts."
  * Download the "default" layout by clicking the "export" button
- * Alternatively, click the download button for one of the other layouts you have.
 
 Once the page downloads open it with your code editor (in our case Visual Studio Code).
 
-Look at the HTML comments, and you will find what parts of the page are "uneditable" because they are part of the layout, and what parts are editable--this is where you put your web app.
+Find the HTML comments within the code. You will find what parts of the page are "uneditable" because they are part of the layout and what parts are editable.
+
+Your code will go within those "editable" blocks.
 
 ## Step 2: Create an React web app
 
@@ -84,15 +87,16 @@ The content within these comments are part of the layout.  It is important to no
 
 Now complete the following steps:
 
-* Rename your `index.html` page to something like `original-index.html` and rename the import page to `index.html'.
-* Copy the code from  `original-index.html` and put it in your new `index.html` making sure the uneditable areas are not changed.
+* Rename your `index.html` page to something like `original-index.html`.
+* Copy the layout you exported before into the project and rename it to `index.html'.
+* Copy the React code from  `original-index.html` and put it in your new `index.html` making sure the uneditable areas are not changed.
 * Build and start your app to see the results.
 
 ## Step 4: Test and Debug your app
 
-It is not unusual to have conflicts between the CSS and JavaScript functions of your layout and your application.  If you choose a "lean" layout you will minimize any problems.
+At this point it is not uncommon to have CSS conflicts with your layout. Fix those now. (See our [tips](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md#tips)] for avoiding layout conflicts.
 
-Below is a screenshot of the finished app that now has the layout elements implemented, and I have resolved any CSS conflicts.
+Below is a screenshot of the finished app that now has the layout elements implemented.
 
 ![Finished App Screenshot](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-ready-to-import.png)
 
