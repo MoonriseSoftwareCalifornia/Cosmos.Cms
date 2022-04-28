@@ -1,12 +1,14 @@
-# Tutorial: Creating React Web App with VS Code and Hosting it with Cosmos
+# Tutorial: Creating React Web App for Cosmos with VS Code
 
-Traditional content management systems (CMS) have you create web content using built-in HTML and code editors. Cosmos goes beyond by allowing you to use your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) or code editor such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio, then upload your work into Cosmos to host.
+Cosmos gives web developers maximum flexibility in how they want to create web apps and content by enabling you to use your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) or code editor such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio. Once complete use the built-in tools to import your work into Cosmos.
 
-In this tutorial we will create a React web application using Visual Studio Code then import it into Cosmos using these
+In this tutorial show how by creating a React web application using Visual Studio Code that is then imported into Cosmos. Here are the general steps:
 
 1. [Export a layout](#step-1-export-your-layout)
 2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
 3. [Then import](#step-3-import-the-web-page) the application into Cosmos to host.
+
+Here is a [link to a live result on our website](https://cosmos.moonrise.net/Demos/SnapShot).
 
 ## Prerequisites
 
@@ -119,5 +121,9 @@ Next we need to import the `index.html` into Cosmos. Here are the steps:
 2. Find the page you created above and click "Edit." On the next page select "Code View."
 3. Once the code editor opens, select "Menu" then "Import."
 4. The import dialog open, click the "Select files" button, and select the `index.html` file in the "build" folder.
+
+### Fix paths
+
+When developing this application
 
 Previous: [Create and Edit Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) Next: [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Releated: [HTML (WYSIWYG) Editor](https://github.com/CosmosSoftware/Cosmos.Cms/edit/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)
