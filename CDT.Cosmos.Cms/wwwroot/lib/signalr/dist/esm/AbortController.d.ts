@@ -1,10 +1,10 @@
 /** @private */
 export declare class AbortController implements AbortSignal {
-    private isAborted;
+    private _isAborted;
     onabort: (() => void) | null;
     abort(): void;
-    readonly signal: AbortSignal;
-    readonly aborted: boolean;
+    get signal(): AbortSignal;
+    get aborted(): boolean;
 }
 /** Represents a signal that can be monitored to determine if a request has been aborted. */
 export interface AbortSignal {

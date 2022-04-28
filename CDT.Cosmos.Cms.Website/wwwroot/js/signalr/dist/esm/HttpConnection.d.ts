@@ -14,58 +14,58 @@ export interface INegotiateResponse {
 /** @private */
 export interface IAvailableTransport {
     transport: keyof typeof HttpTransportType;
-    transferFormats: Array<keyof typeof TransferFormat>;
+    transferFormats: (keyof typeof TransferFormat)[];
 }
 /** @private */
 export declare class HttpConnection implements IConnection {
-    private connectionState;
-    private connectionStarted;
-    private readonly httpClient;
-    private readonly logger;
-    private readonly options;
+    private _connectionState;
+    private _connectionStarted;
+    private readonly _httpClient;
+    private readonly _logger;
+    private readonly _options;
     private transport?;
-    private startInternalPromise?;
-    private stopPromise?;
-    private stopPromiseResolver;
-    private stopError?;
-    private accessTokenFactory?;
-    private sendQueue?;
+    private _startInternalPromise?;
+    private _stopPromise?;
+    private _stopPromiseResolver;
+    private _stopError?;
+    private _accessTokenFactory?;
+    private _sendQueue?;
     readonly features: any;
     baseUrl: string;
     connectionId?: string;
     onreceive: ((data: string | ArrayBuffer) => void) | null;
     onclose: ((e?: Error) => void) | null;
-    private readonly negotiateVersion;
+    private readonly _negotiateVersion;
     constructor(url: string, options?: IHttpConnectionOptions);
     start(): Promise<void>;
     start(transferFormat: TransferFormat): Promise<void>;
     send(data: string | ArrayBuffer): Promise<void>;
     stop(error?: Error): Promise<void>;
-    private stopInternal;
-    private startInternal;
-    private getNegotiationResponse;
-    private createConnectUrl;
-    private createTransport;
-    private constructTransport;
-    private startTransport;
-    private resolveTransportOrError;
-    private isITransport;
-    private stopConnection;
-    private resolveUrl;
-    private resolveNegotiateUrl;
+    private _stopInternal;
+    private _startInternal;
+    private _getNegotiationResponse;
+    private _createConnectUrl;
+    private _createTransport;
+    private _constructTransport;
+    private _startTransport;
+    private _resolveTransportOrError;
+    private _isITransport;
+    private _stopConnection;
+    private _resolveUrl;
+    private _resolveNegotiateUrl;
 }
 /** @private */
 export declare class TransportSendQueue {
-    private readonly transport;
-    private buffer;
-    private sendBufferedData;
-    private executing;
-    private transportResult?;
-    private sendLoopPromise;
-    constructor(transport: ITransport);
+    private readonly _transport;
+    private _buffer;
+    private _sendBufferedData;
+    private _executing;
+    private _transportResult?;
+    private _sendLoopPromise;
+    constructor(_transport: ITransport);
     send(data: string | ArrayBuffer): Promise<void>;
     stop(): Promise<void>;
-    private bufferData;
-    private sendLoop;
-    private static concatBuffers;
+    private _bufferData;
+    private _sendLoop;
+    private static _concatBuffers;
 }

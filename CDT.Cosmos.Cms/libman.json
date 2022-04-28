@@ -4,11 +4,11 @@
   "libraries": [
     {
       "provider": "unpkg",
-      "library": "@microsoft/signalr@5.0.11",
+      "library": "@microsoft/signalr@6.0.4",
       "destination": "wwwroot/lib/signalr/"
     },
     {
-      "library": "monaco-editor@0.31.1",
+      "library": "monaco-editor@0.33.0",
       "destination": "wwwroot/lib/monaco-editor/"
     },
     {

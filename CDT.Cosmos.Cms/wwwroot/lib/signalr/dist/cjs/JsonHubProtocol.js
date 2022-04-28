@@ -1,16 +1,17 @@
 "use strict";
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var IHubProtocol_1 = require("./IHubProtocol");
-var ILogger_1 = require("./ILogger");
-var ITransport_1 = require("./ITransport");
-var Loggers_1 = require("./Loggers");
-var TextMessageFormat_1 = require("./TextMessageFormat");
-var JSON_HUB_PROTOCOL_NAME = "json";
+exports.JsonHubProtocol = void 0;
+const IHubProtocol_1 = require("./IHubProtocol");
+const ILogger_1 = require("./ILogger");
+const ITransport_1 = require("./ITransport");
+const Loggers_1 = require("./Loggers");
+const TextMessageFormat_1 = require("./TextMessageFormat");
+const JSON_HUB_PROTOCOL_NAME = "json";
 /** Implements the JSON Hub Protocol. */
-var JsonHubProtocol = /** @class */ (function () {
-    function JsonHubProtocol() {
+class JsonHubProtocol {
+    constructor() {
         /** @inheritDoc */
         this.name = JSON_HUB_PROTOCOL_NAME;
         /** @inheritDoc */
@@ -23,7 +24,7 @@ var JsonHubProtocol = /** @class */ (function () {
      * @param {string} input A string containing the serialized representation.
      * @param {ILogger} logger A logger that will be used to log messages that occur during parsing.
      */
-    JsonHubProtocol.prototype.parseMessages = function (input, logger) {
+    parseMessages(input, logger) {
         // The interface does allow "ArrayBuffer" to be passed in, but this implementation does not. So let's throw a useful error.
         if (typeof input !== "string") {
             throw new Error("Invalid input for JSON hub protocol. Expected a string.");
@@ -35,23 +36,22 @@ var JsonHubProtocol = /** @class */ (function () {
             logger = Loggers_1.NullLogger.instance;
         }
         // Parse the messages
-        var messages = TextMessageFormat_1.TextMessageFormat.parse(input);
-        var hubMessages = [];
-        for (var _i = 0, messages_1 = messages; _i < messages_1.length; _i++) {
-            var message = messages_1[_i];
-            var parsedMessage = JSON.parse(message);
+        const messages = TextMessageFormat_1.TextMessageFormat.parse(input);
+        const hubMessages = [];
+        for (const message of messages) {
+            const parsedMessage = JSON.parse(message);
             if (typeof parsedMessage.type !== "number") {
                 throw new Error("Invalid payload.");
             }
             switch (parsedMessage.type) {
                 case IHubProtocol_1.MessageType.Invocation:
-                    this.isInvocationMessage(parsedMessage);
+                    this._isInvocationMessage(parsedMessage);
                     break;
                 case IHubProtocol_1.MessageType.StreamItem:
-                    this.isStreamItemMessage(parsedMessage);
+                    this._isStreamItemMessage(parsedMessage);
                     break;
                 case IHubProtocol_1.MessageType.Completion:
-                    this.isCompletionMessage(parsedMessage);
+                    this._isCompletionMessage(parsedMessage);
                     break;
                 case IHubProtocol_1.MessageType.Ping:
                     // Single value, no need to validate
@@ -67,42 +67,41 @@ var JsonHubProtocol = /** @class */ (function () {
             hubMessages.push(parsedMessage);
         }
         return hubMessages;
-    };
+    }
     /** Writes the specified {@link @microsoft/signalr.HubMessage} to a string and returns it.
      *
      * @param {HubMessage} message The message to write.
      * @returns {string} A string containing the serialized representation of the message.
      */
-    JsonHubProtocol.prototype.writeMessage = function (message) {
+    writeMessage(message) {
         return TextMessageFormat_1.TextMessageFormat.write(JSON.stringify(message));
-    };
-    JsonHubProtocol.prototype.isInvocationMessage = function (message) {
-        this.assertNotEmptyString(message.target, "Invalid payload for Invocation message.");
+    }
+    _isInvocationMessage(message) {
+        this._assertNotEmptyString(message.target, "Invalid payload for Invocation message.");
         if (message.invocationId !== undefined) {
-            this.assertNotEmptyString(message.invocationId, "Invalid payload for Invocation message.");
+            this._assertNotEmptyString(message.invocationId, "Invalid payload for Invocation message.");
         }
-    };
-    JsonHubProtocol.prototype.isStreamItemMessage = function (message) {
-        this.assertNotEmptyString(message.invocationId, "Invalid payload for StreamItem message.");
+    }
+    _isStreamItemMessage(message) {
+        this._assertNotEmptyString(message.invocationId, "Invalid payload for StreamItem message.");
         if (message.item === undefined) {
             throw new Error("Invalid payload for StreamItem message.");
         }
-    };
-    JsonHubProtocol.prototype.isCompletionMessage = function (message) {
+    }
+    _isCompletionMessage(message) {
         if (message.result && message.error) {
             throw new Error("Invalid payload for Completion message.");
         }
         if (!message.result && message.error) {
-            this.assertNotEmptyString(message.error, "Invalid payload for Completion message.");
+            this._assertNotEmptyString(message.error, "Invalid payload for Completion message.");
         }
-        this.assertNotEmptyString(message.invocationId, "Invalid payload for Completion message.");
-    };
-    JsonHubProtocol.prototype.assertNotEmptyString = function (value, errorMessage) {
+        this._assertNotEmptyString(message.invocationId, "Invalid payload for Completion message.");
+    }
+    _assertNotEmptyString(value, errorMessage) {
         if (typeof value !== "string" || value === "") {
             throw new Error(errorMessage);
         }
-    };
-    return JsonHubProtocol;
-}());
+    }
+}
 exports.JsonHubProtocol = JsonHubProtocol;
 //# sourceMappingURL=JsonHubProtocol.js.map

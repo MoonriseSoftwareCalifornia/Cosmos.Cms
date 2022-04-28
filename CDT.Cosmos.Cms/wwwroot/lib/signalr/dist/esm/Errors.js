@@ -1,77 +1,134 @@
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 /** Error thrown when an HTTP request fails. */
-var HttpError = /** @class */ (function (_super) {
-    __extends(HttpError, _super);
+export class HttpError extends Error {
     /** Constructs a new instance of {@link @microsoft/signalr.HttpError}.
      *
      * @param {string} errorMessage A descriptive error message.
      * @param {number} statusCode The HTTP status code represented by this error.
      */
-    function HttpError(errorMessage, statusCode) {
-        var _newTarget = this.constructor;
-        var _this = this;
-        var trueProto = _newTarget.prototype;
-        _this = _super.call(this, errorMessage) || this;
-        _this.statusCode = statusCode;
+    constructor(errorMessage, statusCode) {
+        const trueProto = new.target.prototype;
+        super(`${errorMessage}: Status code '${statusCode}'`);
+        this.statusCode = statusCode;
         // Workaround issue in Typescript compiler
         // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
-        _this.__proto__ = trueProto;
-        return _this;
+        this.__proto__ = trueProto;
     }
-    return HttpError;
-}(Error));
-export { HttpError };
+}
 /** Error thrown when a timeout elapses. */
-var TimeoutError = /** @class */ (function (_super) {
-    __extends(TimeoutError, _super);
+export class TimeoutError extends Error {
     /** Constructs a new instance of {@link @microsoft/signalr.TimeoutError}.
      *
      * @param {string} errorMessage A descriptive error message.
      */
-    function TimeoutError(errorMessage) {
-        var _newTarget = this.constructor;
-        if (errorMessage === void 0) { errorMessage = "A timeout occurred."; }
-        var _this = this;
-        var trueProto = _newTarget.prototype;
-        _this = _super.call(this, errorMessage) || this;
+    constructor(errorMessage = "A timeout occurred.") {
+        const trueProto = new.target.prototype;
+        super(errorMessage);
         // Workaround issue in Typescript compiler
         // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
-        _this.__proto__ = trueProto;
-        return _this;
+        this.__proto__ = trueProto;
     }
-    return TimeoutError;
-}(Error));
-export { TimeoutError };
+}
 /** Error thrown when an action is aborted. */
-var AbortError = /** @class */ (function (_super) {
-    __extends(AbortError, _super);
+export class AbortError extends Error {
     /** Constructs a new instance of {@link AbortError}.
      *
      * @param {string} errorMessage A descriptive error message.
      */
-    function AbortError(errorMessage) {
-        var _newTarget = this.constructor;
-        if (errorMessage === void 0) { errorMessage = "An abort occurred."; }
-        var _this = this;
-        var trueProto = _newTarget.prototype;
-        _this = _super.call(this, errorMessage) || this;
+    constructor(errorMessage = "An abort occurred.") {
+        const trueProto = new.target.prototype;
+        super(errorMessage);
         // Workaround issue in Typescript compiler
         // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
-        _this.__proto__ = trueProto;
-        return _this;
+        this.__proto__ = trueProto;
     }
-    return AbortError;
-}(Error));
-export { AbortError };
+}
+/** Error thrown when the selected transport is unsupported by the browser. */
+/** @private */
+export class UnsupportedTransportError extends Error {
+    /** Constructs a new instance of {@link @microsoft/signalr.UnsupportedTransportError}.
+     *
+     * @param {string} message A descriptive error message.
+     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occured on.
+     */
+    constructor(message, transport) {
+        const trueProto = new.target.prototype;
+        super(message);
+        this.transport = transport;
+        this.errorType = 'UnsupportedTransportError';
+        // Workaround issue in Typescript compiler
+        // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
+        this.__proto__ = trueProto;
+    }
+}
+/** Error thrown when the selected transport is disabled by the browser. */
+/** @private */
+export class DisabledTransportError extends Error {
+    /** Constructs a new instance of {@link @microsoft/signalr.DisabledTransportError}.
+     *
+     * @param {string} message A descriptive error message.
+     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occured on.
+     */
+    constructor(message, transport) {
+        const trueProto = new.target.prototype;
+        super(message);
+        this.transport = transport;
+        this.errorType = 'DisabledTransportError';
+        // Workaround issue in Typescript compiler
+        // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
+        this.__proto__ = trueProto;
+    }
+}
+/** Error thrown when the selected transport cannot be started. */
+/** @private */
+export class FailedToStartTransportError extends Error {
+    /** Constructs a new instance of {@link @microsoft/signalr.FailedToStartTransportError}.
+     *
+     * @param {string} message A descriptive error message.
+     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occured on.
+     */
+    constructor(message, transport) {
+        const trueProto = new.target.prototype;
+        super(message);
+        this.transport = transport;
+        this.errorType = 'FailedToStartTransportError';
+        // Workaround issue in Typescript compiler
+        // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
+        this.__proto__ = trueProto;
+    }
+}
+/** Error thrown when the negotiation with the server failed to complete. */
+/** @private */
+export class FailedToNegotiateWithServerError extends Error {
+    /** Constructs a new instance of {@link @microsoft/signalr.FailedToNegotiateWithServerError}.
+     *
+     * @param {string} message A descriptive error message.
+     */
+    constructor(message) {
+        const trueProto = new.target.prototype;
+        super(message);
+        this.errorType = 'FailedToNegotiateWithServerError';
+        // Workaround issue in Typescript compiler
+        // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
+        this.__proto__ = trueProto;
+    }
+}
+/** Error thrown when multiple errors have occured. */
+/** @private */
+export class AggregateErrors extends Error {
+    /** Constructs a new instance of {@link @microsoft/signalr.AggregateErrors}.
+     *
+     * @param {string} message A descriptive error message.
+     * @param {Error[]} innerErrors The collection of errors this error is aggregating.
+     */
+    constructor(message, innerErrors) {
+        const trueProto = new.target.prototype;
+        super(message);
+        this.innerErrors = innerErrors;
+        // Workaround issue in Typescript compiler
+        // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
+        this.__proto__ = trueProto;
+    }
+}
 //# sourceMappingURL=Errors.js.map

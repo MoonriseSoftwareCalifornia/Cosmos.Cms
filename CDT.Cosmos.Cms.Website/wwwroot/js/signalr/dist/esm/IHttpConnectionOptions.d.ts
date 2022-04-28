@@ -39,4 +39,11 @@ export interface IHttpConnectionOptions {
      * Cookies are used by many load-balancers for sticky sessions which is required when your app is deployed with multiple servers.
      */
     withCredentials?: boolean;
+    /**
+     * Default value is 100,000 milliseconds.
+     * Timeout to apply to Http requests.
+     *
+     * This will not apply to Long Polling poll requests, EventSource, or WebSockets.
+     */
+    timeout?: number;
 }

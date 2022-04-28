@@ -21,8 +21,8 @@ export declare class JsonHubProtocol implements IHubProtocol {
      * @returns {string} A string containing the serialized representation of the message.
      */
     writeMessage(message: HubMessage): string;
-    private isInvocationMessage;
-    private isStreamItemMessage;
-    private isCompletionMessage;
-    private assertNotEmptyString;
+    private _isInvocationMessage;
+    private _isStreamItemMessage;
+    private _isCompletionMessage;
+    private _assertNotEmptyString;
 }

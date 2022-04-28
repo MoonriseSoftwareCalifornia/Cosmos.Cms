@@ -1,26 +1,24 @@
 "use strict";
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TextMessageFormat = void 0;
 // Not exported from index
 /** @private */
-var TextMessageFormat = /** @class */ (function () {
-    function TextMessageFormat() {
+class TextMessageFormat {
+    static write(output) {
+        return `${output}${TextMessageFormat.RecordSeparator}`;
     }
-    TextMessageFormat.write = function (output) {
-        return "" + output + TextMessageFormat.RecordSeparator;
-    };
-    TextMessageFormat.parse = function (input) {
+    static parse(input) {
         if (input[input.length - 1] !== TextMessageFormat.RecordSeparator) {
             throw new Error("Message is incomplete.");
         }
-        var messages = input.split(TextMessageFormat.RecordSeparator);
+        const messages = input.split(TextMessageFormat.RecordSeparator);
         messages.pop();
         return messages;
-    };
-    TextMessageFormat.RecordSeparatorCode = 0x1e;
-    TextMessageFormat.RecordSeparator = String.fromCharCode(TextMessageFormat.RecordSeparatorCode);
-    return TextMessageFormat;
-}());
+    }
+}
 exports.TextMessageFormat = TextMessageFormat;
+TextMessageFormat.RecordSeparatorCode = 0x1e;
+TextMessageFormat.RecordSeparator = String.fromCharCode(TextMessageFormat.RecordSeparatorCode);
 //# sourceMappingURL=TextMessageFormat.js.map

@@ -1,40 +1,37 @@
 "use strict";
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = require("./Utils");
+exports.Subject = void 0;
+const Utils_1 = require("./Utils");
 /** Stream implementation to stream items to the server. */
-var Subject = /** @class */ (function () {
-    function Subject() {
+class Subject {
+    constructor() {
         this.observers = [];
     }
-    Subject.prototype.next = function (item) {
-        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
-            var observer = _a[_i];
+    next(item) {
+        for (const observer of this.observers) {
             observer.next(item);
         }
-    };
-    Subject.prototype.error = function (err) {
-        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
-            var observer = _a[_i];
+    }
+    error(err) {
+        for (const observer of this.observers) {
             if (observer.error) {
                 observer.error(err);
             }
         }
-    };
-    Subject.prototype.complete = function () {
-        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
-            var observer = _a[_i];
+    }
+    complete() {
+        for (const observer of this.observers) {
             if (observer.complete) {
                 observer.complete();
             }
         }
-    };
-    Subject.prototype.subscribe = function (observer) {
+    }
+    subscribe(observer) {
         this.observers.push(observer);
         return new Utils_1.SubjectSubscription(this, observer);
-    };
-    return Subject;
-}());
+    }
+}
 exports.Subject = Subject;
 //# sourceMappingURL=Subject.js.map

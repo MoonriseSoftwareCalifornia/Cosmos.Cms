@@ -1,38 +1,33 @@
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 import { SubjectSubscription } from "./Utils";
 /** Stream implementation to stream items to the server. */
-var Subject = /** @class */ (function () {
-    function Subject() {
+export class Subject {
+    constructor() {
         this.observers = [];
     }
-    Subject.prototype.next = function (item) {
-        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
-            var observer = _a[_i];
+    next(item) {
+        for (const observer of this.observers) {
             observer.next(item);
         }
-    };
-    Subject.prototype.error = function (err) {
-        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
-            var observer = _a[_i];
+    }
+    error(err) {
+        for (const observer of this.observers) {
             if (observer.error) {
                 observer.error(err);
             }
         }
-    };
-    Subject.prototype.complete = function () {
-        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
-            var observer = _a[_i];
+    }
+    complete() {
+        for (const observer of this.observers) {
             if (observer.complete) {
                 observer.complete();
             }
         }
-    };
-    Subject.prototype.subscribe = function (observer) {
+    }
+    subscribe(observer) {
         this.observers.push(observer);
         return new SubjectSubscription(this, observer);
-    };
-    return Subject;
-}());
-export { Subject };
+    }
+}
 //# sourceMappingURL=Subject.js.map
