@@ -26,13 +26,11 @@ To follow along you will need:
 To export the layout do the following:
  
  * Log into the "Editor" for your website and click the "Menu" button, then select "Layouts."
- * Download the "default" layout by clicking the "export" button
+ * Download the "default" layout by clicking the "export default" button
 
-![Layout file displayed in Windows Explorer](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-layout-exported.png)
+![Export default layout button](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-layout-button.png)
 
-Open the *blank layout* your code editor (in our case Visual Studio Code) and notice the HTML comments noted as "uneditable.".
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; __IMPORTANT!__ _Do not edit or alter_ the uneditable sections as they are layout elements.
+Remember the download location as you will need to copy the layout into your project later.
 
 ## Step 2: Create the React web application
 
@@ -77,7 +75,7 @@ Below is a screenshot of an example where you can see what the comments look lik
 
 ![HEAD screen shot](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-head-layout.png)
 
-The content within these comments are part of the layout.  It is important to not edit anything within these blocks.
+&nbsp;&nbsp;&nbsp;&nbsp; *IMPORTANT: Do not edit or alter anything contained within areas marked as not editable.*
 
 Now complete the following steps:
 
@@ -86,8 +84,18 @@ Now complete the following steps:
 * Copy the React code from  `original-index.html` and put it in your new `index.html` making sure the uneditable areas are not changed.
 * Build and start your app to see the results.
 
+Things to keep in mind as you merge your application with your layout:
+
+* Remember the "layout wins."  So remove tags from your application that already occur in the "layout" blocks.
+* It is not uncommon that CSS conflicts may exist between your layout and application. This is OK as most times these things are easily fixed.
 
 ## Step 4: Test and Debug your app
+
+Use the following command to start the application.
+
+```shell
+yarn start
+```
 
 At this point it is not uncommon to have CSS conflicts with your layout. Fix those now. (See our [tips](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md#tips)] for avoiding layout conflicts.
 
@@ -101,14 +109,18 @@ Now we are ready to import this into Cosmos.
 
 The import process happens in four steps:
 
-1. Run the command `npm run build` to create the run package.
-2. Upload assests to Cosmos
-3. Import the web page
-4. Correct JavaScript and CSS paths in web page
+1. Create the deployment package.
+2. Upload assests to Cosmos.
+3. Import the `index.html` page.
+4. Correct JavaScript and CSS paths in web page.
 
-### Uploading assets
+### Create the deploy package
 
-Login to the Cosmos Editor for your website, then select "Menu" then "Files."  This will open the file manager.
+Run the `yarn build` command to "build" the application and create the package.
+
+### Uploading assets using file manager
+
+Login to the Cosmos Editor for your website, then select "Menu" then "Files."  This will open the *file manager*.
 
 Create a folder to hold your application's assets.  I created the following folder `/pub/apps/snapshot` as show in the picture below.
 
@@ -116,10 +128,13 @@ Create a folder to hold your application's assets.  I created the following fold
 
 Here are the steps to upload the files:
 
-1. With your folder selected, click the "upload files" button.
-2. Open the folder on your computer where the files exist.
-3. Select all these files *except index.html*, plus the `static` folder, and drop it on the uploader.
-4. After files have uploaded click the "close" button.
+1. Using *file manager* click on the folder you just created and then select "upload files."
+2. Open the folder on your computer where the deployment package exists. You should see something like below.
+
+![Files on computer selected and ready for import](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-files-selected-for-import.png)
+
+4. Select all these files *except index.html*, plus the `static` folder, then *drag and drop* them on the uploader.
+5. After files have uploaded click the "close" button.
 
 Using the file manager, check what was just uploaded.
 
@@ -128,7 +143,7 @@ Using the file manager, check what was just uploaded.
 Next we need to import the `index.html` into Cosmos. Here are the steps:
 
 1. Click the "Menu" button then select "Pages."
-2. Find the page you created above and click "Edit." On the next page select "Code View."
+2. Either create a new page to hold the application or select an existing page and click "Code Editor."
 3. Once the code editor opens, select "Menu" then "Import."
 4. The import dialog open, click the "Select files" button, and select the `index.html` file in the "build" folder.
 
