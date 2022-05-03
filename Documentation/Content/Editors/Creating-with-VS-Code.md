@@ -15,8 +15,9 @@ To follow along you will need:
 1. [Cosmos is installed ](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
 2. [Visual Studio Code](https://code.visualstudio.com)
 3. [Node.js](https://nodejs.org) is installed on your development computer.
-4. You know how to edit HTML, JavaScript and CSS
-5. Know how to use [npm](https://docs.npmjs.com/cli/v6/commands/npm-build?msclkid=2ec764f0c49f11ec841c784956bfacb5) to build an application
+4. [Yarn](https://yarnpkg.com/getting-started/install) package manager if not already installed with npm.
+5. You know how to edit HTML, JavaScript and CSS
+6. Know how to use [npm](https://docs.npmjs.com/cli/v6/commands/npm-build?msclkid=2ec764f0c49f11ec841c784956bfacb5) to build an application
 
 ## Step 1: Export your layout
 
@@ -42,10 +43,20 @@ Now close that file so we can start building the React application.This example 
 * React Hooks
 * Context API
 * Flickr API
-
 Read the [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the [Readme document](https://github.com/Yog9/SnapShot#snap-shot-) to install dependencies and build your application.
 
-Run the app and you should see something like below.
+After cloning the application on my local computer I ran the following commands from my terminal.  You may want to do more.
+
+```shell
+yarn install
+npm audit -fix
+```
+
+Try running the application using the command below to view the application. A screen shot of what you should see is given below.
+
+```shell
+yarn start
+```
 
 ![Example Web App Running](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/SnapShotDemo.png)
 
@@ -74,6 +85,7 @@ Now complete the following steps:
 * Rename the layout file to `index.html'.
 * Copy the React code from  `original-index.html` and put it in your new `index.html` making sure the uneditable areas are not changed.
 * Build and start your app to see the results.
+
 
 ## Step 4: Test and Debug your app
 
