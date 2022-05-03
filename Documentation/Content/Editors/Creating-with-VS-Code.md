@@ -28,7 +28,7 @@ To export the layout do the following:
  * Log into the "Editor" for your website and click the "Menu" button, then select "Layouts."
  * Download the "default" layout by clicking the "export" button
 
-![Layout file displayed in Windows Explorer](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/LayoutExported.png)
+![Layout file displayed in Windows Explorer](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-layout-exported.png)
 
 Open the *blank layout* your code editor (in our case Visual Studio Code) and notice the HTML comments noted as "uneditable.".
 
