@@ -1,8 +1,6 @@
-# Tutorial: Creating React Web App for Cosmos with VS Code
+# Tutorial: Build a [React web app](https://github.com/Yog9/SnapShot) with [VS Code](https://code.visualstudio.com/) and [npm](https://www.npmjs.com/) then import and host it with Cosmos
 
-Cosmos gives web developers maximum flexibility in how they want to create web apps and content by enabling you to use your favorite [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment?msclkid=45de0b88c49911ecb8f91dfd783794ab) or code editor such as Visual Studio Code, NetBeans, Eclipse, NotePad or Visual Studio. Once complete use the built-in tools to import your work into Cosmos.
-
-In this tutorial show how by creating a React web application using Visual Studio Code that is then imported into Cosmos. Here are the general steps:
+Cosmos gives web developers maximum flexibility by enabling you to create and build applications outside of Cosmos, then import them into Cosmos to host and manage. In this tutorial I show how with the React web application "[SnapShot](https://github.com/Yog9/SnapShot)."  I use Visual Studio Code with npm on a local development computer to download and build the source code, then import the build into Cosmos. :Here is what we will cover
 
 1. [Export a layout](#step-1-export-your-layout)
 2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
@@ -29,13 +27,15 @@ To export the layout do the following:
  * Log into the "Editor" for your website and click the "Menu" button, then select "Layouts."
  * Download the "default" layout by clicking the "export" button
 
-Once the page downloads open it with your code editor (in our case Visual Studio Code) and find the HTML comments within. Notice the "uneditable" sections. These are part of the layout and need to be left alone. Elsewhere within the code there will be HTML comments that indicate where you should place your application code.
+![Layout file displayed in Windows Explorer](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/LayoutExported.png)
 
-Now close that file so we can start building the React application.
+Open the *blank layout* your code editor (in our case Visual Studio Code) and notice the HTML comments noted as "uneditable.".
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; __IMPORTANT!__ _Do not edit or alter_ the uneditable sections as they are layout elements.
 
 ## Step 2: Create the React web application
 
-This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot). It is a photo gallery that draws upon the Flickr API.  More specifically, it uses the following:
+Now close that file so we can start building the React application.This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot) that makes use of the following:
 
 * React js
 * React Router
@@ -43,7 +43,7 @@ This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot
 * Context API
 * Flickr API
 
-Follow the [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the [Readme document](https://github.com/Yog9/SnapShot#snap-shot-) to install dependencies and build your application.
+Read the [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the [Readme document](https://github.com/Yog9/SnapShot#snap-shot-) to install dependencies and build your application.
 
 Run the app and you should see something like below.
 
@@ -67,8 +67,6 @@ Below is a screenshot of an example where you can see what the comments look lik
 ![HEAD screen shot](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-head-layout.png)
 
 The content within these comments are part of the layout.  It is important to not edit anything within these blocks.
-
-*IMPORTANT!: Do not remove the HTML comments as these are needed during the import process.*
 
 Now complete the following steps:
 
