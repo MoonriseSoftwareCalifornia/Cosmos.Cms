@@ -302,7 +302,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 Title = article.Title,
                 Content = article.Content,
                 Updated = DateTime.UtcNow,
-                HeaderJavaScript = article.HeaderJavaScript,
+                HeadJavaScript = article.HeaderJavaScript,
                 FooterJavaScript = article.FooterJavaScript,
                 ReadWriteMode = false,
                 PreviewMode = false,
@@ -315,7 +315,7 @@ namespace CDT.Cosmos.Cms.Controllers
 
             var result = await _articleLogic.UpdateOrInsert(model, userId);
 
-            return RedirectToAction("Edit", "Editor", new { result.Model.Id });
+            return RedirectToAction("EditCode", "Editor", new { result.Model.Id });
         }
 
         /// <summary>
@@ -580,7 +580,7 @@ namespace CDT.Cosmos.Cms.Controllers
 
 
         /// <summary>
-        /// Exports a layout with a blank page
+        /// Exports a page as a file
         /// </summary>
         /// <returns></returns>
         [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
@@ -596,17 +596,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 article = await _articleLogic.Create("Blank Page");
             }
 
-            var htmlUtilities = new HtmlUtilities();
-
-            article.Layout.Head = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.Head, _blobPublicAbsoluteUrl);
-            article.Layout.HtmlHeader = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.HtmlHeader, _blobPublicAbsoluteUrl);
-            article.Layout.FooterHtmlContent = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.FooterHtmlContent, _blobPublicAbsoluteUrl);
-
-            article.HeaderJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
-            article.Content = htmlUtilities.RelativeToAbsoluteUrls(article.Content, _blobPublicAbsoluteUrl);
-            article.FooterJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
-
-            var html = await _viewRenderService.RenderToStringAsync("~/Views/Editor/ExportPage.cshtml", article);
+            var html = await _articleLogic.ExportArticle(article, _blobPublicAbsoluteUrl, _viewRenderService);
 
             var exportName = $"pageid-{article.ArticleNumber}-version-{article.VersionNumber}.html";
 
@@ -877,7 +867,7 @@ namespace CDT.Cosmos.Cms.Controllers
                         ToolTip = "Content to appear at the bottom of the <body> tag."
                     }
                 },
-                HeaderJavaScript = article.HeaderJavaScript,
+                HeaderJavaScript = article.HeadJavaScript,
                 FooterJavaScript = article.FooterJavaScript,
                 Content = article.Content,
                 EditingField = "HeaderJavaScript",
@@ -950,9 +940,9 @@ namespace CDT.Cosmos.Cms.Controllers
 
                     if (string.IsNullOrEmpty(model.HeaderJavaScript) ||
                     string.IsNullOrWhiteSpace(model.HeaderJavaScript))
-                        articleViewModel.HeaderJavaScript = string.Empty;
+                        articleViewModel.HeadJavaScript = string.Empty;
                     else
-                        articleViewModel.HeaderJavaScript = model.HeaderJavaScript.Trim();
+                        articleViewModel.HeadJavaScript = model.HeaderJavaScript.Trim();
 
                     if (string.IsNullOrEmpty(model.FooterJavaScript) ||
                         string.IsNullOrWhiteSpace(model.FooterJavaScript))

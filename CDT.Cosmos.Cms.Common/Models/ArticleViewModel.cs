@@ -70,10 +70,10 @@ namespace CDT.Cosmos.Cms.Common.Models
         public string Content { get; set; }
 
         /// <summary>
-        ///     JavaScript block injected into header
+        /// JavaScript block injected into HEAD for this particular page (article)
         /// </summary>
         [DataType(DataType.Html)]
-        public string HeaderJavaScript { get; set; }
+        public string HeadJavaScript { get; set; }
 
         /// <summary>
         ///     JavaScript block injected into the footer

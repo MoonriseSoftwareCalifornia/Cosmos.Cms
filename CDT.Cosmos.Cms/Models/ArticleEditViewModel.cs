@@ -25,7 +25,7 @@ namespace CDT.Cosmos.Cms.Models
             Title = model.Title;
             Content = model.Content;
             Updated = model.Updated;
-            HeaderJavaScript = model.HeaderJavaScript;
+            HeadJavaScript = model.HeadJavaScript;
             FooterJavaScript = model.FooterJavaScript;
             Layout = model.Layout;
             RoleList = model.RoleList;

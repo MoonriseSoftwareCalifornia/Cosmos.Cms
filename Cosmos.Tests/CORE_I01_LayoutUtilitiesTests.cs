@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Cosmos.Tests
 {
     [TestClass]
-    public class CORE_I001_LayoutUtilitiesTests
+    public class CORE_I01_LayoutUtilitiesTests
     {
         [TestMethod]
         public void A01_ReadCatalogSuccess()

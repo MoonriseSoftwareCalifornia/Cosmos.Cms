@@ -32,12 +32,11 @@
         background-color: #1e1e1e;
     }
 
-    .k-dropzone {
-        min-height: 200px;
-        vertical-align: top;
+    .uploadDropZone {
+        height: 100px;
     }
 </style>
-<div class="continer-fluid mt-5 pt-2">
+<div class="container-fluid mt-5 pt-2">
     <div class="row">
         <div class="col">
             <a id="frmEditFile" class="btn btn-primary btn-sm" style="display: none" href="javascript:editCode()">Edit File</a> <a id="frmEditImage" class="btn btn-primary btn-sm" style="display: none" href="javascript:editImage()">Edit Image</a>
@@ -46,30 +45,38 @@
     </div>
     <div id="uploaderRow" style="display:none">
         <div class="row">
-            <div class="col">
-                <h5 class="text-light">File Uploader</h5>
-                <p class="text-light">Select files or drag and drop them below. When done click &quot;Close.&quot;</p>
-                <hr />
+            <div class="col pt-2">
+                <h5 class="text-light">File and Folder Upload Tool</h5>
             </div>
         </div>
+        <hr />
         <div class="row">
-            <div class="col-11">
-                <div class="text-light">Uploading to: <span id="folderPath"></span></div>
+            <div class="col-3">
+                <span class="text-light">Uploading files or folders:</span>
+                @(Html.Kendo().Switch()
+                .Name("switch")
+                .Messages(c => c.Checked("Folders").Unchecked("Files")).Width(120))
+            </div>
+            <div class="col-8">
+                <div class="input-group mb-3">
+                  <span class="input-group-text bg-light text-dark" id="basic-addon1">Uploading to: </span>
+                  <div id="folderPath" class="form-control" aria-describedby="basic-addon1"></div>
+                </div>
             </div>
             <div class="col-1">
-                <button type="button" id="btnCloseUpload" class="btn btn-secondary mb-2">Close</button>
+                <button type="button" id="btnCloseUpload" class="float-end btn btn-secondary mb-2">Close</button>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 @(Html.Kendo().Upload()
                 .Name("files")
-                .Directory(true)
-                .DirectoryDrop(true)
+                .Directory(false)
+                .DirectoryDrop(false)
+                .DropZone(".dropZoneElement")
                 .Async(a => a
                 .Save("Upload", "FileManager")
                 .Remove("Remove", "FileManager")
-                .AutoUpload(true)
                 .ChunkSize(5242880) // bytes (5 MB) - AWS S3 multi upload requires 5 MB parts. Last part can be any size
                 )
                 .Events(e =>
@@ -79,6 +86,15 @@
                 .Error("onError")
                 )
                 )
+                <div class="card text-light" style="background-color:#504e4e">
+                    <div class="card-body">
+                        <div class="dropZoneElement">
+                            <div class="uploadDropZone d-flex justify-content-center">
+                                <p id="uploadAreaLabel" class="card-title">Drop files here to upload</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

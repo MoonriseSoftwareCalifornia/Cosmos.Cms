@@ -292,7 +292,7 @@ namespace CDT.Cosmos.Cms.Common.Data.Logic
                 UrlPath = article.UrlPath,
                 Updated = article.Updated,
                 VersionNumber = article.VersionNumber,
-                HeaderJavaScript = article.HeaderJavaScript,
+                HeadJavaScript = article.HeaderJavaScript,
                 FooterJavaScript = article.FooterJavaScript,
                 Layout = await BuildDefaultLayout(lang, true, article.Layout),
                 ReadWriteMode = _isEditor,

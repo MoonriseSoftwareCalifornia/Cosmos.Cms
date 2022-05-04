@@ -52,7 +52,7 @@
     @* Layout head *@
     @Html.Raw(Model.Layout.Head)
     @* Page specific head *@
-    @Html.Raw(Model.HeaderJavaScript)
+    @Html.Raw(Model.HeadJavaScript)
     @*
         Telerik/Kendo resources
     *@
@@ -97,7 +97,7 @@
         <input type="hidden" asp-for="UrlPath" />
         <input type="hidden" asp-for="VersionNumber" />
         <input type="hidden" asp-for="Content" />
-        <input type="hidden" asp-for="HeaderJavaScript" />
+        <input type="hidden" asp-for="HeadJavaScript" />
         <input type="hidden" asp-for="FooterJavaScript" />
         <input type="hidden" asp-for="Published" />
         <input type="hidden" asp-for="RoleList" />

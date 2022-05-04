@@ -96,7 +96,7 @@ namespace CDT.Cosmos.Cms.Data.Logic
                 Title = template.Title,
                 Content = template.Content,
                 Updated = DateTime.Now.ToUniversalTime(),
-                HeaderJavaScript = string.Empty,
+                HeadJavaScript = string.Empty,
                 FooterJavaScript = string.Empty,
                 ReadWriteMode = true
             };
@@ -795,7 +795,7 @@ namespace CDT.Cosmos.Cms.Data.Logic
                 article.Published = null;
             article.Updated = DateTime.Now.ToUniversalTime();
 
-            article.HeaderJavaScript = model.HeaderJavaScript;
+            article.HeaderJavaScript = model.HeadJavaScript;
             article.FooterJavaScript = model.FooterJavaScript;
 
             article.RoleList = model.RoleList;
@@ -837,7 +837,10 @@ namespace CDT.Cosmos.Cms.Data.Logic
         /// </remarks>
         public void UpdateHeadBaseTag(ArticleViewModel model)
         {
-            model.HeaderJavaScript = UpdateHeadBaseTag(model.HeaderJavaScript, model.UrlPath);
+            if (model.HeadJavaScript.Contains("<base "))
+            {
+                model.HeadJavaScript = UpdateHeadBaseTag(model.HeadJavaScript, model.UrlPath);
+            }
             return;
         }
 
@@ -852,7 +855,10 @@ namespace CDT.Cosmos.Cms.Data.Logic
         /// </remarks>
         public void UpdateHeadBaseTag(Article model)
         {
-            model.HeaderJavaScript = UpdateHeadBaseTag(model.HeaderJavaScript, model.UrlPath);
+            if (model.HeaderJavaScript.Contains("<base "))
+            {
+                model.HeaderJavaScript = UpdateHeadBaseTag(model.HeaderJavaScript, model.UrlPath);
+            }
             return;
         }
 
@@ -1145,7 +1151,6 @@ namespace CDT.Cosmos.Cms.Data.Logic
         /// <summary>
         /// Get a list of article redirects
         /// </summary>
-        /// <param name="filter"></param>
         /// <returns></returns>
         public async Task<List<RedirectItemViewModel>> GetArticleRedirects()
         {
@@ -1205,6 +1210,37 @@ namespace CDT.Cosmos.Cms.Data.Logic
         }
 
         #endregion
+
+        #endregion
+
+        #region PAGE EXPORT
+
+        /// <summary>
+        /// Exports and article as HTML with layout elements.
+        /// </summary>
+        /// <param name="article"></param>
+        /// <param name="blobPublicAbsoluteUrl"></param>
+        /// <param name="viewRenderService"></param>
+        /// <returns>web page</returns>
+        public async Task<string> ExportArticle(ArticleViewModel article, Uri blobPublicAbsoluteUrl, Services.IViewRenderService viewRenderService)
+        {
+            
+            var htmlUtilities = new Services.HtmlUtilities();
+
+            article.Layout.Head = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.Head, blobPublicAbsoluteUrl, false);
+
+            // Layout body elements
+            article.Layout.HtmlHeader = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.HtmlHeader, blobPublicAbsoluteUrl, true);
+            article.Layout.FooterHtmlContent = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.FooterHtmlContent, blobPublicAbsoluteUrl, true);
+
+            article.HeadJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeadJavaScript, blobPublicAbsoluteUrl, false);
+            article.Content = htmlUtilities.RelativeToAbsoluteUrls(article.Content, blobPublicAbsoluteUrl, false);
+            article.FooterJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.FooterJavaScript, blobPublicAbsoluteUrl, false);
+
+            var html = await viewRenderService.RenderToStringAsync("~/Views/Editor/ExportPage.cshtml", article);
+
+            return html;
+        }
 
         #endregion
     }

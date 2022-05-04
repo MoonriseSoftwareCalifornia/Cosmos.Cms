@@ -20,9 +20,10 @@
             <p>Shown below lists the layouts loaded into your website.  Each gives your website a specific look for each page in your website.</p>
             <p>Click &quot;Create New&quot; to start building your own style.</p>
         
-            <a class="btn btn-sm btn-primary" href="@Url.Action("Create")">Create</a>
-            <a class="btn btn-sm btn-primary" title="Export the default layout." href="@Url.Action("ExportLayout")">Export</a>
-            <a class="btn btn-sm btn-primary" title="Upload custom layout." href="@Url.Action("Upload")">Upload</a>
+            <a class="btn btn-sm btn-primary" href="@Url.Action("Create")">New Layout</a>
+            <a class="btn btn-sm btn-primary" title="Export the default layout." href="@Url.Action("ExportLayout")/-1">Export Blank</a>
+            <a class="btn btn-sm btn-primary" title="Export the default layout." href="@Url.Action("ExportLayout")">Export Default</a>
+            <a class="btn btn-sm btn-primary" title="Upload custom layout." href="@Url.Action("Upload")">Upload Layout</a>
             |
             <a class="btn btn-sm btn-primary" title="Import one of the community layouts." href="@Url.Action("CommunityLayouts")">Community Layouts</a>
 

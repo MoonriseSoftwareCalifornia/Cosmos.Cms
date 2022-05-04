@@ -36,9 +36,10 @@ namespace CDT.Cosmos.Cms.Services
         /// </summary>
         /// <param name="html"></param>
         /// <param name="absoluteUrl"></param>
+        /// <param name="isLayoutBodyElement"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public string RelativeToAbsoluteUrls(string html, Uri absoluteUrl)
+        public string RelativeToAbsoluteUrls(string html, Uri absoluteUrl, bool isLayoutBodyElement)
         {
             if (string.IsNullOrEmpty(html))
                 return "";
@@ -52,6 +53,10 @@ namespace CDT.Cosmos.Cms.Services
 
             foreach (HtmlNode node in htmlDoc.DocumentNode.ChildNodes)
             {
+                if (isLayoutBodyElement && node.NodeType != HtmlNodeType.Comment && node.NodeType != HtmlNodeType.Text && !node.Attributes.Contains("ccms-layout"))
+                {
+                    node.Attributes.Add("ccms-layout", "true");
+                }
                 RelativeToAbsoluteNoUrls(node, absoluteUrl);
             }
 
@@ -84,5 +89,6 @@ namespace CDT.Cosmos.Cms.Services
                 RelativeToAbsoluteNoUrls(child, absoluteUrl);
             }
         }
+
     }
 }

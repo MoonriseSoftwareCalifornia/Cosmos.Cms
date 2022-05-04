@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -36,6 +35,8 @@ namespace CDT.Cosmos.Cms.Controllers
         // Private fields
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ArticleEditLogic _articleLogic;
+        private readonly Uri _blobPublicAbsoluteUrl;
+        private readonly IViewRenderService _viewRenderService;
 
         /// <summary>
         /// Constructor
@@ -47,13 +48,15 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <param name="userManager"></param>
         /// <param name="articleLogic"></param>
         /// <param name="hostEnvironment"></param>
+        /// <param name="viewRenderService"></param>
         public FileManagerController(IOptions<CosmosConfig> options,
             ILogger<FileManagerController> logger,
             ApplicationDbContext dbContext,
             StorageContext storageContext,
             UserManager<IdentityUser> userManager,
             ArticleEditLogic articleLogic,
-            IWebHostEnvironment hostEnvironment) : base(
+            IWebHostEnvironment hostEnvironment,
+            IViewRenderService viewRenderService) : base(
             dbContext,
             userManager,
             articleLogic,
@@ -70,6 +73,19 @@ namespace CDT.Cosmos.Cms.Controllers
             _hostEnvironment = hostEnvironment;
             _userManager = userManager;
             _articleLogic = articleLogic;
+
+            var htmlUtilities = new HtmlUtilities();
+
+            if (htmlUtilities.IsAbsoluteUri(options.Value.SiteSettings.BlobPublicUrl))
+            {
+                _blobPublicAbsoluteUrl = new Uri(options.Value.SiteSettings.BlobPublicUrl);
+            }
+            else
+            {
+                _blobPublicAbsoluteUrl = new Uri(options.Value.SiteSettings.PublisherUrl.TrimEnd('/') + "/" + options.Value.SiteSettings.BlobPublicUrl.TrimStart('/'));
+            }
+
+            _viewRenderService = viewRenderService;
         }
 
         /// <summary>
@@ -104,7 +120,7 @@ namespace CDT.Cosmos.Cms.Controllers
         /// </summary>
         /// <param name="files"></param>
         /// <param name="metaData"></param>
-        /// <param name="id"></param>
+        /// <param name="id">Article ID</param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Administrators, Editors, Authors, Team Members")]
@@ -142,157 +158,101 @@ namespace CDT.Cosmos.Cms.Controllers
             try
             {
 
-                var file = files.FirstOrDefault();
-                using var memstream = new MemoryStream();
-                await file.CopyToAsync(memstream);
-                var html = Encoding.UTF8.GetString(memstream.ToArray());
-
-                // Load the HTML document.
-                var htmlDoc = new HtmlAgilityPack.HtmlDocument();
-                htmlDoc.LoadHtml(html);
-
-
-                var headHtml = htmlDoc.DocumentNode.SelectSingleNode("//head").InnerHtml.Trim();
-                var bodyHtml = htmlDoc.DocumentNode.SelectSingleNode("//body").InnerHtml.Trim();
-
-
-                // Validate page can be parsed out
-                var headTotalLength = headHtml.Length;
-                var bodyTotalLength = bodyHtml.Length;
-
-                // -----------------------------------------------------
-                // Remove Cosmos Head Injection
-                var cosmosHeadStart = headHtml.IndexOf(PageImportConstants.COSMOS_HEAD_START);
-                var cosmosHeadEnd = headHtml.IndexOf(PageImportConstants.COSMOS_HEAD_END) + PageImportConstants.COSMOS_HEAD_END.Length;
-
-                if (cosmosHeadStart == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_HEAD_START)}");
-                }
-                if (cosmosHeadEnd == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_HEAD_END)}");
-                }
-
                 if (ModelState.IsValid)
                 {
-                    headHtml = headHtml.Remove(cosmosHeadStart, cosmosHeadEnd - cosmosHeadStart);
-                }
+                    var article = await _articleLogic.Get(Id, EnumControllerName.Edit);
 
-                // -----------------------------------------------------
-                // Remove Cosmos Script Injection into bottom of head
-                var cosmosHeadScriptsStart = headHtml.IndexOf(PageImportConstants.COSMOS_HEAD_SCRIPTS_START);
-                var cosmosHeadScriptsEnd = headHtml.IndexOf(PageImportConstants.COSMOS_HEAD_SCRIPTS_END) + PageImportConstants.COSMOS_HEAD_SCRIPTS_END.Length;
+                    var originalHtml = await _articleLogic.ExportArticle(article, _blobPublicAbsoluteUrl, _viewRenderService);
+                    var originalHtmlDoc = new HtmlAgilityPack.HtmlDocument();
+                    originalHtmlDoc.LoadHtml(originalHtml);
 
-                if (cosmosHeadScriptsStart == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_HEAD_SCRIPTS_START)}");
-                }
-                if (cosmosHeadScriptsEnd == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_HEAD_SCRIPTS_END)}");
-                }
+                    var file = files.FirstOrDefault();
+                    using var memstream = new MemoryStream();
+                    await file.CopyToAsync(memstream);
+                    var html = Encoding.UTF8.GetString(memstream.ToArray());
 
-                if (ModelState.IsValid)
-                {
-                    headHtml = headHtml.Remove(cosmosHeadScriptsStart, cosmosHeadScriptsEnd - cosmosHeadScriptsStart);
-                }
+                    // Load the HTML document.
+                    var newHtmlDoc = new HtmlAgilityPack.HtmlDocument();
+                    newHtmlDoc.LoadHtml(html);
 
-                // -----------------------------------------------------
-                // Remove Cosmos body header Injection
-                var cosmosBodyHeaderStart = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_HEADER_START);
-                var cosmosBodyHeaderEnd = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_HEADER_END) + PageImportConstants.COSMOS_BODY_HEADER_END.Length;
+                    var originalHeadNode = originalHtmlDoc.DocumentNode.SelectSingleNode("//head");
+                    var originalBodyNode = originalHtmlDoc.DocumentNode.SelectSingleNode("//body");
 
-                if (cosmosBodyHeaderStart == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_HEADER_START)}");
-                }
-                if (cosmosBodyHeaderEnd == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_HEADER_END)}");
-                }
+                    var layoutHeadNodes =
+                        SelectNodesBetweenComments(originalHeadNode, PageImportConstants.COSMOS_HEAD_START, PageImportConstants.COSMOS_HEAD_END);
+                    var layoutHeadScriptsNodes =
+                        SelectNodesBetweenComments(originalHeadNode, PageImportConstants.COSMOS_HEAD_SCRIPTS_START, PageImportConstants.COSMOS_HEAD_SCRIPTS_END);
+                    var layoutBodyHeaderNodes =
+                        SelectNodesBetweenComments(originalBodyNode, PageImportConstants.COSMOS_BODY_HEADER_START, PageImportConstants.COSMOS_BODY_HEADER_END);
+                    var layoutBodyFooterNodes =
+                        SelectNodesBetweenComments(originalBodyNode, PageImportConstants.COSMOS_BODY_FOOTER_START, PageImportConstants.COSMOS_BODY_FOOTER_END);
+                    var layoutBodyGoogleTranslateNodes =
+                        SelectNodesBetweenComments(originalBodyNode, PageImportConstants.COSMOS_GOOGLE_TRANSLATE_START, PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END);
+                    var layoutBodyEndScriptsNodes =
+                        SelectNodesBetweenComments(originalBodyNode, PageImportConstants.COSMOS_BODY_END_SCRIPTS_START, PageImportConstants.COSMOS_BODY_END_SCRIPTS_END);
 
-                if (ModelState.IsValid)
-                {
-                    bodyHtml = bodyHtml.Remove(cosmosBodyHeaderStart, cosmosBodyHeaderEnd - cosmosBodyHeaderStart);
-                }
 
-                // -----------------------------------------------------
-                // Remove Cosmos body footer Injection
-                var cosmosBodyFooterStart = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_FOOTER_START);
-                var cosmosBodyFooterEnd = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_FOOTER_END) + PageImportConstants.COSMOS_BODY_FOOTER_END.Length;
+                    // NOTES
+                    // https://stackoverflow.com/questions/3844208/html-agility-pack-find-comment-node?msclkid=b885cfabc88011ecbf75531a66703f70
+                    // https://html-agility-pack.net/knowledge-base/7275301/htmlagilitypack-select-nodes-between-comments?msclkid=b88685c7c88011ecbe703bfac7781d3c
 
-                if (cosmosBodyFooterStart == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_FOOTER_START)}");
-                }
-                if (cosmosBodyFooterEnd == -1)
-                {
-                    ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_FOOTER_END)}");
-                }
 
-                if (ModelState.IsValid)
-                {
-                    bodyHtml = bodyHtml.Remove(cosmosBodyFooterStart, cosmosBodyFooterEnd - cosmosBodyFooterStart);
-                }
+                    var newHeadNode = newHtmlDoc.DocumentNode.SelectSingleNode("//head");
+                    var newBodyNode = newHtmlDoc.DocumentNode.SelectSingleNode("//body");
 
-                // -----------------------------------------------------
-                // Remove Cosmos Google Translate footer Injection (if present)
-                var cosmosGoogleTranslateStart = bodyHtml.IndexOf(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_START);
-                var cosmosGoogleTranslateEnd = bodyHtml.IndexOf(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END);
+                    // Now remove layout elements for the HEAD node
+                    RemoveNodes(ref newHeadNode, layoutHeadNodes);
+                    RemoveNodes(ref newHeadNode, layoutHeadScriptsNodes);
 
-                if ((cosmosGoogleTranslateStart > -1) || (cosmosGoogleTranslateEnd > -1))
-                {
-                    if (cosmosGoogleTranslateStart == -1)
+                    // Now remove layout elements for the BODY - Except layout footer
+                    RemoveNodes(ref newBodyNode, layoutBodyHeaderNodes);
+                    RemoveNodes(ref newBodyNode, layoutBodyGoogleTranslateNodes);
+                    RemoveNodes(ref newBodyNode, layoutBodyEndScriptsNodes);
+
+                    // Now capture nodes above and below footer within body
+                    var exclude = new []{ HtmlAgilityPack.HtmlNodeType.Comment, HtmlAgilityPack.HtmlNodeType.Text };
+
+                    var footerStartIndex = GetChildNodeIndex(newBodyNode, layoutBodyFooterNodes.FirstOrDefault(f => exclude.Contains(f.NodeType) == false ));
+                    var footerEndIndex = GetChildNodeIndex(newBodyNode, layoutBodyFooterNodes.LastOrDefault(f => exclude.Contains(f.NodeType) == false));
+
+                    // Clean up the head inject
+                    var headHtml = new StringBuilder();
+                    foreach(var node in newHeadNode.ChildNodes)
                     {
-                        ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_START)}");
-                    }
-                    else if (cosmosGoogleTranslateEnd == -1)
-                    {
-                        ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END)}");
+                        if (node.NodeType != HtmlAgilityPack.HtmlNodeType.Comment &&
+                           node.NodeType != HtmlAgilityPack.HtmlNodeType.Text)
+                        {
+                            headHtml.AppendLine(node.OuterHtml);
+                        }
                     }
 
-                    if (ModelState.IsValid)
+                    // Retrieve HTML above footer
+                    var bodyHtmlAboveFooter = new StringBuilder();
+                    for (int i = 0; i < footerStartIndex; i++)
                     {
-                        bodyHtml = bodyHtml.Remove(cosmosGoogleTranslateStart, (cosmosGoogleTranslateEnd + PageImportConstants.COSMOS_GOOGLE_TRANSLATE_END.Length) - cosmosGoogleTranslateStart);
-                    }
-                }
-
-
-                // -----------------------------------------------------
-                // Remove Cosmos end of body scripts Injection (if present)
-                var cosmosBodyEndScriptsStart = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_END_SCRIPTS_START);
-                var cosmosBodyEndScriptsEnd = bodyHtml.IndexOf(PageImportConstants.COSMOS_BODY_END_SCRIPTS_END);
-
-                if ((cosmosBodyEndScriptsStart > -1) || (cosmosBodyEndScriptsEnd > -1))
-                {
-                    if (cosmosBodyEndScriptsStart == -1)
-                    {
-                        ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_END_SCRIPTS_START)}");
-                    }
-                    if (cosmosBodyEndScriptsEnd == -1)
-                    {
-                        ModelState.AddModelError("", $"Could not find  {HttpUtility.HtmlEncode(PageImportConstants.COSMOS_BODY_END_SCRIPTS_END)}");
+                        if (newBodyNode.ChildNodes[i].NodeType != HtmlAgilityPack.HtmlNodeType.Comment &&
+                            newBodyNode.ChildNodes[i].NodeType != HtmlAgilityPack.HtmlNodeType.Text)
+                        {
+                            bodyHtmlAboveFooter.AppendLine(newBodyNode.ChildNodes[i].OuterHtml);
+                        }
                     }
 
-                    if (ModelState.IsValid)
+                    // Retrieve HTML below footer
+                    var bodyHtmlBelowFooter = new StringBuilder();
+                    for (int i = footerEndIndex + 1; i < newBodyNode.ChildNodes.Count; i++)
                     {
-                        bodyHtml = bodyHtml.Remove(cosmosBodyEndScriptsStart, (cosmosBodyEndScriptsEnd + PageImportConstants.COSMOS_BODY_END_SCRIPTS_END.Length) - cosmosBodyEndScriptsStart);
+                        if (newBodyNode.ChildNodes[i].NodeType != HtmlAgilityPack.HtmlNodeType.Comment &&
+                               newBodyNode.ChildNodes[i].NodeType != HtmlAgilityPack.HtmlNodeType.Text)
+                        {
+                            bodyHtmlBelowFooter.AppendLine(newBodyNode.ChildNodes[i].OuterHtml);
+                        }
                     }
-                }
-
-                if (ModelState.IsValid)
-                {
-
-                    var pageBody = bodyHtml.Substring(0, cosmosBodyFooterStart);
-                    var pageFooter = bodyHtml.Substring(cosmosBodyFooterStart, bodyHtml.Length - cosmosBodyFooterStart);
 
                     var trims = new char[] { ' ', '\n', '\r' };
 
-                    var article = await _articleLogic.Get(Id, EnumControllerName.Edit);
-                    article.HeaderJavaScript = headHtml.Trim();
-                    article.Content = pageBody.Trim();
-                    article.FooterJavaScript = pageFooter.Trim();
+                    article.HeadJavaScript = headHtml.ToString().Trim(trims);
+                    article.Content = bodyHtmlAboveFooter.ToString().Trim(trims);
+                    article.FooterJavaScript = bodyHtmlBelowFooter.ToString().Trim(trims);
 
                     // Get the user's ID for logging.
                     var user = await _userManager.GetUserAsync(User);
@@ -306,16 +266,115 @@ namespace CDT.Cosmos.Cms.Controllers
             }
             catch (Exception e)
             {
+                ModelState.AddModelError("file", e.Message);
                 _logger.LogError("Web page import failed.", e);
-                throw;
+                uploadResult.Errors = SerializeErrors(ModelState);
             }
 
 
             return Json(uploadResult);
         }
 
+        private int GetChildNodeIndex(HtmlAgilityPack.HtmlNode parent, HtmlAgilityPack.HtmlNode child)
+        {
+            var target = parent.ChildNodes.FirstOrDefault(f => NodesAreEqual(f, child));
+            if (target == null)
+            {
+                return -1;
+            }
+            var index = parent.ChildNodes.IndexOf(target);
+            return index;
+        }
+
         /// <summary>
-        /// Opens the file manager without the toolbar.
+        /// Removes nodes from a parent node by XPath.
+        /// </summary>
+        /// <param name="originalNode"></param>
+        /// <param name="nodesToRemove"></param>
+        private void RemoveNodes(ref HtmlAgilityPack.HtmlNode originalNode, IEnumerable<HtmlAgilityPack.HtmlNode> nodesToRemove)
+        {
+            foreach (var node in nodesToRemove)
+            {
+                var doomed = originalNode.ChildNodes.FirstOrDefault(w => NodesAreEqual(w, node));
+                if (doomed != null)
+                {
+                    doomed.Remove();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines if nodes are equal
+        /// </summary>
+        /// <param name="node1"></param>
+        /// <param name="node2"></param>
+        /// <returns></returns>
+        /// <remarks>Compares node name, node type, and attributes.</remarks>
+        private bool NodesAreEqual(HtmlAgilityPack.HtmlNode node1, HtmlAgilityPack.HtmlNode node2)
+        {
+            if (node1.Name == node2.Name && node1.NodeType == node2.NodeType)
+            {
+                var attributeNames1 = node1.Attributes.Select(s => new
+                {
+                    Name = s.Name.ToLower(),
+                    Value = s.Value
+                }).OrderBy(o => o.Name).ToList();
+
+                var attributeNames2 = node2.Attributes.Select(s => new
+                {
+                    Name = s.Name.ToLower(),
+                    Value = s.Value
+                }).OrderBy(o => o.Name).ToList();
+
+                var firstNotInSecond = attributeNames1.Except(attributeNames2).ToList();
+                var secondNotInFirst = attributeNames2.Except(attributeNames1).ToList();
+
+                return firstNotInSecond.Count == 0 && secondNotInFirst.Count == 0;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Selects nodes between HTML comments
+        /// </summary>
+        /// <param name="originalNode"></param>
+        /// <param name="startComment"></param>
+        /// <param name="endComment"></param>
+        /// <returns></returns>
+        private IEnumerable<HtmlAgilityPack.HtmlNode> SelectNodesBetweenComments(HtmlAgilityPack.HtmlNode originalNode, string startComment, string endComment)
+        {
+            var nodes = new List<HtmlAgilityPack.HtmlNode>();
+
+            startComment = startComment.Replace("<!--", "").Replace("-->", "").Trim();
+            endComment = endComment.Replace("<!--", "").Replace("-->", "").Trim();
+
+            var startNode = originalNode.SelectSingleNode($"//comment()[contains(., '{startComment}')]");
+            var endNode = originalNode.SelectSingleNode($"//comment()[contains(., '{endComment}')]");
+
+            if (startNode != null && endNode != null)
+            {
+                int startNodeIndex = startNode.ParentNode.ChildNodes.IndexOf(startNode);
+                int endNodeIndex = endNode.ParentNode.ChildNodes.IndexOf(endNode);
+
+                for (int i = startNodeIndex; i < endNodeIndex + 1; i++)
+                {
+                    nodes.Add(originalNode.ChildNodes[i]);
+                }
+            }
+            else if (startNode != null && endNode == null)
+            {
+                throw new Exception($"End comment: '{endComment}' not found.");
+            }
+            else if (startNode == null && endNode != null)
+            {
+                throw new Exception($"Start comment: '{startComment}' not found.");
+            }
+
+            return nodes;
+        }
+
+        /// <summary>
+        /// Opens the file manager without the tool bar.
         /// </summary>
         /// <param name="id">option id</param>
         /// <returns></returns>
@@ -896,7 +955,7 @@ namespace CDT.Cosmos.Cms.Controllers
             if (files == null || files.Any() == false)
                 return Json("");
 
-            if (string.IsNullOrEmpty(path) || path.Trim('/') == "") return Unauthorized("Cannot upload here. Please select the 'pub' folder first, or subfolder below that, then try again.");
+            if (string.IsNullOrEmpty(path) || path.Trim('/') == "") return Unauthorized("Cannot upload here. Please select the 'pub' folder first, or sub-folder below that, then try again.");
 
             //
             // Get information about the chunk we are on.
@@ -1030,7 +1089,7 @@ namespace CDT.Cosmos.Cms.Controllers
         /// Marks the end of the head injection
         /// </summary>
         public const string COSMOS_HEAD_END = "<!--  END: Cosmos Layout HEAD content. -->";
-        // <summary>
+        /// <summary>
         /// Marks the beginning of the header injection
         /// </summary>
         public const string COSMOS_BODY_HEADER_START = "<!-- BEGIN: Cosmos Layout BODY HEADER content -->";

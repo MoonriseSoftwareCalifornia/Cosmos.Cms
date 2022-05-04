@@ -446,7 +446,7 @@ namespace Cosmos.Tests
 
             // Create test page 2
             var article2 = await logic.Create(prefix + "/Angular");
-            article2.HeaderJavaScript = "<meta name='ccms:framework' value='angular'>";
+            article2.HeadJavaScript = "<meta name='ccms:framework' value='angular'>";
             article2.ArticleNumber = 0;
             article2.Published = DateTime.Now.ToUniversalTime().AddDays(-1);
             article2.Content = "Hello world!";
@@ -454,7 +454,7 @@ namespace Cosmos.Tests
 
             // Create test page 3
             var article3 = await logic.Create(prefix + "/Angular/Wow");
-            article3.HeaderJavaScript = "<meta name='ccms:framework' value='angular'>";
+            article3.HeadJavaScript = "<meta name='ccms:framework' value='angular'>";
             article3.ArticleNumber = 0;
             article3.Published = DateTime.Now.ToUniversalTime().AddDays(-1);
             article3.Content = "Hello world!";
@@ -462,7 +462,7 @@ namespace Cosmos.Tests
 
             // Create test page 4
             var article4 = await logic.Create(prefix + "/Angular/Wow/We");
-            article4.HeaderJavaScript = "<meta name='ccms:framework' value='angular'>";
+            article4.HeadJavaScript = "<meta name='ccms:framework' value='angular'>";
             article4.ArticleNumber = 0;
             article4.Published = DateTime.Now.ToUniversalTime().AddDays(-1);
             article4.Content = "Hello world!";
@@ -480,8 +480,8 @@ namespace Cosmos.Tests
 
             var find2 = await logic.GetByUrl(saved2.Model.UrlPath);
             Assert.IsNotNull(find2);
-            Assert.IsTrue(find2.HeaderJavaScript.Contains("ccms:framework", StringComparison.CurrentCultureIgnoreCase));
-            Assert.IsTrue(find2.HeaderJavaScript.Contains("base", StringComparison.CurrentCultureIgnoreCase));
+            Assert.IsTrue(find2.HeadJavaScript.Contains("ccms:framework", StringComparison.CurrentCultureIgnoreCase));
+            Assert.IsTrue(find2.HeadJavaScript.Contains("base", StringComparison.CurrentCultureIgnoreCase));
 
             var find2b = await logic.GetByUrl(saved2.Model.UrlPath + "/");
             Assert.IsNotNull(find2);

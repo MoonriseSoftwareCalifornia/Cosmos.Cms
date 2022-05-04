@@ -126,7 +126,7 @@ namespace Cosmos.Tests
             using var reader = File.OpenText(@"JavaScript1.js");
 
             var js = await reader.ReadToEndAsync();
-            model.HeaderJavaScript = js;
+            model.HeadJavaScript = js;
             model.FooterJavaScript = js;
 
             //
@@ -174,7 +174,7 @@ namespace Cosmos.Tests
             //
             // Check to make sure the header javascript is saved.
             //
-            Assert.IsNotNull(savedModel.HeaderJavaScript);
+            Assert.IsNotNull(savedModel.HeadJavaScript);
 
             //
             // Check to make sure the footer javascript is saved
@@ -321,7 +321,7 @@ namespace Cosmos.Tests
             Assert.IsTrue(savedArticleViewModel.UrlPath == testArticle.UrlPath);
             Assert.IsTrue(savedArticleViewModel.Title == testArticle.Title);
             //Assert.IsTrue(savedArticleViewModel.Content == testArticle.Content);
-            Assert.IsTrue(savedArticleViewModel.HeaderJavaScript == testArticle.HeaderJavaScript);
+            Assert.IsTrue(savedArticleViewModel.HeadJavaScript == testArticle.HeaderJavaScript);
             Assert.IsTrue(savedArticleViewModel.FooterJavaScript == testArticle.FooterJavaScript);
         }
 

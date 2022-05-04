@@ -460,28 +460,34 @@ namespace CDT.Cosmos.Cms.Controllers
             var article = await _articleLogic.Create("Blank Page");
 
             var view = "~/Views/Layouts/ExportLayout.cshtml";
-            var exportName = $"layoutid-{article.Layout.Id }.html";
+            var exportName = $"layout-{article.Layout.Id}.html";
 
             if (id.HasValue)
             {
-                var layout = await _dbContext.Layouts.FindAsync(id.Value);
-                article.Layout = new LayoutViewModel(layout);
-            }
-            else
-            {
-                view = "~/Views/Layouts/ExportBlank.cshtml";
-                exportName = "blank-layout.html";
+                if (id.Value < 0)
+                {
+                    // Blank layout
+                    view = "~/Views/Layouts/ExportBlank.cshtml";
+                    exportName = "blank-layout.html";
+                }
+                else
+                {
+                    var layout = await _dbContext.Layouts.FindAsync(id.Value);
+                    article.Layout = new LayoutViewModel(layout);
+                }
             }
 
             var htmlUtilities = new HtmlUtilities();
 
-            article.Layout.Head = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.Head, _blobPublicAbsoluteUrl);
-            article.Layout.HtmlHeader = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.HtmlHeader, _blobPublicAbsoluteUrl);
-            article.Layout.FooterHtmlContent = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.FooterHtmlContent, _blobPublicAbsoluteUrl);
+            article.Layout.Head = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.Head, _blobPublicAbsoluteUrl, false);
 
-            article.HeaderJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
-            article.Content = htmlUtilities.RelativeToAbsoluteUrls(article.Content, _blobPublicAbsoluteUrl);
-            article.FooterJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeaderJavaScript, _blobPublicAbsoluteUrl);
+            // Layout body elements
+            article.Layout.HtmlHeader = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.HtmlHeader, _blobPublicAbsoluteUrl, true);
+            article.Layout.FooterHtmlContent = htmlUtilities.RelativeToAbsoluteUrls(article.Layout.FooterHtmlContent, _blobPublicAbsoluteUrl, true);
+
+            article.HeadJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeadJavaScript, _blobPublicAbsoluteUrl, false);
+            article.Content = htmlUtilities.RelativeToAbsoluteUrls(article.Content, _blobPublicAbsoluteUrl, false);
+            article.FooterJavaScript = htmlUtilities.RelativeToAbsoluteUrls(article.HeadJavaScript, _blobPublicAbsoluteUrl, false);
 
             var html = await _viewRenderService.RenderToStringAsync(view, article);
 

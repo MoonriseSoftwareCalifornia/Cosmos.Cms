@@ -249,7 +249,7 @@ namespace CDT.Cosmos.Cms.Controllers
                 Title = "Access Pending",
                 Content = null,
                 Updated = default,
-                HeaderJavaScript = null,
+                HeadJavaScript = null,
                 FooterJavaScript = null,
                 Layout = null,
                 ReadWriteMode = false,
