@@ -462,7 +462,7 @@ namespace Cosmos.Tests
 
             // Create test page 4
             var article4 = await logic.Create(prefix + "/Angular/Wow/We");
-            article4.HeadJavaScript = "<meta name='ccms:framework' value='angular'>";
+            article4.HeadJavaScript = "<meta name='ccms:framework' value='angular'><base href='/' />";
             article4.ArticleNumber = 0;
             article4.Published = DateTime.Now.ToUniversalTime().AddDays(-1);
             article4.Content = "Hello world!";
@@ -478,7 +478,7 @@ namespace Cosmos.Tests
             var find1b = await logic.GetByUrl(saved1.Model.UrlPath + "/");
             Assert.IsNotNull(find1b);
 
-            var find2 = await logic.GetByUrl(saved2.Model.UrlPath);
+            var find2 = await logic.GetByUrl(saved4.Model.UrlPath);
             Assert.IsNotNull(find2);
             Assert.IsTrue(find2.HeadJavaScript.Contains("ccms:framework", StringComparison.CurrentCultureIgnoreCase));
             Assert.IsTrue(find2.HeadJavaScript.Contains("base", StringComparison.CurrentCultureIgnoreCase));

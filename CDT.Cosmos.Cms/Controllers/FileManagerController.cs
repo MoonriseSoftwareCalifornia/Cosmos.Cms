@@ -210,14 +210,14 @@ namespace CDT.Cosmos.Cms.Controllers
                     RemoveNodes(ref newBodyNode, layoutBodyEndScriptsNodes);
 
                     // Now capture nodes above and below footer within body
-                    var exclude = new []{ HtmlAgilityPack.HtmlNodeType.Comment, HtmlAgilityPack.HtmlNodeType.Text };
+                    var exclude = new[] { HtmlAgilityPack.HtmlNodeType.Comment, HtmlAgilityPack.HtmlNodeType.Text };
 
-                    var footerStartIndex = GetChildNodeIndex(newBodyNode, layoutBodyFooterNodes.FirstOrDefault(f => exclude.Contains(f.NodeType) == false ));
+                    var footerStartIndex = GetChildNodeIndex(newBodyNode, layoutBodyFooterNodes.FirstOrDefault(f => exclude.Contains(f.NodeType) == false));
                     var footerEndIndex = GetChildNodeIndex(newBodyNode, layoutBodyFooterNodes.LastOrDefault(f => exclude.Contains(f.NodeType) == false));
 
                     // Clean up the head inject
                     var headHtml = new StringBuilder();
-                    foreach(var node in newHeadNode.ChildNodes)
+                    foreach (var node in newHeadNode.ChildNodes)
                     {
                         if (node.NodeType != HtmlAgilityPack.HtmlNodeType.Comment &&
                            node.NodeType != HtmlAgilityPack.HtmlNodeType.Text)
@@ -940,6 +940,21 @@ namespace CDT.Cosmos.Cms.Controllers
         }
 
         /// <summary>
+        ///     Used to directories, with files processed one chunk at a time, and normalizes the blob name to lower case.
+        /// </summary>
+        /// <param name="folders"></param>
+        /// <param name="metaData"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [RequestSizeLimit(
+            6291456)] // AWS S3 multi part upload requires 5 MB parts--no more, no less so pad the upload size by a MB just in case
+        public async Task<ActionResult> UploadDirectory(IEnumerable<IFormFile> folders,
+            string metaData, string path)
+        {
+            return await Upload(folders, metaData, path);
+        }
+        /// <summary>
         ///     Used to upload files, one chunk at a time, and normalizes the blob name to lower case.
         /// </summary>
         /// <param name="files"></param>
@@ -952,71 +967,77 @@ namespace CDT.Cosmos.Cms.Controllers
         public async Task<ActionResult> Upload(IEnumerable<IFormFile> files,
             string metaData, string path)
         {
-            if (files == null || files.Any() == false)
-                return Json("");
-
-            if (string.IsNullOrEmpty(path) || path.Trim('/') == "") return Unauthorized("Cannot upload here. Please select the 'pub' folder first, or sub-folder below that, then try again.");
-
-            //
-            // Get information about the chunk we are on.
-            //
-            var ms = new MemoryStream(Encoding.UTF8.GetBytes(metaData));
-
-            var serializer = new JsonSerializer();
-            FileUploadMetaData fileMetaData;
-            using (var streamReader = new StreamReader(ms))
+            try
             {
-                fileMetaData =
-                    (FileUploadMetaData)serializer.Deserialize(streamReader, typeof(FileUploadMetaData));
-            }
+                if (files == null || files.Any() == false)
+                    return Json("");
 
-            if (fileMetaData == null) throw new Exception("Could not read the file's metadata");
+                if (string.IsNullOrEmpty(path) || path.Trim('/') == "") return Unauthorized("Cannot upload here. Please select the 'pub' folder first, or sub-folder below that, then try again.");
 
-            var file = files.FirstOrDefault();
+                //
+                // Get information about the chunk we are on.
+                //
+                var ms = new MemoryStream(Encoding.UTF8.GetBytes(metaData));
 
-            if (file == null) throw new Exception("No file found to upload.");
-
-            var blobName = UrlEncode(fileMetaData.FileName.ToLower());
-
-            fileMetaData.FileName = blobName.ToLower();
-            fileMetaData.RelativePath = (path.TrimEnd('/') + "/" + fileMetaData.RelativePath).ToLower();
-
-            // Make sure full folder path exists
-            var parts = fileMetaData.RelativePath.ToLower().Trim('/').Split('/');
-            var part = "";
-            for (int i = 0; i < parts.Length - 1; i++)
-            {
-                if (i == 0 && parts[i] != "pub")
+                var serializer = new JsonSerializer();
+                FileUploadMetaData fileMetaData;
+                using (var streamReader = new StreamReader(ms))
                 {
-                    throw new Exception("Must upload folders and files under /pub directory.");
+                    fileMetaData =
+                        (FileUploadMetaData)serializer.Deserialize(streamReader, typeof(FileUploadMetaData));
                 }
 
-                part = $"{part}/{parts[i].ToLower()}";
-                if (part != "/pub")
+                if (fileMetaData == null) throw new Exception("Could not read the file's metadata");
+
+                var file = files.FirstOrDefault();
+
+                if (file == null) throw new Exception("No file found to upload.");
+
+                var blobName = UrlEncode(fileMetaData.FileName.ToLower());
+
+                fileMetaData.FileName = blobName.ToLower();
+                fileMetaData.RelativePath = (path.TrimEnd('/') + "/" + fileMetaData.RelativePath).ToLower();
+
+                // Make sure full folder path exists
+                var parts = fileMetaData.RelativePath.ToLower().Trim('/').Split('/');
+                var part = "";
+                for (int i = 0; i < parts.Length - 1; i++)
                 {
-                    var folder = part.Trim('/');
-                    _storageContext.CreateFolder(folder);
-                }
-            }
+                    if (i == 0 && parts[i] != "pub")
+                    {
+                        throw new Exception("Must upload folders and files under /pub directory.");
+                    }
 
-            await using (var stream = file.OpenReadStream())
-            {
-                await using (var memoryStream = new MemoryStream())
+                    part = $"{part}/{parts[i].ToLower()}";
+                    if (part != "/pub")
+                    {
+                        var folder = part.Trim('/');
+                        _storageContext.CreateFolder(folder);
+                    }
+                }
+
+                await using (var stream = file.OpenReadStream())
                 {
-                    await stream.CopyToAsync(memoryStream);
-                    _storageContext.AppendBlob(memoryStream, fileMetaData);
+                    await using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        _storageContext.AppendBlob(memoryStream, fileMetaData);
+                    }
                 }
+
+                var fileBlob = new FileUploadResult
+                {
+                    uploaded = fileMetaData.TotalChunks - 1 <= fileMetaData.ChunkIndex,
+                    fileUid = fileMetaData.UploadUid
+                };
+                return Json(fileBlob);
             }
-
-            var fileBlob = new FileUploadResult
+            catch (Exception ex)
             {
-                uploaded = fileMetaData.TotalChunks - 1 <= fileMetaData.ChunkIndex,
-                fileUid = fileMetaData.UploadUid
-            };
-
-            return Json(fileBlob);
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
         }
-
 
         #endregion
     }

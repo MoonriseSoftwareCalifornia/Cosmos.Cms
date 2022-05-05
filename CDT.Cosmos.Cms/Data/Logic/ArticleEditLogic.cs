@@ -837,7 +837,7 @@ namespace CDT.Cosmos.Cms.Data.Logic
         /// </remarks>
         public void UpdateHeadBaseTag(ArticleViewModel model)
         {
-            if (model.HeadJavaScript.Contains("<base "))
+            if (!string.IsNullOrEmpty(model.HeadJavaScript) && model.HeadJavaScript.Contains("<base "))
             {
                 model.HeadJavaScript = UpdateHeadBaseTag(model.HeadJavaScript, model.UrlPath);
             }
@@ -855,7 +855,7 @@ namespace CDT.Cosmos.Cms.Data.Logic
         /// </remarks>
         public void UpdateHeadBaseTag(Article model)
         {
-            if (model.HeaderJavaScript.Contains("<base "))
+            if (!string.IsNullOrEmpty(model.HeaderJavaScript) && (model.HeaderJavaScript.Contains("<base ") || (model.HeaderJavaScript.ToLower().Contains("ccms:framework") && model.HeaderJavaScript.ToLower().Contains("angular"))))
             {
                 model.HeaderJavaScript = UpdateHeadBaseTag(model.HeaderJavaScript, model.UrlPath);
             }
