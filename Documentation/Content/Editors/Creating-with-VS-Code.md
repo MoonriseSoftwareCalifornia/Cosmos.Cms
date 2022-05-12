@@ -1,6 +1,8 @@
 # Tutorial: Build a [React web app](https://github.com/Yog9/SnapShot) with [VS Code](https://code.visualstudio.com/) and [npm](https://www.npmjs.com/) then import and host it with Cosmos
 
-Cosmos gives web developers maximum flexibility by enabling you to create and build applications outside of Cosmos, then import them into Cosmos to host and manage. In this tutorial I show how with the React web application "[SnapShot](https://github.com/Yog9/SnapShot)."  I use Visual Studio Code with npm on a local development computer to download and build the source code, then import the build into Cosmos. :Here is what we will cover
+Cosmos enables web developers to create applications outside of Cosmos, then import them into Cosmos to host and manage. This tutorial shows you how with  Visual Studio Code and the sample React web application called "[SnapShot](https://github.com/Yog9/SnapShot)."
+
+Generally speaking, there are three parts to this tutorial:
 
 1. [Export a layout](#step-1-export-your-layout)
 2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
@@ -12,18 +14,17 @@ Here is a [link to a live result on our website](https://cosmos.moonrise.net/dem
 
 To follow along you will need:
 
-1. [Cosmos is installed ](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
-2. [Visual Studio Code](https://code.visualstudio.com)
-3. [Node.js](https://nodejs.org) is installed on your development computer.
+1. [Cosmos installed](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
+2. [Visual Studio Code](https://code.visualstudio.com) installed on your computer.
+3. [Node.js](https://nodejs.org) is installed on your computer.
 4. [Yarn](https://yarnpkg.com/getting-started/install) package manager if not already installed with npm.
-5. You know how to edit HTML, JavaScript and CSS
-6. Know how to use [npm](https://docs.npmjs.com/cli/v6/commands/npm-build?msclkid=2ec764f0c49f11ec841c784956bfacb5) to build an application
+5. Know how to edit HTML, JavaScript and CSS.
 
 ## Step 1: Export your layout
 
-[Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) contains all the common elements that appear on each page of your website. Layouts enable you to be "[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)" (don't repeat yourself). For this tutorial we want the web app to be placed within the website layout. Our first step then, is to export the layout so we can embed our application within it.
+[Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) contain all the common elements that appear on each page of your website. In this tutorial our example application will be embedded in our layout. This means we will need to export the layout from Cosmos so we can work with it later.
 
-To export the layout do the following:
+Here is how to export the default layout of your website:
  
  * Log into the "Editor" for your website and click the "Menu" button, then select "Layouts."
  * Download the "default" layout by clicking the "export default" button
