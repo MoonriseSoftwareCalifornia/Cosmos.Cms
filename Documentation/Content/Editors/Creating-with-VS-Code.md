@@ -1,4 +1,4 @@
-# Tutorial: Build a [React web app](https://github.com/Yog9/SnapShot) with [VS Code](https://code.visualstudio.com/) and [npm](https://www.npmjs.com/) then import it into Cosmos
+# Tutorial: Build a [React web app](https://github.com/Yog9/SnapShot) then import it into Cosmos
 
 Cosmos enables web developers to create applications outside of Cosmos, then import them into Cosmos to host and manage. This tutorial shows you how with  Visual Studio Code and the sample React web application called "[SnapShot](https://github.com/Yog9/SnapShot)."
 
