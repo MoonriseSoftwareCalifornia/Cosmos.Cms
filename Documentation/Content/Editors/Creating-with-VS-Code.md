@@ -6,7 +6,7 @@ Cosmos gives web developers maximum flexibility by enabling you to create and bu
 2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
 3. [Then import](#step-3-import-the-web-page) the application into Cosmos to host.
 
-Here is a [link to a live result on our website](https://cosmos.moonrise.net/Demos/SnapShot).
+Here is a [link to a live result on our website](https://cosmos.moonrise.net/demos/snapshot).
 
 ## Prerequisites
 
@@ -145,10 +145,26 @@ Next we need to import the `index.html` into Cosmos. Here are the steps:
 1. Click the "Menu" button then select "Pages."
 2. Either create a new page to hold the application or select an existing page and click "Code Editor."
 3. Once the code editor opens, select "Menu" then "Import."
-4. The import dialog open, click the "Select files" button, and select the `index.html` file in the "build" folder.
+4. The import dialog open, click the "Select files" button, and select the `index.html` file in the "build" folder (../build/index.html).
+
+Once the document loads, the import tools closes and now the new application code should be revealed in your online code editor.
+
+One more step:
 
 ### Fix paths
 
-When developing this application
+When creating this application the index.html has links referencing JavaScript, CSS and other asset files to include. Note the paths. They may be relative to your development environment.
+
+But now these assets have been uploaded to the Cosmos website and the URLs to these files are now likely to be difference. You will need to change them.
+
+Here are some examples (Note: Your "New URL" may be different than below):
+
+Old URL: /SnapShot/manifest.json
+New URL: /pub/apps/snapshot/manifest.json
+
+Old URL: /SnapShot/static/css/main.e41d18ea.chunk.css
+New URL: /pub/apps/snapshot/static/css/main.e41d18ea.chunk.css
+
+Now when you preview the application, it should look and work fine.  You can see the finished example [above online](https://cosmos.moonrise.net/demos/snapshot).
 
 Previous: [Create and Edit Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) Next: [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Releated: [HTML (WYSIWYG) Editor](https://github.com/CosmosSoftware/Cosmos.Cms/edit/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)
