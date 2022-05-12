@@ -165,6 +165,10 @@ New URL: /pub/apps/snapshot/manifest.json
 Old URL: /SnapShot/static/css/main.e41d18ea.chunk.css
 New URL: /pub/apps/snapshot/static/css/main.e41d18ea.chunk.css
 
-Now when you preview the application, it should look and work fine.  You can see the finished example [above online](https://cosmos.moonrise.net/demos/snapshot).
+Now when you preview the application, it should look and work fine. You can see the finished example [above online](https://cosmos.moonrise.net/demos/snapshot).
+
+This concludes this tutorial.  If you have any questions, please feel free to post in our [Q&A discussion section](https://github.com/CosmosSoftware/Cosmos.Cms/discussions/categories/q-a).
+
+---
 
 Previous: [Create and Edit Content](https://github.com/CosmosSoftware/Cosmos.Cms/tree/main/Documentation/Content) Next: [Code Editor](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/CodeEditor.md) Releated: [HTML (WYSIWYG) Editor](https://github.com/CosmosSoftware/Cosmos.Cms/edit/main/Documentation/Content/Editors/WYSIWYG(HTMLEditor).md)
