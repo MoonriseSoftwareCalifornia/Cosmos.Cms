@@ -1,8 +1,10 @@
 # Tutorial: Build a [React web app](https://github.com/Yog9/SnapShot) then import it into Cosmos
 
-Cosmos enables web developers to create applications outside of Cosmos, then import them into Cosmos to host and manage. This tutorial shows you how with  Visual Studio Code and the sample React web application called "[SnapShot](https://github.com/Yog9/SnapShot)."
+Cosmos enables web developers to create applications outside of Cosmos, then import them to host and manage. This allows web applications built with Angular, jQuery, React, Vue or other framework to be hosted on the same website, along with traditional HTML content.
 
-Generally speaking, there are three parts to this tutorial:
+This tutorial shows how to build the sample React web application called "[SnapShot](https://github.com/Yog9/SnapShot)" outside of Cosmos, then how to import it.
+
+More specifically, this tutorial will take you through the following:
 
 1. [Export a layout](#step-1-export-your-layout)
 2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
@@ -22,12 +24,12 @@ To follow along you will need:
 
 ## Step 1: Export your layout
 
-[Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) contain all the common elements that appear on each page of your website. In this tutorial our example application will be embedded in our layout. This means we will need to export the layout from Cosmos so we can work with it later.
+[Layouts](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Layouts/About.md) contain all the common elements that appear on each page of your website. In this tutorial our example application will be embedded in our layout. This means we will need to export the layout from Cosmos so we can encorporate it with our application.
 
-Here is how to export the default layout of your website:
+To export the default layout of your website follow these steps:
  
  * Log into the "Editor" for your website and click the "Menu" button, then select "Layouts."
- * Download the "default" layout by clicking the "export default" button
+ * Download the "default" layout by clicking the "export default" button.
 
 ![Export default layout button](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-export-layout-button.png)
 
@@ -35,16 +37,17 @@ Remember the download location as you will need to copy the layout into your pro
 
 ## Step 2: Create the React web application
 
-Now close that file so we can start building the React application.This example a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot) that makes use of the following:
+The current example application is a React project called [Snap Shot](https://github.com/Yog9/SnapShot) found on [GitHub](https://github.com/Yog9/SnapShot) that makes use of the following:
 
 * React js
 * React Router
 * React Hooks
 * Context API
 * Flickr API
-Read the [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the [Readme document](https://github.com/Yog9/SnapShot#snap-shot-) to install dependencies and build your application.
 
-After cloning the application on my local computer I ran the following commands from my terminal.  You may want to do more.
+Clone the application on your computer and take a moment to read the [getting started](https://github.com/Yog9/SnapShot#getting-started) instructions on the [Readme document](https://github.com/Yog9/SnapShot#snap-shot-) to install dependencies and build your application.
+
+After cloning the application you may want to do some house keeping such as running `npm audit` as shown below to get things updated.
 
 ```shell
 yarn install
@@ -61,12 +64,9 @@ yarn start
 
 ## Step 3: Merge the app with the exported layout
 
-I want this application to be hosting within my website--which has a standard *header* and *footer* on each page. Notice that right now the application above does not include the standard header of my [website](https://cosmos.moonrise.net).  Now we are going to merge the app we just create with the layout so my web app looks like it belong in my website.
+We want this application to be hosting within the [Cosmos product website](https://cosmos.moonrise.net)--which has a standard *header* and *footer* on each page. Now it is time merge the SnapShot application with the layout so my web app looks like it belong on the Cosmos website.
 
-Let us start with this:
-
-* Locate the layout you exported from Cosmos and add it to your project.
-* You should now see the file added to your `src` folder like below (your file name might be different).
+To begin, locate the layout you exported from Cosmos and add it to your project. You should now see the file added to your `src` folder like below (your file name might be different).
 
 ![Exported file now in src folder](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-file-added.png)
 
