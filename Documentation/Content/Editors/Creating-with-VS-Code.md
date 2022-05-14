@@ -2,13 +2,13 @@
 
 Cosmos enables you to create applications externally, then import them to Cosmos to host and manage. This allows Angular, jQuery, React, Vue and other framework applications to be hosted side by side--along with traditional HTML content--on a single website.
 
-This tutorial shows how to build the sample React web application called "[SnapShot](https://github.com/Yog9/SnapShot)" outside of Cosmos, then import it.
+In this tutorial we show you how to import the sample React web application called "[SnapShot](https://github.com/Yog9/SnapShot)" into Cosmos.
 
-More specifically, this tutorial will take you through the following:
+More specifically, you will learn how to:
 
-1. [Export the layout](#step-1-export-your-layout).
-2. [build the web appplication](#step-2-create-an-angular-web-app-and-build-it) and encorporate the layout.
-4. [Then import](#step-3-import-the-web-page) the finished application into Cosmos.
+1. [Export a layout](#step-1-export-your-layout).
+2. [Encorporate the layout with the sample web appplication](#step-2-create-an-angular-web-app-and-build-it).
+4. [Then import](#step-3-import-the-web-page) it into Cosmos.
 
 Here is a [link to a live result on our website](https://cosmos.moonrise.net/demos/snapshot).
 
