@@ -1,26 +1,25 @@
-# Tutorial: Build a [React web app](https://github.com/Yog9/SnapShot) then import it into Cosmos
+# Tutorial: Import a [React web app](https://github.com/Yog9/SnapShot) into Cosmos
 
-Cosmos enables web developers to create applications outside of Cosmos, then import them to host and manage. This allows web applications built with Angular, jQuery, React, Vue or other framework to be hosted on the same website, along with traditional HTML content.
+Cosmos enables you to create applications externally, then import them to Cosmos to host and manage. This allows Angular, jQuery, React, Vue and other framework applications to be hosted side by side--along with traditional HTML content--on a single website.
 
-This tutorial shows how to build the sample React web application called "[SnapShot](https://github.com/Yog9/SnapShot)" outside of Cosmos, then how to import it.
+This tutorial shows how to build the sample React web application called "[SnapShot](https://github.com/Yog9/SnapShot)" outside of Cosmos, then import it.
 
 More specifically, this tutorial will take you through the following:
 
-1. [Export a layout](#step-1-export-your-layout)
-2. [Build an example web app](#step-2-create-an-angular-web-app-and-build-it) using Visual Studio Code, React, and npm.
-3. [Then import](#step-3-import-the-web-page) the application into Cosmos to host.
+1. [Export the layout](#step-1-export-your-layout).
+2. [build the web appplication](#step-2-create-an-angular-web-app-and-build-it) and encorporate the layout.
+4. [Then import](#step-3-import-the-web-page) the finished application into Cosmos.
 
 Here is a [link to a live result on our website](https://cosmos.moonrise.net/demos/snapshot).
 
 ## Prerequisites
 
-To follow along you will need:
+This tutorial assumes you have a [Cosmos](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md) website (version 6.3.12.1 or higher), and have the following items installed on your computer:
 
-1. [Cosmos installed](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Installation/AzureClickInstall.md)
-2. [Visual Studio Code](https://code.visualstudio.com) installed on your computer.
-3. [Node.js](https://nodejs.org) is installed on your computer.
-4. [Yarn](https://yarnpkg.com/getting-started/install) package manager if not already installed with npm.
-5. Know how to edit HTML, JavaScript and CSS.
+1. 
+2. [Visual Studio Code](https://code.visualstudio.com)
+3. [Node.js](https://nodejs.org)
+4. [Yarn](https://yarnpkg.com/getting-started/install)
 
 ## Step 1: Export your layout
 
