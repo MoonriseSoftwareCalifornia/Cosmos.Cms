@@ -131,8 +131,12 @@ Here are the steps to upload the files:
 
 ![Files on computer selected and ready for import](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/tutorial1-files-selected-for-import.png)
 
-4. Select all these files *except index.html*, plus the `static` folder, then *drag and drop* them on the uploader.
-5. After files have uploaded click the "close" button.
+4. Select all these files *except index.html*, then *drag and drop* them on the uploader.
+5. After files have uploaded change the upload mode to folders.
+
+![Folder upload on](https://github.com/CosmosSoftware/Cosmos.Cms/blob/main/Documentation/Content/Editors/FolderUploadSelected.png)
+
+6. Now drag and drop the `static` folder onto the uploader.
 
 Using the file manager, check what was just uploaded.
 
