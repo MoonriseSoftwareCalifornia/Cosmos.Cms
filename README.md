@@ -14,17 +14,12 @@ Cosmos is a lightweight CMS that has a built-in WYSIWYG and Source Code editor, 
 
 See our [live framework demos](https://cosmos.moonrise.net/Demos).
 
-<details><summary>Example Use Cases</summary>
- <div style='border-style: solid;'>
- <ul>
-  <li>Originally designed to host web content for emergencies for the State of California.</li>
-  <li>Host an Angular, jQuery, React or Vue web-app as a "home page" along with other pages with documentation.</li>
-  <li>Website hosts multiple web-apps each built with different framework.</li>
-  <li>A dashboard website with graphs, charts, maps along with report pages and documentation.</li>
-  <li>A CMS with an extremely easy HTML editing interface for non-technical users needing to make quick edits.</li>
- </ul>
- </div>
- </details>
+Example Use Cases:
+
+* High performance, light-weight CMS able to sustain large number of users.
+* Host an Angular, jQuery, React or Vue web-app as a "home page" along with other pages with documentation.
+* A dashboard website with graphs, charts, maps along with report pages and documentation.
+* A CMS with an extremely easy HTML editing interface for non-technical users needing to make quick edits.
 
 Cosmos was built by the staff of the California Department of Technology as an open, cloud-first high performance platform built to host websites during times of natural disasters and other emergencies. It was used from 2019 - 2021 for fire response, and in 2020 for COVID response.
 
