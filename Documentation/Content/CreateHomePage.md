@@ -6,7 +6,9 @@ When Cosmos is installed it contains no web pages, and when you open the "Editor
 
 Here you will see no pages listed. There is a button at the top that says "Create Page." Click on this and follow the dialog.
 
-Tip: If you selected a ready-made layout during install, chances are that layout contains a "home page" template. Select that as your first page then edit it to suit your needs.
+Tips:
+* If you selected a ready-made layout during install, chances are that layout contains a "home page" template. Select that as your first page then edit it to suit your needs.
+* [Create a customized "not found" page](NotFoundPage.md).
 
 ## Web App as your Home Page
 You may want to have a web app built using Angular, jQuery, React, Vue, Google Map, Map Box, or ESRI Map as your home page.
