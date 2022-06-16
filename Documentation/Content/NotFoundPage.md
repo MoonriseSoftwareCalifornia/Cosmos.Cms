@@ -10,3 +10,5 @@ Easily create your own custom "not found" page with Cosmos. Here is how:
 4. Edit the web page with your own content just like any other web page.
 
 Now, anytime a web page is not found, Cosmos will return the "Not Found" page you just created.
+___
+Previous: [Create and edit content](Readme.md) Next: [HTML Editor](Editors/WYSIWYG(HTMLEditor).md) 
