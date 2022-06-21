@@ -980,7 +980,7 @@ namespace CDT.Cosmos.Cms.Controllers
                         var manager = new CdnManagement(model.CdnConfig.AzureCdnConfig);
 
                         var azResult = await manager.Authenticate();
-                        if (azResult.AccessTokenType == "Bearer")
+                        if (azResult.TokenType == "Bearer")
                         {
                             using var client = await manager.GetCdnManagementClient();
                             var profiles = await client.Profiles.ListWithHttpMessagesAsync();

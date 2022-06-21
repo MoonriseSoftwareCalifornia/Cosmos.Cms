@@ -5,7 +5,7 @@ using CDT.Cosmos.Cms.Common.Data;
 using Microsoft.Azure.Management.Cdn;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Identity.Client;
 using Microsoft.Rest;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -624,19 +624,26 @@ namespace CDT.Cosmos.Cms.Common.Services.Configurations.BootUp
                             {
                                 try
                                 {
-                                    var authority = $"https://login.microsoftonline.com/{_config.Value.CdnConfig.AzureCdnConfig.TenantId }/{_config.Value.CdnConfig.AzureCdnConfig.TenantDomainName }";
+                                    //var authority = $"https://login.microsoftonline.com/{_config.Value.CdnConfig.AzureCdnConfig.TenantId }/{_config.Value.CdnConfig.AzureCdnConfig.TenantDomainName }";
 
-                                    var authContext = new AuthenticationContext(authority);
+                                    //var authContext = new AuthenticationContext(authority);
 
-                                    var credential = new ClientCredential(_config.Value.CdnConfig.AzureCdnConfig.ClientId, _config.Value.CdnConfig.AzureCdnConfig.ClientSecret);
-                                    var tokenResult = await authContext.AcquireTokenAsync("https://management.core.windows.net/", credential);
+                                    //var credential = new ClientCredential(_config.Value.CdnConfig.AzureCdnConfig.ClientId, _config.Value.CdnConfig.AzureCdnConfig.ClientSecret);
+                                    //var tokenResult = await authContext.AcquireTokenAsync("https://management.core.windows.net/", credential);
 
-                                    using var client = new CdnManagementClient(new TokenCredentials(tokenResult.AccessToken))
+                                    var scope = "https://management.core.windows.net//.default";
+                                    var app = ConfidentialClientApplicationBuilder.Create(_config.Value.CdnConfig.AzureCdnConfig.ClientId)
+                                        .WithClientSecret(_config.Value.CdnConfig.AzureCdnConfig.ClientSecret)
+                                        .WithTenantId(_config.Value.CdnConfig.AzureCdnConfig.TenantId).Build();
+
+                                    var authResult = await app.AcquireTokenForClient(new[] { scope }).ExecuteAsync();
+
+                                    using var client = new CdnManagementClient(new TokenCredentials(authResult.AccessToken))
                                     {
                                         SubscriptionId = _config.Value.CdnConfig.AzureCdnConfig.SubscriptionId
                                     };
 
-                                    if (tokenResult.AccessTokenType == "Bearer")
+                                    if (authResult.TokenType == "Bearer")
                                     {
                                         var profiles = await client.Profiles.ListWithHttpMessagesAsync();
                                         if (profiles != null)

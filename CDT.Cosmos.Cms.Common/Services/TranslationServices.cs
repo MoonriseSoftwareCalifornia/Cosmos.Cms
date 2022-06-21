@@ -46,7 +46,6 @@ namespace CDT.Cosmos.Cms.Common.Services
                 JsonCredentials = null,
                 QuotaProject = null,
                 Scopes = null,
-                TokenAccessMethod = null,
                 UserAgent = null,
                 Settings = null
             };

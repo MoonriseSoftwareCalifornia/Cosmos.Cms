@@ -1,7 +1,7 @@
 ﻿using CDT.Cosmos.Cms.Common.Services.Configurations;
 using Microsoft.Azure.Management.Cdn;
 using Microsoft.Azure.Management.Cdn.Models;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Identity.Client;
 using Microsoft.Rest;
 using Microsoft.Rest.Azure;
 using System;
@@ -21,9 +21,6 @@ namespace CDT.Cosmos.Cms.Services
 
     public class CdnManagement
     {
-        private readonly string _authority;
-        private readonly string _clientId;
-        private readonly string _clientSecret;
         private readonly string _subscriptionId;
         private readonly AzureCdnConfig _config;
         private Profile _profile;
@@ -36,9 +33,6 @@ namespace CDT.Cosmos.Cms.Services
         /// <param name="config"></param>
         public CdnManagement(AzureCdnConfig config)
         {
-            _authority = $"https://login.microsoftonline.com/{config.TenantId}/{config.TenantDomainName}";
-            _clientId = config.ClientId;
-            _clientSecret = config.ClientSecret;
             _subscriptionId = config.SubscriptionId;
             _config = config;
 
@@ -75,10 +69,18 @@ namespace CDT.Cosmos.Cms.Services
         {
             if (_authenticationResult == null)
             {
-                var authContext = new AuthenticationContext(_authority);
-                var credential = new ClientCredential(_clientId, _clientSecret);
-                _authenticationResult = await
-                    authContext.AcquireTokenAsync("https://management.core.windows.net/", credential);
+                //var authContext = new AuthenticationContext(_authority);
+                //var credential = new ClientCredential(_clientId, _clientSecret);
+                //_authenticationResult = await
+                //    authContext.AcquireTokenAsync("https://management.core.windows.net/", credential);
+
+                // See update: https://www.how2code.info/en/blog/managing-azure-resources-from-csharp/
+                var scope = "https://management.core.windows.net//.default";
+                var app = ConfidentialClientApplicationBuilder.Create(_config.ClientId)
+                    .WithClientSecret(_config.ClientSecret)
+                    .WithTenantId(_config.TenantId).Build();
+
+                _authenticationResult = await app.AcquireTokenForClient(new[] { scope }).ExecuteAsync();
             }
 
             return _authenticationResult;

@@ -4,7 +4,7 @@
   "libraries": [
     {
       "provider": "unpkg",
-      "library": "@microsoft/signalr@6.0.4",
+      "library": "@microsoft/signalr@6.0.5",
       "destination": "wwwroot/lib/signalr/"
     },
     {
@@ -25,16 +25,12 @@
     },
     {
       "provider": "jsdelivr",
-      "library": "jquery-validation@1.19.3",
+      "library": "jquery-validation@1.19.4",
       "destination": "wwwroot/lib/jquery-validation/"
     },
     {
-      "library": "mdb-ui-kit@3.10.2",
+      "library": "mdb-ui-kit@4.1.0",
       "destination": "wwwroot/lib/mdb-ui-kit/"
-    },
-    {
-      "library": "microsoft-signalr@6.0.1",
-      "destination": "wwwroot/lib/microsoft-signalr/"
     }
   ]
 }
