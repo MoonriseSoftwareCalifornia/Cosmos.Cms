@@ -133,9 +133,9 @@ namespace CDT.Cosmos.Cms
 
                 // https://forums.asp.net/t/2130410.aspx?Roles+and+RoleManager+in+ASP+NET+Core+2
                 services.AddIdentity<IdentityUser, IdentityRole>(options =>
-                {
-                    options.SignIn.RequireConfirmedAccount = true;
-                })
+                    {
+                        options.SignIn.RequireConfirmedAccount = true;
+                    })
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddUserManager<UserManager<IdentityUser>>()
                     .AddRoleManager<RoleManager<IdentityRole>>()
