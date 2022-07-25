@@ -133,14 +133,12 @@ namespace CDT.Cosmos.Cms
                 // using WebPWrecover.Services;
 
                 // https://forums.asp.net/t/2130410.aspx?Roles+and+RoleManager+in+ASP+NET+Core+2
-                services.AddIdentity<IdentityUser, IdentityRole>(options =>
+                services.AddDefaultIdentity<IdentityUser>(options =>
                     {
                         options.SignIn.RequireConfirmedAccount = true;
                     })
-                    .AddEntityFrameworkStores<ApplicationDbContext>()
-                    .AddUserManager<UserManager<IdentityUser>>()
-                    .AddRoleManager<RoleManager<IdentityRole>>()
-                    .AddDefaultTokenProviders();
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
                 //
                 // Configure authentication providers.
