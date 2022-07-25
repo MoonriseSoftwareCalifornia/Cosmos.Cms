@@ -69,7 +69,7 @@ namespace CDT.Cosmos.Cms.Common.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //
-            // The following two coverters ensure UTC date times are 
+            // The following two converters ensure UTC date times are 
             // going into the database, and they are retried with
             // DateTime.Kind set to UTC
             // More information:
@@ -114,6 +114,18 @@ namespace CDT.Cosmos.Cms.Common.Data
             modelBuilder.Entity<ArticleLock>()
                 .Property(p => p.Id)
                 .HasDefaultValueSql("newid()");
+
+            modelBuilder.Entity<Config>()
+                .Property(p => p.IsActive)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<Config>()
+                .Property(p => p.Created)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Config>()
+                .Property(p => p.Updated)
+                .HasDefaultValueSql("GETUTCDATE()");
 
             base.OnModelCreating(modelBuilder);
         }
@@ -208,6 +220,11 @@ namespace CDT.Cosmos.Cms.Common.Data
         ///     Article activity logs
         /// </summary>
         public DbSet<ArticleLog> ArticleLogs { get; set; }
+
+        /// <summary>
+        ///     Configurations
+        /// </summary>
+        public DbSet<Config> Configs { get; set; }
 
         /// <summary>
         ///     Menu items

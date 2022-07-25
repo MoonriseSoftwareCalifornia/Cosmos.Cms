@@ -30,6 +30,7 @@ namespace CDT.Cosmos.Cms.Controllers
     /// <summary>
     /// Controller used for Cosmos setup.
     /// </summary>
+    [Authorize(Roles = "Administrators")]
     public class SetupController : Controller
     {
         private readonly ILogger<SetupController> _logger;
@@ -216,7 +217,7 @@ namespace CDT.Cosmos.Cms.Controllers
         }
 
         /// <summary>
-        ///     Configuraton wizard post back
+        /// Configuration wizard post back
         /// </summary>
         /// <param name="model"></param>
         /// <returns>SetupIndexViewModel</returns>

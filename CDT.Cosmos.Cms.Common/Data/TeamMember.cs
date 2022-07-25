@@ -38,7 +38,7 @@ namespace CDT.Cosmos.Cms.Common.Data
         public string UserId { get; set; }
 
         /// <summary>
-        ///     The identity user assocated with this membership
+        ///     The identity user associated with this membership
         /// </summary>
         [ForeignKey("UserId")]
         public IdentityUser User { get; set; }

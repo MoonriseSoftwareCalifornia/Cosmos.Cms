@@ -221,7 +221,7 @@ namespace CDT.Cosmos.Cms.Website
             //    options.KnownProxies.Clear();
             //});
 
-            services.AddApplicationInsightsTelemetry(Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+            services.AddApplicationInsightsTelemetry(t => t.ConnectionString = Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
             // END
             // https://docs.microsoft.com/en-us/dotnet/core/compatibility/aspnet-core/5.0/middleware-database-error-page-obsolete

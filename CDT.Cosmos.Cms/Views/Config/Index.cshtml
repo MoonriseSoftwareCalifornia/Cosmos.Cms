@@ -1,0 +1,27 @@
+﻿<div class="container mt-5 pt-2">
+    <div class="row">
+        <div class="col">
+            <h3>Cosmos Configurations</h3>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            @(Html.Kendo().Grid<ConfigListItemViewModel>()
+            .Name("grid")
+            .Columns(c => {
+                c.Bound(b => b.Id);
+                c.Bound(b => b.IsActive);
+                c.Bound(b => b.Updated);
+                c.Bound(b => b.UserEmail);
+            })
+            .DataSource(dataSource =>
+            {
+                dataSource.Ajax()
+                .Model(m => m.Id("Id"))
+                .Read(read => read.Action("Read_Configs", "Config"));
+            })
+            )
+        </div>
+    </div>
+</div>
