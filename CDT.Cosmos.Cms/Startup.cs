@@ -8,7 +8,6 @@ using CDT.Cosmos.Cms.Services;
 using CDT.Cosmos.Cms.Services.Secrets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -53,7 +52,7 @@ namespace CDT.Cosmos.Cms
         {
             var appInsightsConfig = Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
             SqlConnectionStringBuilder connectionStringBuilder = null;
-             
+
             services.AddApplicationInsightsTelemetry(appInsightsConfig);
 
             //
@@ -134,9 +133,9 @@ namespace CDT.Cosmos.Cms
 
                 // https://forums.asp.net/t/2130410.aspx?Roles+and+RoleManager+in+ASP+NET+Core+2
                 services.AddIdentity<IdentityUser, IdentityRole>(options =>
-                    {
-                        options.SignIn.RequireConfirmedAccount = true;
-                    })
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                })
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddUserManager<UserManager<IdentityUser>>()
                     .AddRoleManager<RoleManager<IdentityRole>>()
@@ -243,6 +242,7 @@ namespace CDT.Cosmos.Cms
                 // Load what is necessary to show diagnostic
                 // and setup pages.
                 //
+
                 services.AddControllersWithViews();
                 services.AddRazorPages();
 
@@ -351,7 +351,7 @@ namespace CDT.Cosmos.Cms
                     o.SchemaName = "SignalRCore";
                 });
             }
-            
+
         }
 
         /// <summary>
