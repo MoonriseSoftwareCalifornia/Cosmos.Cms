@@ -53,7 +53,7 @@ namespace CDT.Cosmos.Cms.Website.Controllers
         /// </summary>
         /// <remarks>Cosmos handles routes, not normal MVC routing.</remarks>
         /// <returns></returns>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
             // We do this so Cosmos can handle heirarchical page paths
             HttpContext.Request.Query.TryGetValue("lang", out var lang);

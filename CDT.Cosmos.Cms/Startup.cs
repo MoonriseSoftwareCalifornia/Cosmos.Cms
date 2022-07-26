@@ -412,6 +412,14 @@ namespace CDT.Cosmos.Cms
                     endpoints.MapControllerRoute(
                         "default",
                         "{controller=Home}/{action=Index}/{id?}");
+
+                    // Table of contents route
+                    endpoints.MapControllerRoute("TableOfContentsREST", "/GetTOC/{id?}",
+                        new { controller = "Home", action = "GetTOC" });
+
+                    // Deep path
+                    endpoints.MapFallbackToController("Index", "Home");
+
                 }
                 else
                 {

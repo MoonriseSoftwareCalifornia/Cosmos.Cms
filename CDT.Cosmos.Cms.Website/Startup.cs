@@ -283,6 +283,14 @@ namespace CDT.Cosmos.Cms.Website
                     endpoints.MapControllerRoute(
                         "default",
                         "{controller=Home}/{action=Index}/{id?}");
+
+                    // Table of contents route
+                    endpoints.MapControllerRoute("TableOfContentsREST", "/GetTOC/{id?}",
+                        new { controller = "Home", action = "GetTOC" });
+
+                    // Deep path
+                    endpoints.MapFallbackToController("Index", "Home");
+
                 }
                 else
                 {
@@ -297,6 +305,7 @@ namespace CDT.Cosmos.Cms.Website
                 // This route allows page titles to become URLs.
                 endpoints.MapControllerRoute("DynamicPage", "/{id?}/{lang?}",
                     new { controller = "Home", action = "Index" });
+
             });
         }
     }
