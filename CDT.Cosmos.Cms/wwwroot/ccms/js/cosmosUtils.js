@@ -19,7 +19,7 @@ function cosmosBuildTOC(targetClassId, startTitle, ordByPubDate, pageNo, pageSiz
     cosmosGetTOC(startTitle, ordByPubDate, pageNo, pageSize, function (data) {
         var html = "<ul>";
         data.Items.forEach(function (item) {
-            html += "<li><a href='/" + item.UrlPath + "'>" + item.Title.substring(item.Title.indexOf("/") + 1) + "</a></li>";
+            html += "<li><a href='/" + item.UrlPath + "'>" + item.Title.substring(item.Title.lastIndexOf("/") + 1) + "</a></li>";
         });
         html += "</ul>";
 

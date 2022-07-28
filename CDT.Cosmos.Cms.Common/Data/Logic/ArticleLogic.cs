@@ -95,6 +95,7 @@ namespace CDT.Cosmos.Cms.Common.Data.Logic
 
             var query = (from t in DbContext.Articles
                     where t.Published <= DateTime.UtcNow &&
+                    t.StatusCode == 0 &&
                     EF.Functions.Like(t.Title, prefix + "%") &&
                     (EF.Functions.Like(t.Title, prefix + "%/%") == false)
                     group t by new { t.Title, t.UrlPath }
