@@ -184,6 +184,15 @@ namespace CDT.Cosmos.Cms.Website
                 services.AddSingleton(cosmosOptions);
             }
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllCors",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin().AllowAnyMethod();
+                    });
+            });
+
             services.AddResponseCompression();
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -271,6 +280,8 @@ namespace CDT.Cosmos.Cms.Website
             //app.UseHttpsRedirection(); // Comment out for Docker container!
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

@@ -5,6 +5,7 @@ using CDT.Cosmos.Cms.Common.Services.Configurations;
 using CDT.Cosmos.Cms.Data.Logic;
 using CDT.Cosmos.Cms.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -266,14 +267,19 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <summary>
         /// Gets the children of a given page path.
         /// </summary>
-        /// <param name="id">UrlPath</param>
+        /// <param name="page">UrlPath</param>
         /// <param name="pageNo"></param>
         /// <param name="pageSize"></param>
         /// <param name="orderByPub"></param>
         /// <returns></returns>
-        public async Task<IActionResult> GetTOC(string id, bool orderByPub = false, int pageNo = 0, int pageSize = 10)
+        [EnableCors("AllCors")]
+        public async Task<IActionResult> GetTOC(
+            string page,
+            bool? orderByPub,
+            int? pageNo,
+            int? pageSize)
         {
-            var result = await _articleLogic.GetTOC(id, pageNo, pageSize, orderByPub);
+            var result = await _articleLogic.GetTOC(page, pageNo??0, pageSize??10, orderByPub??false);
             return Json(result);
         }
 

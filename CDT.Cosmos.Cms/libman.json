@@ -31,6 +31,11 @@
     {
       "library": "mdb-ui-kit@4.1.0",
       "destination": "wwwroot/lib/mdb-ui-kit/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "signalr.js@2.4.3",
+      "destination": "wwwroot/lib/signalr.js/"
     }
   ]
 }

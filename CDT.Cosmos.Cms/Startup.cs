@@ -115,6 +115,15 @@ namespace CDT.Cosmos.Cms
                 // to export web pages for external editing.
                 services.AddScoped<IViewRenderService, ViewRenderService>();
 
+                services.AddCors(options =>
+                {
+                    options.AddPolicy("AllCors",
+                        policy =>
+                        {
+                            policy.AllowAnyOrigin().AllowAnyMethod();
+                        });
+                });
+
                 // Add this before identity
                 services.AddControllersWithViews();
                 services.AddRazorPages();
@@ -387,11 +396,12 @@ namespace CDT.Cosmos.Cms
             app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseCors();
+
             app.UseResponseCaching(); //https://docs.microsoft.com/en-us/aspnet/core/performance/caching/middleware?view=aspnetcore-3.1
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.UseEndpoints(endpoints =>
             {
@@ -413,9 +423,6 @@ namespace CDT.Cosmos.Cms
                         "default",
                         "{controller=Home}/{action=Index}/{id?}");
 
-                    // Table of contents route
-                    endpoints.MapControllerRoute("TableOfContentsREST", "/GetTOC/{id?}",
-                        new { controller = "Home", action = "GetTOC" });
 
                     // Deep path
                     endpoints.MapFallbackToController("Index", "Home");

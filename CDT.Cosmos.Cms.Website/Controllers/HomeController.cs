@@ -4,6 +4,7 @@ using CDT.Cosmos.Cms.Common.Models;
 using CDT.Cosmos.Cms.Common.Services;
 using CDT.Cosmos.Cms.Common.Services.Configurations;
 using CDT.Cosmos.Cms.Website.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -65,6 +66,7 @@ namespace CDT.Cosmos.Cms.Website.Controllers
         /// </summary>
         /// <param name="id">UrlPath</param>
         /// <returns></returns>
+        [EnableCors("AllCors")]
         public async Task<IActionResult> GetTOC(string id, bool orderByPub = false, int pageSize = 10, int pageNo = 0)
         {
             var articleLogic = new ArticleLogic(_dbContext, _cosmosOptions);

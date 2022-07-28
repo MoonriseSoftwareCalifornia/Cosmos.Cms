@@ -1,7 +1,11 @@
 ﻿// Cosmos CMS utility functions
 
+$(document).ready(function () {
+    cosmosBuildTOC(".divCcmsToc");
+});
+
 // Automatically creates a Table of Contents for a given page
-var cosmosBuildTOC = function (targetDivId, startTitle, ordByPubDate, pageNo, pageSize,) {
+function cosmosBuildTOC(targetClassId, startTitle, ordByPubDate, pageNo, pageSize,) {
 
     if (startTitle === null || typeof (startTitle) === "undefined" || startTitle === "") {
         startTitle = document.title;
@@ -11,73 +15,51 @@ var cosmosBuildTOC = function (targetDivId, startTitle, ordByPubDate, pageNo, pa
     } else {
         ordByPubDate = Boolean(ordByPubDate);
     }
-    document.addEventListener("DOMContentLoaded", function () {
 
-        cosmosGetTOC(startTitle, ordByPubDate, pageNo, pageSize, function (data) {
-            var html = "<ul>";
-            data.Items.forEach(function (item) {
-                html += "<li><a href='/" + item.UrlPath + "'>" + item.Title.substring(item.Title.indexOf("/") + 1) + "</a></li>";
-            });
-            html += "</ul>";
-            var el = document.getElementById(targetDivId);
-            el.innerHTML = html;
-
-            var footer = "<div>";
-
-            if (data.PageNo > 0) {
-                footer += "<span onclick=''>Prev</span>";
-            }
-            var current = (data.PageNo * data.PageSize) + data.PageSize;
-
-            if (current < data.TotalCount) {
-                footer += "<span onclick='' style='float:right'>Next</span>";
-            }
-
-            footer += "</div>";
+    cosmosGetTOC(startTitle, ordByPubDate, pageNo, pageSize, function (data) {
+        var html = "<ul>";
+        data.Items.forEach(function (item) {
+            html += "<li><a href='/" + item.UrlPath + "'>" + item.Title.substring(item.Title.indexOf("/") + 1) + "</a></li>";
         });
+        html += "</ul>";
+
+        html += "<div>";
+
+        if (data.PageNo > 0) {
+            html += "<span onclick=''>Prev</span>";
+        }
+        var current = (data.PageNo * data.PageSize) + data.PageSize;
+
+        if (current < data.TotalCount) {
+            html += "<span onclick='' style='float:right'>Next</span>";
+        }
+
+        html += "</div>";
+        $(targetClassId).html(html);
     });
 }
 
 // Cosmos CMS Table of Contents generator
 function cosmosGetTOC(parentTitle, orderbypub, pageNo, pageSize, callback) {
 
-    if (pageNo === null) {
+    if (orderbypub === null || typeof (orderbypub) === "undefined") {
+        orderbypub = false;
+    }
+
+    if (pageNo === null || typeof (pageNo) === "undefined") {
         pageNo = 0;
     }
 
-    if (pageSize === null) {
+    if (pageSize === null || typeof (pageSize) === "undefined") {
         pageSize = 10;
     }
 
-    var http_request = new XMLHttpRequest();
-    try {
-        // Opera 8.0+, Firefox, Chrome, Safari
-        http_request = new XMLHttpRequest();
-    } catch (e) {
-        // Internet Explorer Browsers
-        try {
-            http_request = new ActiveXObject("Msxml2.XMLHTTP");
+    $.ajax({
+        type: "GET",
+        url: "/Home/GetTOC",
+        data: { page: encodeURIComponent(parentTitle), orderByPub: orderbypub, pageNo: pageNo, pageSize: pageSize },
+        success: callback,
+        dataType: "json"
+    });
 
-        } catch (e) {
-
-            try {
-                http_request = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (e) {
-                // Something went wrong
-                alert("Your browser broke!");
-                return false;
-            }
-        }
-    }
-
-    http_request.onreadystatechange = function () {
-        if (http_request.readyState == 4) {
-            // Javascript function JSON.parse to parse JSON data
-            var data = JSON.parse(http_request.responseText);
-            callback(data);
-        }
-    }
-    // pageNo, pageSize
-    http_request.open("GET", "/Home/GetTOC/" + encodeURIComponent(parentTitle) + "?orderByPub=" + orderbypub + "&pageNo=" + pageNo + "&pageSize=" + pageSize, true);
-    http_request.send();
 }
