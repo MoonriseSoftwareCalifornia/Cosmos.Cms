@@ -37,10 +37,24 @@ namespace CDT.Cosmos.Cms.Common.Services
         /// <param name="email"></param>
         /// <param name="subject"></param>
         /// <param name="message"></param>
+        /// <param name="emailFrom"></param>
         /// <returns></returns>
         public Task SendEmailAsync(string email, string subject, string message)
         {
             return Execute(subject, message, email);
+        }
+
+        /// <summary>
+        ///     Send email method
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="subject"></param>
+        /// <param name="message"></param>
+        /// <param name="emailFrom"></param>
+        /// <returns></returns>
+        public Task SendEmailAsync(string email, string subject, string message, string emailFrom)
+        {
+            return Execute(subject, message, email, emailFrom);
         }
 
         /// <summary>

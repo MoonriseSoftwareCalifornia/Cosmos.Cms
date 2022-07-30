@@ -1,0 +1,88 @@
+﻿@model CDT.Cosmos.Cms.Common.Models.EmailMessageViewModel
+@{
+    Layout = null;
+    var layout = (LayoutViewModel)ViewData["layout"];
+    ViewData["Title"] = "Contact Us";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+
+    @Html.Raw(layout.Head)
+
+</head>
+<body>
+
+    @Html.Raw(layout.HtmlHeader)
+
+    <form id="showdowForm" method="post" asp-action="Index" asp-controller="ContactUs">
+        @Html.AntiForgeryToken()
+        <div class="container mt-5 mb-5">
+            <main class="main-primary">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card card-dark bg-dark text-light mt-5">
+                            @if (Model.SendSuccess ?? false)
+                            {
+                                <div class="card-header">
+                                    <h4 class="card-title">Thank you!</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p>Your message has been sent,
+                                        and we will reply as soon as we can.</p>
+                                        <p>Thank you!</p>
+                                        <p><a href="/">Return to home page</a></p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="card-header">
+                                    <h4 class="card-title">Contact Us</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form id="frmContactUs">
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                        @Html.AntiForgeryToken()
+                                        <div class="mb-3">
+                                            <label asp-for="SenderName"></label>
+                                            <input asp-for="SenderName" class="form-control" required>
+                                            <span asp-validation-for="SenderName" class="badge badge-primary"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label asp-for="FromEmail"></label>
+                                            <input asp-for="FromEmail" class="form-control" required>
+                                            <span asp-validation-for="FromEmail" class="badge badge-primary"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label asp-for="Subject"></label>
+                                            <input asp-for="Subject" class="form-control">
+                                            <span asp-validation-for="Subject" class="badge badge-primary"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label asp-for="Content"></label>
+                                            <textarea asp-for="Content" class="form-control rounded-0" rows="10" required>
+                                            <span asp-validation-for="Content" class="badge badge-primary"></span>
+                                            </textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <button type="submit" class="btn btn-primary">Send Message </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </form>
+
+    @Html.Raw(layout.FooterHtmlContent)
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+    </body>
+    </html>

@@ -32,6 +32,7 @@ namespace CDT.Cosmos.Cms.Controllers
         private readonly IOptions<CosmosConfig> _cosmosConfigOptions;
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<HomeController> _logger;
+        
 
         /// <summary>
         /// Constructor
@@ -54,6 +55,7 @@ namespace CDT.Cosmos.Cms.Controllers
         /// <summary>
         /// Editor home index method
         /// </summary>
+        /// <param name="Id"></param>
         /// <returns></returns>
         public async Task<IActionResult> Index()
         {

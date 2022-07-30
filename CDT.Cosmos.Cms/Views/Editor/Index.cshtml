@@ -23,6 +23,7 @@
             @if (canEdit || User.IsInRole("Authors") || teamMemberLogic?.CanCreatePage() == true)
             {
                 <a class="btn btn-sm btn-primary" asp-action="Create">New Page</a>
+                <a asp-action="Redirects">Manage Redirects</a>
             }
             @(Html.Kendo().Grid<ArticleListItem>()
             .Name("grid")

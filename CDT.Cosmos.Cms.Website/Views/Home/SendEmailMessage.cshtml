@@ -1,0 +1,79 @@
+﻿@model CDT.Cosmos.Cms.Common.Models.EmailMessageViewModel
+@{
+    Layout = null;
+    var article = (CDT.Cosmos.Cms.Common.Models.ArticleViewModel)ViewData["article"];
+    ViewData["Title"] = article.Title;
+}
+<!DOCTYPE html>
+<html lang="@article.LanguageCode">
+<head>
+    <title>@article.Title</title>
+
+    @Html.Raw(article.Layout.Head)
+    @*
+    Page specific header
+    *@
+    @Html.Raw(article.HeadJavaScript)
+    @*
+    Application Insights Scripts
+    *@
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body>
+    @if (Model.SendSuccess ?? false)
+    {
+        @Html.Raw(article.Layout.HtmlHeader)
+        <form id="showdowForm" asp-action="SendEmailMessage" asp-route-id="@article.UrlPath" asp-controller="Home">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Content)
+            @Html.HiddenFor(m => m.FromEmail)
+            @Html.HiddenFor(m => m.Subject)
+            @Html.HiddenFor(m => m.FromEmail)
+        </form>
+        @Html.Raw(article.Content)
+    }
+    else
+    {
+        <h4>Thank you!</h4>
+        <hr />
+        <p>Your message has been sent. We will reply as soon as we can.</p>
+        <a href="/">Return to home page</a>
+    }
+
+    @Html.Raw(article.Layout.FooterHtmlContent)
+    @*
+    Page specific
+    *@
+    @Html.Raw(article.FooterJavaScript)
+
+    @*
+    <script>
+    var identityInfo = @(Html.Raw(ViewData["CCMS-RBAC"]));
+    if (identityInfo != null && identityInfo.IsAuthenticated && identityInfo.RoleMembership.length > 0) {
+    $(document).ready(function () {
+    var items = $("[data-ccms-roles]");
+    $.each(items, function (index, elem) {
+    var elementRoles = $(elem).attr("data-ccms-roles");
+    var show = false;
+    $.each(identityInfo.RoleMembership,
+    function(inner, role) {
+    if (elementRoles.includes(role)) {
+    show = true;
+    }
+    });
+    if (show) {
+    $(elem).show();
+    }
+    });
+    });
+    }
+    </script>
+    <!-- Comment out the following if not using Google Translate v3 -->
+    @if (ViewData["UseGoogleTranslate"] != null && (bool)ViewData["UseGoogleTranslate"])
+    {
+    <script src="~/ccms/js/GoogleTranslations.js" id="ccms-lang-script" data-lang="@Model.LanguageName"></script>
+    }
+    *@
+
+</body>
+</html>

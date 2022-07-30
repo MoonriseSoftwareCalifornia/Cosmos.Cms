@@ -1,9 +1,11 @@
 ﻿using CDT.Cosmos.Cms.Common.Data;
 using CDT.Cosmos.Cms.Common.Data.Logic;
 using CDT.Cosmos.Cms.Common.Models;
+using CDT.Cosmos.Cms.Common.Services;
 using CDT.Cosmos.Cms.Common.Services.Configurations;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -25,15 +27,18 @@ namespace CDT.Cosmos.Cms.Website.Controllers
         private readonly IDistributedCache _distributedCache;
         private readonly SqlConnectionStringBuilder _connectionStringBuilder;
         private readonly ApplicationDbContext _dbContext;
+        private readonly EmailSender _emailSender;
 
         public HomeController(ApplicationDbContext dbContext, ILogger<HomeController> logger,
             IOptions<CosmosConfig> cosmosOptions,
-            IDistributedCache distributedCache)
+            IDistributedCache distributedCache,
+            IEmailSender emailSender)
         {
             _dbContext = dbContext;
             _logger = logger;
             _cosmosOptions = cosmosOptions;
             _distributedCache = distributedCache;
+            _emailSender = (EmailSender) emailSender;
 
             var primaryCloud = cosmosOptions.Value.PrimaryCloud;
             var primary = cosmosOptions.Value.SqlConnectionStrings.FirstOrDefault(f => f.CloudName.Equals(primaryCloud, StringComparison.CurrentCultureIgnoreCase));
@@ -52,11 +57,63 @@ namespace CDT.Cosmos.Cms.Website.Controllers
         /// </summary>
         /// <remarks>Cosmos handles routes, not normal MVC routing.</remarks>
         /// <returns></returns>
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> Index(string Id)
         {
-            // We do this so Cosmos can handle heirarchical page paths
+            // We do this so Cosmos can handle hierarchical page paths
             HttpContext.Request.Query.TryGetValue("lang", out var lang);
             return await GetArticleViewModelAsync(HttpContext.Request.Path, lang, false, true);
+        }
+
+        /// <summary>
+        /// Setup email message page
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="subject"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> SendEmailMessage(string Id, string subject)
+        {
+            // We do this so Cosmos can handle hierarchical page paths
+            HttpContext.Request.Query.TryGetValue("lang", out var lang);
+            var model = (ViewResult) await GetArticleViewModelAsync(Id, lang, false, true);
+
+            ViewData["article"] = (ArticleViewModel) model.Model;
+
+            return View(new EmailMessageViewModel()
+            {
+                Subject = subject
+            });
+        }
+        
+        /// <summary>
+        /// SendEmailMessage
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendEmailMessage(EmailMessageViewModel model, string Id)
+        {
+            // We do this so Cosmos can handle hierarchical page paths
+            HttpContext.Request.Query.TryGetValue("lang", out var lang);
+            var result = (ViewResult)await GetArticleViewModelAsync(Id, lang, false, true);
+
+            ViewData["article"] = (ArticleViewModel) result.Model;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _emailSender.SendEmailAsync(_cosmosOptions.Value.SendGridConfig.EmailFrom,
+                        model.Subject, model.Content, model.FromEmail);
+
+                    model.SendSuccess = true;
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message, e);
+                }
+            }
+
+            return View(model);
         }
 
         /// <summary>
@@ -98,7 +155,6 @@ namespace CDT.Cosmos.Cms.Website.Controllers
 
             // Make sure this is UrlEncoded, because this is the way it is stored in DB.
             if (!string.IsNullOrEmpty(urlPath)) urlPath = ArticleLogic.HandleUrlEncodeTitle(urlPath);
-
 
             urlPath = urlPath?.Trim().ToLower();
             if (string.IsNullOrEmpty(urlPath) || urlPath.Trim() == "/")
