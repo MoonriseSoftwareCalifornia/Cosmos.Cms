@@ -106,9 +106,9 @@
             btn.Add().Text("Reformatting Code");
             btn.Add().Text("About Monaco");
             }).Click("btnHelpClick");
-                @*item.Add().Type(CommandType.Separator);
+                        @*item.Add().Type(CommandType.Separator);
                     item.Add().Template(@"<div><strong>Editing:</strong> " + Model.EditorTitle + "</div>");*@
-                @*item.Add().Template(@"<div><strong>Version:</strong> " + ViewData["Version"] + "</div>");
+                        @*item.Add().Template(@"<div><strong>Version:</strong> " + ViewData["Version"] + "</div>");
                     item.Add().Template("<span title=\"Edit sessions\" id=\"pubLbl\">Session info: </span><span id=\"articleChat\"></span>");*@
             })
             )
@@ -125,9 +125,9 @@
                         var aclass = "active";
                         foreach (var field in fields)
                         {
-                            <li class="nav-item">
-                                <a title="@field.ToolTip" data-bs-toggle="tooltip" data-bs-placement="bottom" data-ccms-fieldname="@field.FieldName" class="tabitem nav-link @aclass" aria-current="page" onclick="tabOnSelect(this)"><span class="pageTabIcon">&lt;&gt;</span>  @field.FieldName</a>
-                            </li>
+                                    <li class="nav-item">
+                                        <a title="@field.ToolTip" data-bs-toggle="tooltip" data-bs-placement="bottom" data-ccms-fieldname="@field.FieldName" class="tabitem nav-link @aclass" aria-current="page" onclick="tabOnSelect(this)"><span class="pageTabIcon">&lt;&gt;</span>  @field.FieldName</a>
+                                    </li>
                             aclass = "";
                         }
                     }
@@ -185,33 +185,33 @@
                             var errors = values[i].Errors.ToList();
                             if (errors.Count > 0)
                             {
-                                <li>
-                                    @keys[i] :
-                                    <ul>
-                                        @{
+                                        <li>
+                                            @keys[i] :
+                                            <ul>
+                                                @{
                                             for (var c = 0; c < errors.Count; c++)
                                             {
-                                                <li>
-                                                    @errors[c].ErrorMessage
-                                                    @if (errors[c].Exception != null)
+                                                                <li>
+                                                                    @errors[c].ErrorMessage
+                                                                    @if (errors[c].Exception != null)
                                                     {
-                                                        <br />
-                                                        <br />
-                                                        <button class="btn btn-sm btn-dark" onclick="onClickShowError('@("#exception" + i + c)')">View Details</button>
-                                                        <div @("id=\"exception" + i + c + "\"") style="display: none">
-                                                            <div style="display: block; font-family: Courier New;">
-                                                                @errors[c].Exception.Message
-                                                            </div>
-                                                            <code>
-                                                                @errors[c].Exception.InnerException
-                                                            </code>
-                                                        </div>
+                                                                        <br />
+                                                                        <br />
+                                                                        <button class="btn btn-sm btn-dark" onclick="onClickShowError('@("#exception" + i + c)')">View Details</button>
+                                                                        <div @("id=\"exception" + i + c + "\"") style="display: none">
+                                                                            <div style="display: block; font-family: Courier New;">
+                                                                                @errors[c].Exception.Message
+                                                                            </div>
+                                                                            <code>
+                                                                                @errors[c].Exception.InnerException
+                                                                            </code>
+                                                                        </div>
                                                     }
-                                                </li>
+                                                                </li>
                                             }
-                                        }
-                                    </ul>
-                                </li>
+                                                }
+                                            </ul>
+                                        </li>
                             }
                         }
                     }
@@ -372,11 +372,23 @@
                     fieldId = fieldInfo.FieldId;
 
                     var mode = null;
-                    if (fieldInfo.EditorMode === 0) {
-                        mode = "javascript";
-                    } else {
-                        mode = "html";
+
+                    switch(fieldInfo.EditorMode)
+                    {
+                        case 0:
+                            mode = "javascript"
+                            break;
+                        case 1:
+                            mode = "html"
+                            break;
+                        case 2:
+                            mode = "css";
+                            break;
+                        default:
+                            mode = "html"
+                            break;
                     }
+
                     $("#EditingField").val(fieldId);
                     var hiddenInput = $("#" + fieldId);
                     var code = hiddenInput.val();

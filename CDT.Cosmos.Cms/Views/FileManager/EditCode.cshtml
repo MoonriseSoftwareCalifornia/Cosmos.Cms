@@ -1,0 +1,242 @@
+﻿@model FileManagerEditCodeViewModel
+@addTagHelper *, Kendo.Mvc
+@{
+    Layout = "_LayoutCodeEditor";
+    ViewData["Title"] = Model.EditorTitle;
+}
+
+<form id="codeForm" asp-action="EditCode" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="EditingField" />
+    <input type="hidden" asp-for="Content" />
+    <input type="hidden" asp-for="Path" />
+    <input type="hidden" asp-for="EditorMode" />
+    <input type="hidden" asp-for="EditingField" />
+    <input type="hidden" asp-for="EditorTitle" />
+    <input type="hidden" asp-for="EditorFields" />
+</form>
+
+<script>
+    function btnCustomClick(e) {
+        //switch (e.target.text()) {
+        //case "Preview":
+        //    // Open in new window.
+        //    window.open("@Url.Action("Preview", "Home", new {Model.Id})");
+        //    break;
+        //case "Html":
+        //    $("#htmlEditorDialog").data("kendoDialog").open();
+        //    break;
+        //case "Versions":
+        //    $("#versionsDialog").data("kendoDialog").open();
+        //    break;
+        //case "Help":
+        //    //window.open("https://cosmos.azureedge.net/edit_page#CodeEditor");
+        //    break;
+        //case "Export":
+        //    window.location.href = "@Url.Action("ExportPage", "Editor")/@Model.Id";
+        //    break;
+        //case "Import":
+        //     if (ccmsEditorIsLocked === true) {
+        //        alert("Import page while it is locked by another.");
+        //     } else {
+        //        ccmsSendSignal("SetArticleLock");
+        //        window.open("@Url.Action("ImportPage", "FileManager", new {Model.Id})", '_blank', 'height=510,width=1200,menubar=no,location=no,status=no,titlebar=no,toolbar=no');
+        //     }
+        //    break;
+        //}
+    }
+
+    // Used by signalR to re-load
+    function ccmsLoadModel(model) {
+
+        var id = $("#Id");
+        var content = $("#Content");
+        var hjs = $("#HeaderJavaScript");
+        var fjs = $("#FooterJavaScript");
+
+        id.val(model.Id);
+        content.val(model.Content);
+        hjs.val(model.HeaderJavaScript);
+        fjs.val(model.FooterJavaScript);
+
+        var activeTab = $(".tabitem.nav-link.active");
+        var name = $(activeTab).attr("data-ccms-fieldname");
+        createAndLoadEditor(name);// tabOnSelect on _LayoutCodeEditor
+    }
+
+    function closeEditor() {
+        window.location.href = "@Url.Action("Index", "FileManager")";
+    }
+
+    function htmlEditor() {
+        //window.location.href = "@Url.Action("Edit", "Editor", new {Model.Id})";
+    }
+
+    function goVersions() {
+    }
+
+    // PUBLISHING METHODS
+    function onPubNow(e) {
+        var now = new Date();
+        now = now.toUTCString();
+        $("#Published").val(now);
+        loadPublishLocalDateTime();
+    }
+    // SCHEDULING PUBLISHING UTILITIES
+    function loadPublishLocalDateTime() {
+        var published = $("#Published").val();
+        var publishButton = $("#btnPublish");
+        if (published !== null && typeof (published) !== "undefined" && published.trim() !== "") {
+
+            if (!published.endsWith("Z") && !published.endsWith("GMT")) {
+                published += " GMT";
+            }
+
+            var localDateTime = new Date(published);
+            var dateTimePicker = $("#dtPublished").data("kendoDateTimePicker");
+            dateTimePicker.value(localDateTime);
+            var now = new Date();
+
+            if (now < localDateTime) {
+                //publishButton.attr("class", "k-button k-primary");
+                publishButton.html("Pending");
+                $(publishButton).kendoTooltip({
+                    content: "This version is set to be published in the future at: " + localDateTime.toLocaleString() + ". Click to change."
+                });
+            } else {
+                //publishButton.attr("class", "k-button k-success");
+                publishButton.html("Published");
+                $(publishButton).kendoTooltip({
+                    content: "This version is now published and available on the web as of: " + localDateTime.toLocaleString() + ". Click to change."
+                });
+            }
+        } else {
+            //publishButton.attr("class", "k-button k-alert");
+            publishButton.html("DRAFT");
+            $(publishButton).kendoTooltip({
+                content: "This version is not yet published. Click to schedule publishing date and time."
+            });
+        }
+    }
+
+    function openSchedulerDialog() {
+        $("#schedulingDialog").data("kendoDialog").open();
+    }
+
+    function cancelPublish() {
+        var dateTimePicker = $("#dtPublished").data("kendoDateTimePicker");
+        dateTimePicker.value("");
+    }
+
+    function savePublishDateTime() {
+        // Save date/time
+        var dateTimePicker = $("#dtPublished").data("kendoDateTimePicker");
+        var dateTimeValue = dateTimePicker.value();
+
+        if ($("#Published").val() !== dateTimeValue) {
+            $("#pendingChangesBadge").show();
+        }
+
+        // Note, this saves the date/time using local time (of the user's computer).
+        // The server stores this as UTC time.
+        if (dateTimeValue !== null && dateTimeValue !== "null" && dateTimeValue !== "") {
+            var datetime = new Date(dateTimeValue);
+            var utcString = datetime.toUTCString();
+            $("#Published").val(utcString);
+            $("#btnPublish").html("Published");
+        } else {
+            $("#btnPublish").html("DRAFT");
+            $("#Published").val("");
+        }
+
+        //loadPublishLocalDateTime();
+    }
+
+    function cancelPublishDateTime() {
+        loadPublishLocalDateTime();
+        $("#schedulingDialog").data("kendoDialog").close();
+    };
+</script>
+
+<kendo-dialog name="htmlEditorDialog" title="Edit Code" modal="true" visible="false" min-width="500">
+    <content>
+        <p>You are about to leave this page.</p>
+        <p><span class="badge badge-warning">Warning:</span> Any unsaved changes will be lost!</p>
+    </content>
+    <actions>
+        <action text="Cancel">
+        </action>
+        <action action="htmlEditor" primary="true" text="Yes" title="Confirm">
+        </action>
+    </actions>
+    <popup-animation>
+        <open duration="500" effects="fade:in" />
+        <close duration="500" effects="fade:out" />
+    </popup-animation>
+</kendo-dialog>
+<kendo-dialog name="versionsDialog" title="Versions" modal="true" visible="false" min-width="500">
+    <content>
+        <p>You are about to leave this page.</p>
+        <p><span class="badge badge-warning">Warning:</span> Any unsaved changes will be lost!</p>
+    </content>
+    <actions>
+        <action text="Cancel">
+        </action>
+        <action action="goVersions" primary="true" text="Yes" title="Confirm">
+        </action>
+    </actions>
+    <popup-animation>
+        <open duration="500" effects="fade:in" />
+        <close duration="500" effects="fade:out" />
+    </popup-animation>
+</kendo-dialog>
+<kendo-dialog name="schedulingDialog" title="Publishing Date" modal="true" visible="false" min-width="700">
+    <content>
+        <h4><span class="fa fa-calendar"></span> Publishing Date/Time</h4>
+        <hr />
+        <p></p>
+        <p>Set the day and time when this page will be made visible on the web.</p>
+        <p>Tips:</p>
+        <ul>
+            <li>Pick now or a date/time in the past to publish right away.</li>
+            <li>Pick a date/time later on to schedule publishing in the future.</li>
+            <li>
+                Removing or clearing out the date/time will &quot;un-publish&quot; this version.
+                <ul>
+                    <li>If no prior version exists, this page will not appear on the web.</li>
+                    <li>Otherwise, the prior <em>published</em> version will appear instead.</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-6">
+                @(Html.Kendo().DateTimePicker().Name("dtPublished").Enable(User.IsInRole("Editors") || User.IsInRole("Administrators")))
+            </div>
+            <div class="col-4">
+                @Html.Kendo().Button().Name("btnPublishNow").Content("Publish Now").Events(eve => eve.Click("onPubNow"))
+            </div>
+        </div>
+        <div class="col">
+            @Html.Kendo().Button().Name("timeZone")
+        </div>
+        <p></p>
+        <div class="form-row">
+            <div class="col">
+                <div class="k-button k-button-sm k-button-primary" onclick="cancelPublish()">Clear Date/Time</div>
+            </div>
+        </div>
+        <p></p>
+        <p><span class="badge badge-warning">Note: </span> This will immediately set permissions for all versions of this page.</p>
+    </content>
+    <popup-animation>
+        <open duration="500" effects="fade:in" />
+        <close duration="500" effects="fade:out" />
+    </popup-animation>
+    <actions>
+        <action action="cancelPublishDateTime" text="Cancel">
+        </action>
+        <action action="savePublishDateTime" text="Set Date/Time" title="Save Date/Time">
+        </action>
+    </actions>
+</kendo-dialog>
