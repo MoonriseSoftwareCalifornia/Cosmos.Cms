@@ -27,6 +27,8 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.5
     - name: Adding Telerik NuGet
       run: dotnet nuget add source https://nuget.telerik.com/v3/index.json --username ${{ secrets.TELERIK_USER }} --password ${{ secrets.TELERIK_PASSWORD }} --store-password-in-clear-text --name telerik.com
+    - name: Create pkg dir
+      run: mkdir -p ./packages
     - name: Restore dependencies
       run: dotnet restore --packages ./packages
     #- name: Build
