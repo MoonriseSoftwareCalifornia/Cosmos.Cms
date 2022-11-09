@@ -1,6 +1,6 @@
 # Cosmos
 
-##IMPORTANT: This repository is being archived as a major new release of Cosmos is now available.
+## IMPORTANT: This repository is being archived as a major new release of Cosmos is now available.
 
 Please visit the [new repository](https://github.com/CosmosSoftware/CosmosCms).
 
